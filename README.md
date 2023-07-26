@@ -1,2 +1,2 @@
 # PixelPro
-4th Project_SpringBoot(team)
+4th Project SpringBoot(team)
