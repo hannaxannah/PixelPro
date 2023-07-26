@@ -1,13 +1,11 @@
 package com.example.PixelPro.Bean;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Setter
 @Getter
 @ToString
-@AllArgsConstructor
-@NoArgsConstructor
 public class testBean {
-//    commit test 01
-
 }
