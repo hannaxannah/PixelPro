@@ -8,5 +8,4 @@ import lombok.ToString;
 @Getter
 @ToString
 public class testBean {
-  test
 }
