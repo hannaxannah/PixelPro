@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}">
+
+<th:block layout:fragment="css">
+    <style>
+        .fieldError{
+            color : red;
+            font-size:11pt;
+        }
+    </style>
+</th:block>
+
+<body class="content" layout:fragment="content">
+<main id="main" class="main">
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-6">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">급여대장 정보 추가</h5>
+
+                        <!-- General Form Elements -->
+                        <form name="myform" method="post" action="/insert" th:object="${salaryBean}">
+<!--                            <div class="row mb-3">-->
+<!--                                <label class="col-sm-2 col-form-label"></label>-->
+<!--                                <div class="col-sm-10">-->
+<!--                                    <input type="text" class="form-control" th:field="${salaryBean.sortation}" placeholder="구분을 입력하세요">-->
+<!--                                    <p th:if="${#fields.hasErrors('sortation')}" th:errors="*{sortation}" class="fieldError"></p>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">명칭</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" th:field="${salaryBean.stitle}" placeholder="명칭을 입력하세요">
+                                    <p th:if="${#fields.hasErrors('stitle')}" th:errors="*{stitle}" class="fieldError"></p>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">지급일</label>
+                                <div class="col-sm-10">
+                                    <input type="date" class="form-control" th:field="${salaryBean.pdate}">
+                                    <p th:if="${#fields.hasErrors('pdate')}" th:errors="*{pdate}" class="fieldError"></p>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">인원 수</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" th:field="${salaryBean.sname}" placeholder="인원수를 입력하세요">
+                                    <p th:if="${#fields.hasErrors('sname')}" th:errors="*{sname}" class="fieldError"></p>
+                                </div>
+                            </div>
+                            <div class="col-sm-10">
+                                <select class="form-select" aria-label="Default select example" th:field="${paystubBean.ptype}">
+                                    <option selected value="">선택해주세요.</option>
+                                    <option th:field="${paystubBean.ptype}" value="급여">급여</option>
+                                    <option th:field="${paystubBean.ptype}" value="기타">기타</option>
+                                </select>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">지급총액(세전)</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" th:field="${salaryBean.allpayment}" placeholder="월급여를 입력하세요">
+                                    <p th:if="${#fields.hasErrors('allpayment')}" th:errors="*{allpayment}" class="fieldError"></p>
+                                </div>
+                            </div>
+
+
+                            <div class="row mb-3">
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-success">추가</button>
+                                    <button type="reset" class="btn btn-primary">초기화</button>
+                                </div>
+                            </div>
+
+                        </form><!-- End General Form Elements -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+

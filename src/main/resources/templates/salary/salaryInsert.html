@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}">
+
+<th:block layout:fragment="css">
+    <style>
+        .fieldError{
+            color : red;
+            font-size:11pt;
+        }
+    </style>
+</th:block>
+
+<body class="content" layout:fragment="content">
+<main id="main" class="main">
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-6">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">임직원 급여 정보 추가</h5>
+
+                        <!-- General Form Elements -->
+                        <form name="myform" method="post" action="/insert" th:object="${salaryBean}">
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">구분</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" th:field="${salaryBean.sortation}" placeholder="구분을 입력하세요">
+                                    <p th:if="${#fields.hasErrors('sortation')}" th:errors="*{sortation}" class="fieldError"></p>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">명칭</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" th:field="${salaryBean.stitle}" placeholder="명칭을 입력하세요">
+                                    <p th:if="${#fields.hasErrors('stitle')}" th:errors="*{stitle}" class="fieldError"></p>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">사원명</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" th:field="${salaryBean.sname}" placeholder="사원명을 입력하세요">
+                                    <p th:if="${#fields.hasErrors('sname')}" th:errors="*{sname}" class="fieldError"></p>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">지급일</label>
+                                <div class="col-sm-10">
+                                    <input type="date" class="form-control" th:field="${salaryBean.pdate}">
+                                    <p th:if="${#fields.hasErrors('pdate')}" th:errors="*{pdate}" class="fieldError"></p>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">지급총액(세전)</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" th:field="${salaryBean.allpayment}" placeholder="월급여를 입력하세요">
+                                    <p th:if="${#fields.hasErrors('allpayment')}" th:errors="*{allpayment}" class="fieldError"></p>
+                                </div>
+                            </div>
+
+                            <!--
+                            1인가구를 기준으로 월 100만원 이하는 X 200만원부터 1%로 100만원마다 2%증가함
+                            최종으로 월급여 5000만원 이상이면 34%임
+                            월 300만원 기준이면 9만원임(3000000 * 0.03)
+                            -->
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">소득세</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" value="" th:field="${salaryBean.cometax}">
+                                    <p th:if="${#fields.hasErrors('cometax')}" th:errors="*{cometax}" class="fieldError"></p>
+                                </div>
+                            </div>
+
+                            <!--
+                            지방소득세는 소득세 * 10%(0.1)로 계산함
+                            월 300만원 기준으로 9000원
+                             -->
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">지방세</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" value="" th:field="${salaryBean.taxes}">
+                                    <p th:if="${#fields.hasErrors('taxes')}" th:errors="*{taxes}" class="fieldError"></p>
+                                </div>
+                            </div>
+
+                            <!--
+                            월급여에서 4.5%임
+                            월급여가 300만원이면 3000000 * 0.045 로 계산함 -> 135,000원
+                             -->
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">국민연금</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" value="" th:field="${salaryBean.pension}">
+                                    <p th:if="${#fields.hasErrors('pension')}" th:errors="*{pension}" class="fieldError"></p>
+                                </div>
+                            </div>
+
+                            <!--
+                           월급여에서 3.545%임
+                           월급여가 300만원이면 3000000 * 0.03545 로 계산함 -> 106,350원
+                            -->
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">건강보험</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" value="" th:field="${salaryBean.health}">
+                                    <p th:if="${#fields.hasErrors('health')}" th:errors="*{health}" class="fieldError"></p>
+                                </div>
+                            </div>
+
+                            <!--
+                          월급여에서 0.9%임
+                          월급여가 300만원이면 3000000 * 0.009 로 계산함 -> 27,000원
+                           -->
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">고용보험</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" value="" th:field="${salaryBean.employment}">
+                                    <p th:if="${#fields.hasErrors('employment')}" th:errors="*{employment}" class="fieldError"></p>
+                                </div>
+                            </div>
+
+                            <!-- 세전월급 - 사대보험(소득세, 지방소득세 포함) = 실급여 -->
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">실급여</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" value="" th:field="${salaryBean.actsalary}">
+                                    <p th:if="${#fields.hasErrors('actsalary')}" th:errors="*{actsalary}" class="fieldError"></p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-success">추가</button>
+                                    <button type="reset" class="btn btn-primary">초기화</button>
+                                </div>
+                            </div>
+
+                        </form><!-- End General Form Elements -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+
