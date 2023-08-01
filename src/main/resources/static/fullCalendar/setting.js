@@ -1,8 +1,8 @@
 // 캘린더 초기설정
 
  document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('MainCalendar');
-    var miniCalendarEl = document.getElementById('MiniCalendar');
+    var calendarEl = document.getElementById('MainCalendar'); //메인 캘린더
+    var miniCalendarEl = document.getElementById('MiniCalendar'); //미니 캘린더
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
       locale: 'ko', //언어는 한국어
@@ -124,6 +124,7 @@
         });
 
     calendar.setOption('locale', 'ko'); //언어 한국어설정
+    calendar.setOption('height', 800); //캘린더 높이설정
     calendar.render(); //캘린더 구현
 
     mCalendar.setOption('locale', 'ko'); //언어 한국어설정
