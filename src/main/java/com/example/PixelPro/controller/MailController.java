@@ -1,7 +1,7 @@
 package com.example.PixelPro.controller;
 
-import com.example.PixelPro.service.mailService;
-import com.example.PixelPro.mapper.mailMapper;
+import com.example.PixelPro.service.MailService;
+import com.example.PixelPro.mapper.MailMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,10 +10,10 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
-public class mailController {
+public class MailController {
 
-    private final mailService mailservice;
-    private final mailMapper mailmapper;
+    private final MailService mailservice;
+    private final MailMapper mailmapper;
 
     /* 전체 메일함 */
     @GetMapping("/mail/fullMail")
