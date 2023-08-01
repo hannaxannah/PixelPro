@@ -1,6 +1,5 @@
 package com.example.PixelPro.controller;
 
-import com.example.PixelPro.Bean.MemberBean;
 import com.example.PixelPro.entity.Member;
 import com.example.PixelPro.repository.AtapprovalRepository;
 import com.example.PixelPro.repository.MemberRepository;
@@ -18,23 +17,7 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class testController {
 
-    private final MemberRepository memberRepository;
 
-    @GetMapping("/login")
-    public String login(){
-        return "member/login";
-    }
 
-    @PostMapping("/login")
-    public String login(@RequestParam("id") String id, @RequestParam("pw") String pw, HttpSession session){
-        Member member = memberRepository.findByEmail(id);
-        if(member == null){
-            System.out.println("로그인실패");
-            return "redirect:/login";
-        }
-        else{
-            session.setAttribute("loginInfo",member);
-            return "redirect:/";
-        }
-    }
+
 }

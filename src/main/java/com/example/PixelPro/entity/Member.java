@@ -1,6 +1,7 @@
 package com.example.PixelPro.entity;
 
-import com.example.PixelPro.bean.MemberBean;
+
+import com.example.PixelPro.Bean.MemberBean;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

@@ -13,11 +13,15 @@ public class MemberService {
     @Autowired MemberRepository memberRepository;
     public void save(Member member)
     {
-
         memberRepository.save(member);
     }
 
     public boolean isEmailDuplicate(String email){
         return memberRepository.existsByEmail(email);
     }
+
+    public Member findByEmail(String email){
+        return memberRepository.findByEmail(email);
+    }
+
 }
