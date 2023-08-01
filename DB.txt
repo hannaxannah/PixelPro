@@ -1,0 +1,24 @@
+drop table inbox cascade constraints;
+create table inbox(
+    inum number primary key, -- 메일번호
+    email varchar2(100) not null, -- 이메일
+    recipient varchar2(100) not null, -- 받는사람
+    ititle varchar2(100) , -- 제목
+    icontent varchar2(4000), -- 내용
+    attach varchar2(100), -- 첨부파일
+    trash varchar2(100)  default 'N', -- 휴지통
+    tdate date, -- 휴지통 이동 날짜
+    senddate date default sysdate, -- 보낸날짜
+    status varchar2(100) default 'unread', -- 상태
+    readdate date, -- 읽은 날짜
+    impo number default 0, -- 중요메일
+    iref number , -- 메일그룹
+    istep number default 0 -- 메일순서
+);
+
+drop table scrapemail cascade constraints;
+create table scrapemail(
+    scnum number primary key, -- 스크랩번호
+    email varchar2(100) not null, -- 본인 이메일
+    scemail varchar2(100) not null -- 스크랩 이메일
+);
