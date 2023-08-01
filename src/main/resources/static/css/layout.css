@@ -16,12 +16,33 @@ body {
     text-align: center;
 }
 .content, .bottom{
-    margin-bottom:100px;
+/*    margin-bottom:100px;
     margin-top: 50px;
     margin-left: 200px;
-    margin-right: 200px;
+    margin-right: 200px;*/
 }
 #top{
     width : 100%;
     backgroundColor:cyan;
 }
+
+
+/* =========== mail css =========== */
+.mailTopIcon{
+    width: 100%;
+    font-size: 25px;
+    text-align: center;
+}
+.mailBottom{
+    font-size: 13px;
+    text-align: center;
+    text-align: center;
+    color: #808080;
+
+}
+.mailTopmenu{
+    padding: 10px;
+    padding-top: 30px;
+}
+
+/* =========== END mail css =========== */
