@@ -9,6 +9,6 @@ import lombok.*;
 @ToString
 public class CommuteBean { //출퇴근
     private int mbnum;
-    private String atcategory;
-    private String atdate;
+    private String gotowork;
+    private String getoff;
 }
