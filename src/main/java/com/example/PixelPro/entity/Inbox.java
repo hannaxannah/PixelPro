@@ -1,17 +1,20 @@
-package com.example.PixelPro.Bean;
+package com.example.PixelPro.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name="inbox")
 @Setter
 @Getter
 @ToString
-@AllArgsConstructor
-@NoArgsConstructor
-public class inboxBean {
-
+public class Inbox {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer inum;
     private String email;
     private String recipient;
@@ -26,9 +29,4 @@ public class inboxBean {
     private int impo;
     private int iref;
     private int istep;
-
-
-
-
-
 }

@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @ToString
-public class scrapemail {
+public class Scrapemail {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer scnum;
