@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}">
+<!-- 왼쪽 컬럼 -->
+<div class="col-lg-2" th:fragment="mail">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"></h5>
+
+            <div style="text-align: center;">
+                <button type="button" class="btn btn-success" onclick="location.href='/mail/send'">메일 쓰기</button>
+                <button type="button" class="btn btn-success" onclick="location.href='/mail/sendToMe'">내게 쓰기</button>
+            </div>
+
+            <div class="row mailTopmenu">
+                <div class="col-4">
+                    <a th:if="${session.MailBar == 'unreadMail'}" class="main-Font-Color" href="/mail/unreadMail">
+                        <i class="bx mailTopIcon">0</i>
+                        <div class="mailBottom">안읽음</div>
+                    </a>
+                    <a th:if="${session.MailBar != 'unreadMail'}" href="/mail/unreadMail">
+                        <i class="bx mailTopIcon">0</i>
+                        <div class="mailBottom">안읽음</div>
+                    </a>
+                </div>
+                <div class="col-4">
+                    <a th:if="${session.MailBar == 'scrapMail'}" class="main-Font-Color" href="/mail/scrapMail">
+                        <i class="bx bx-star mailTopIcon"></i>
+                        <div class="mailBottom">중요</div>
+                    </a>
+                    <a th:if="${session.MailBar != 'scrapMail'}" href="/mail/scrapMail">
+                        <i class="bx bx-star mailTopIcon"></i>
+                        <div class="mailBottom">중요</div>
+                    </a>
+                </div>
+                <div class="col-4">
+                    <a th:if="${session.MailBar == 'clipMail'}" class="main-Font-Color" href="/mail/clipMail">
+                        <i class="bx bx-paperclip mailTopIcon"></i>
+                        <div class="mailBottom">첨부</div>
+                    </a>
+                    <a th:if="${session.MailBar != 'clipMail'}" href="/mail/clipMail">
+                        <i class="bx bx-paperclip mailTopIcon"></i>
+                        <div class="mailBottom">첨부</div>
+                    </a>
+                </div>
+            </div>
+            <hr>
+
+            <ul class="sidebar-nav" id="sidebar-nav">
+                <li class="nav-item">
+                    <a th:if="${session.MailBar == 'fullMail'}" class="nav-link" href="/mail/fullMail">
+                        <i class="bx bx-envelope"></i><span>전체메일함</span>
+                    </a>
+                    <a th:if="${session.MailBar != 'fullMail'}" class="nav-link collapsed" href="/mail/fullMail">
+                        <i class="bx bx-envelope"></i><span>전체메일함</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:if="${session.MailBar == 'inbox'}" class="nav-link" href="/mail/inbox">
+                        <i class="bx bx-box"></i><span>받은메일함</span>
+                    </a>
+                    <a th:if="${session.MailBar != 'inbox'}" class="nav-link collapsed" href="/mail/inbox">
+                        <i class="bx bx-box"></i><span>받은메일함</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:if="${session.MailBar == 'sentMail'}" class="nav-link" href="/mail/sentMail">
+                        <i class="bx bx-send"></i><span>보낸메일함</span>
+                    </a>
+                    <a th:if="${session.MailBar != 'sentMail'}" class="nav-link collapsed" href="/mail/sentMail">
+                        <i class="bx bx-send"></i><span>보낸메일함</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:if="${session.MailBar == 'draftBox'}" class="nav-link" href="/mail/draftBox">
+                        <i class="bx bx-file-blank"></i><span>임시보관함</span>
+                    </a>
+                    <a th:if="${session.MailBar != 'draftBox'}" class="nav-link collapsed" href="/mail/draftBox">
+                        <i class="bx bx-file-blank"></i><span>임시보관함</span>
+                    </a>
+                </li>
+
+                <hr>
+
+                <li class="nav-item">
+                    <a th:if="${session.MailBar == 'mailToMe'}" class="nav-link" href="/mail/mailToMe">
+                        <i class="bx bx-file"></i><span>내게쓴메일함</span>
+                    </a>
+                    <a th:if="${session.MailBar != 'mailToMe'}" class="nav-link collapsed" href="/mail/mailToMe">
+                        <i class="bx bx-file"></i><span>내게쓴메일함</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:if="${session.MailBar == 'trashCan'}" class="nav-link" href="/mail/trashCan">
+                        <i class="bx bx-trash"></i><span>휴지통</span>
+                    </a>
+                    <a th:if="${session.MailBar != 'trashCan'}" class="nav-link collapsed" href="/mail/trashCan">
+                        <i class="bx bx-trash"></i><span>휴지통</span>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div><!-- END 왼쪽 컬럼 -->
+
+</html>

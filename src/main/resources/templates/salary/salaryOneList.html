@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}">
+
+<th:block layout:fragment="script">
+    <script th:inline = "javascript">
+      function deleteConfirm(){
+         var answer = confirm("데이터를 삭제할까요?");
+         return answer ? true : false;
+      }
+
+      <!--name이 rowcheck인 항목들을 전부 체크 상태로 만드는 함수-->
+      function allselect(obj){
+         //alert(1);
+         var checkNum = document.getElementsByName('rowcheck');
+
+          if(obj.checked){ // true
+              for(var i=0; i<checkNum.length; i++){
+                  checkNum[i].checked = true;
+              }
+          }else{ //
+              for(var i=0; i<checkNum.length; i++){
+                  checkNum[i].checked = false;
+              }
+          }
+      }
+
+      <!--선택한 항목만 삭제-->
+      function selectDelete(){
+         var rowchk = document.getElementsByName('rowcheck');
+         var flag = false;
+
+         for(i=0; i<rowchk.length; i++){
+             if(rowchk[i].checked){
+                 flag = true;
+             }
+         }
+
+         <!--만약 한개도 체크하지 않고 선택삭제를 클릭하면 -->
+         if(!flag){
+             alert('삭제 항목을 한 개 이상 선택하세요.');
+         }else{
+             var check = confirm("정말 삭제하시겠습니까?");
+             if(check == false){
+               alert("삭제가 취소되었습니다.");
+               return false;
+             }
+
+             //확인 클릭 시 실행
+             document.myform.submit();
+         }
+      }
+      </script>
+</th:block>
+
+<body class="content" layout:fragment="content">
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>급여계산/대장</h1>
+    </div><!-- End Page Title -->
+<form name="myform" action="/salary/checkDelete" method="post">
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">개인 급여</h5>
+<!--                        <p>Add lightweight datatables to your project with using the <a href="" target="_blank">Simple DataTables</a>-->
+<!--                            library. Just add <code>.datatable</code> class name to any table you wish to conver to a datatable-->
+<!--                        </p>-->
+
+                        <!-- Table with stripped rows -->
+                        <table class="table datatable">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" name="allcheck" onClick="allselect(this)">번호
+                                </th>
+                                <th scope="col">구분</th>
+                                <th scope="col">사원명</th>
+                                <th scope="col">지급총액</th>
+                                <th scope="col">소득세</th>
+                                <th scope="col">지방소득세</th>
+                                <th scope="col">국민연금</th>
+                                <th scope="col">건강보험</th>
+                                <th scope="col">고용보험</th>
+                                <th scope="col">실급여</th>
+                                <th scope="col">수정|삭제</th>
+                                <th scope="col">명세서</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="bean : ${salary}">
+                                <td align="center">
+                                    <input type="checkbox" name="rowcheck" th:value="${bean.snum}">
+                                    <label th:text="${bean.snum}"></label>
+                                </td>
+                                <td th:text="${bean.sortation}"></td>
+                                <td th:text="${bean.sname}"></td>
+                                <td th:text="${bean.allpayment}"></td>
+                                <td th:text="${bean.cometax}"></td>
+                                <td th:text="${bean.taxes}"></td>
+                                <td th:text="${bean.pension}"></td>
+                                <td th:text="${bean.health}"></td>
+                                <td th:text="${bean.employment}"></td>
+                                <td th:text="${bean.actsalary}"></td>
+                                <td>
+                                    <a type="button" class="btn btn-primary" th:href="@{'/salary/update/' + ${bean.snum}}">수정</a>
+                                    <a type="button" class="btn btn-danger" th:href = "@{/salary/delete(snum=${bean.snum})}"  onClick="return deleteConfirm()"> 삭제 </a>
+                                </td>
+                                <td><a type="button" class="btn btn-success" th:href="@{'/salary/payOneStub/' + ${bean.snum}}">출력</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <button type="button" class="btn btn-danger" onClick="return selectDelete()">선택항목 삭제</button>
+                        <button type="button" class="btn btn-success" onClick="">CSV</button>
+                        <!-- End Table with stripped rows -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</form>
+</main><!-- End #main -->
+</body>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}">
+
+<th:block layout:fragment="script">
+    <script th:inline = "javascript">
+ $(function(){
+$('[data-filter="trigger"]').on("change", function() {
+    var t = $(this).find("option:selected").val().toLowerCase();
+
+	$('[data-filter="target"]').css("display", "none");
+	$("#" + t).css("display", "table-row-group");
+	if(t == "all") {
+		$('[data-filter="target"]').css("display", "table-row-group")
+	}
+	$(this).css("display", "block");
+});
+})
+    </script>
+</th:block>
+
+<th:block layout:fragment="css">
+    <style>
+       body{margin-top:20px;}
+
+.comparison-table {
+    width: 100%;
+    font-size: .875rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar
+}
+
+.comparison-table table {
+    min-width: 41rem;
+    table-layout: fixed
+}
+
+.comparison-table table tbody+tbody {
+    border-top-width: 1px
+}
+
+.comparison-table .table-bordered thead td {
+    border-bottom-width: 1px
+}
+
+.comparison-table .comparison-item {
+    position: relative;
+    padding: .875rem .75rem 1.125rem;
+    border: 1px solid #e7e7e7;
+    background-color: #fff;
+    text-align: center
+}
+
+.comparison-table .comparison-item .comparison-item-thumb {
+    display: block;
+    width: 5rem;
+    margin-right: auto;
+    margin-bottom: .75rem;
+    margin-left: auto
+}
+
+.comparison-table .comparison-item .comparison-item-thumb>img {
+    display: block;
+    width: 100%
+}
+
+.comparison-table .comparison-item .comparison-item-title {
+    display: block;
+    width: 100%;
+    margin-bottom: 14px;
+    color: #222;
+    font-weight: 600;
+    text-decoration: none
+}
+
+.comparison-table .comparison-item .comparison-item-title:hover {
+    text-decoration: underline
+}
+
+.comparison-table .comparison-item .btn {
+    margin: 0
+}
+
+.comparison-table .comparison-item .remove-item {
+    display: block;
+    position: absolute;
+    top: -.3125rem;
+    right: -.3125rem;
+    width: 1.375rem;
+    height: 1.375rem;
+    border-radius: 50%;
+    background-color: #f44336;
+    color: #fff;
+    text-align: center;
+    cursor: pointer
+}
+
+.comparison-table .comparison-item .remove-item .feather {
+    width: .875rem;
+    height: .875rem
+}
+.table-bordered th, .table-bordered td {
+    border: 1px solid #e7e7e7;
+}
+.bg-secondary {
+    background-color: #f7f7f7 !important;
+}
+.payment {
+    margin-top: 30px;
+    margin-left: 225px;
+    align: center;
+}
+
+.comparison-table {
+    margin-top: 70px;
+}
+
+#secondary{
+    text-align: center;
+}
+#secondary2{
+    text-align: center;
+}
+#secondary3{
+    text-align: center;
+}
+#secondary4{
+    text-align: center;
+}
+#secondary5{
+    text-align: center;
+}
+#secondary6{
+    text-align: center;
+}
+#secondary7{
+    text-align: center;
+}
+#secondary8{
+    text-align: center;
+}
+.taxsum {
+    text-align: right;
+}
+.paysum {
+    text-align: right;
+    font-size: large;
+}
+.resignsum {
+    text-align: right;
+}
+.tcenter{
+    text-align: center;
+}
+    </style>
+</th:block>
+
+<body class="content" layout:fragment="content">
+<main id="main" class="main">
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="container pb-5 mb-2">
+                            <div class="comparison-table">
+                                <table class="table table-bordered">
+                                    <thead class="bg-secondary">
+                                    <tr>
+                                        <td class="align-middle" colspan="2">
+                                            <select class="form-control custom-select" id="compare-criteria" data-filter="trigger">
+                                                <option value="all">전체</option>
+                                                <option value="information">기본정보</option>
+                                                <option value="price">임금내역</option>
+                                                <option value="tax">지급내역</option>
+                                            </select><small class="form-text text-muted">* 참고내용을 적는 곳입니다.</small>
+
+                                        </td>
+                                        <td colspan="3">
+                                            <h1 class="payment">퇴 직 명 세 서</h1>
+                                        </td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="information" data-filter="target">
+                                    <tr class="bg-secondary" id="secondary">
+                                        <th>사원명</th>
+                                        <th>부서명</th>
+                                        <th>직급</th>
+                                        <th>입사일</th>
+                                        <th>퇴사일</th>
+                                    </tr>
+                                    <tr class="tcenter">
+                                        <th>신주영</th>
+                                        <td>개발부</td>
+                                        <td>사원</td>
+                                        <td>2021/11/20</td>
+                                        <td>2023/07/31</td>
+                                    </tr>
+                                    </tbody>
+                                </table><br><br>
+
+                                <span><h5>임금내역</h5></span>
+                                <table class="table table-bordered">
+                                    <tbody id="price" data-filter="target">
+                                    <tr class="bg-secondary" id="secondary5">
+                                        <th colspan="2">통상임금(1일)</th>
+                                        <td colspan="2">100,000</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="bg-secondary" id="secondary6">
+                                        <th colspan="2">급여(3개월)</th>
+                                        <td colspan="2">9,000,000</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="bg-secondary" id="secondary7">
+                                        <th colspan="2">근무일수(3개월)</th>
+                                        <td colspan="2">67</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="bg-secondary" id="secondary8">
+                                        <th colspan="2">근무상태</th>
+                                        <td colspan="2">퇴사</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="taxsum">
+                                        <th colspan="5">임금금액 합계 : 2,451,000</th>
+                                    </tr>
+                                    </tbody>
+                                </table><br><br>
+
+                                <span><h5>지급내역</h5></span>
+                                <table class="table table-bordered">
+                                    <tbody id="tax" data-filter="target">
+                                    <tr class="bg-secondary" id="secondary3">
+                                        <th>사원번호</th>
+                                        <th>평균임금</th>
+                                        <th>퇴직금 총액</th>
+                                        <th>공제금액</th>
+                                        <th>비고</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="tcenter">MP2150812</th>
+                                        <td>2,578,120</td>
+                                        <td>7,345,788</td>
+                                        <td>600,000</td>
+                                        <td class="tcenter">상호 간 확인에 동의합니다.</td>
+                                    </tr>
+                                    <tr class="resignsum">
+                                        <!--(총액 - 공제금액) = 지급금액-->
+                                        <th colspan="5">지급금액 합계 : 6,985,388</th>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5">
+                                            <a href="javascript:window.print()" class="btn btn-success me-1"> <i class="bi bi-printer-fill"></i></a>
+                                            <a href="#" class="btn btn-primary w-md">전송</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+</body>

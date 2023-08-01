@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}">
+
+<th:block layout:fragment="css">
+    <style>
+        .fieldError{
+            color : red;
+            font-size:11pt;
+        }
+    </style>
+</th:block>
+
+<body class="content" layout:fragment="content">
+<main id="main" class="main">
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-6">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">급여명세서 내용추가</h5>
+
+                        <!-- General Form Elements -->
+                        <form name="myform" method="post" action="/paystubInsert" th:object="${paystubBean}">
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">수당항목</label>
+                                <div class="col-sm-10">
+                                    <select class="form-select" aria-label="Default select example" th:field="${paystubBean.aitem}">
+                                        <option selected value="">선택해주세요.</option>
+                                        <option th:field="${paystubBean.aitem}" value="기본금(고정)">기본금(고정)</option>
+                                        <option th:field="${paystubBean.aitem}" value="식대(고정)">식대(고정)</option>
+                                        <option th:field="${paystubBean.aitem}" value="야간근로시간">야간근로시간</option>
+                                        <option th:field="${paystubBean.aitem}" value="가족수당">가족수당</option>
+                                    </select>
+                                </div>
+                                <p th:if="${#fields.hasErrors('aitem')}" th:errors="*{aitem}" class="fieldError"></p>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">지급유형</label>
+                                <div class="col-sm-10">
+                                    <select class="form-select" aria-label="Default select example" th:field="${paystubBean.ptype}">
+                                        <option selected value="">선택해주세요.</option>
+                                        <option th:field="${paystubBean.ptype}" value="급여">급여</option>
+                                        <option th:field="${paystubBean.ptype}" value="수당">수당</option>
+                                        <option th:field="${paystubBean.ptype}" value="기타">기타</option>
+                                    </select>
+                                </div>
+                                <p th:if="${#fields.hasErrors('ptype')}" th:errors="*{ptype}" class="fieldError"></p>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">근무기록</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" th:field="${paystubBean.wrecord}">
+                                    <p th:if="${#fields.hasErrors('wrecord')}" th:errors="*{wrecord}" class="fieldError"></p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">수당금액</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" value="" th:field="${paystubBean.allowance}">
+                                    <p th:if="${#fields.hasErrors('allowance')}" th:errors="*{allowance}" class="fieldError"></p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">합계</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" value="" th:field="${paystubBean.tsum}" placeholder="근무기록 * 수당금액으로 계산">
+                                    <p th:if="${#fields.hasErrors('tsum')}" th:errors="*{tsum}" class="fieldError"></p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">산출방법</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" value="" th:field="${paystubBean.putitem}">
+                                    <p th:if="${#fields.hasErrors('putitem')}" th:errors="*{putitem}" class="fieldError"></p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-success">추가</button>
+                                    <button type="reset" class="btn btn-primary">초기화</button>
+                                </div>
+                            </div>
+
+                        </form><!-- End General Form Elements -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+

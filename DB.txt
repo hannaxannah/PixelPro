@@ -1,0 +1,47 @@
+drop table inbox cascade constraints;
+create table inbox(
+    inum number primary key, -- 메일번호
+    email varchar2(100) not null, -- 이메일
+    recipient varchar2(100) not null, -- 받는사람
+    ititle varchar2(100) , -- 제목
+    icontent varchar2(4000), -- 내용
+    attach varchar2(100), -- 첨부파일
+    trash varchar2(100)  default 'N', -- 휴지통
+    tdate date, -- 휴지통 이동 날짜
+    senddate date default sysdate, -- 보낸날짜
+    status varchar2(100) default 'unread', -- 상태
+    readdate date, -- 읽은 날짜
+    impo number default 0, -- 중요메일
+    iref number , -- 메일그룹
+    istep number default 0 -- 메일순서
+);
+
+drop table scrapemail cascade constraints;
+create table scrapemail(
+    scnum number primary key, -- 스크랩번호
+    email varchar2(100) not null, -- 본인 이메일
+    scemail varchar2(100) not null -- 스크랩 이메일
+);
+
+
+
+-- 임시 사원 테이블입니다. 담당자분께서는 추후 수정 부탁드립니다.
+drop table member cascade constraints;
+CREATE TABLE member (
+	mbnum number primary key,
+	email varchar2(100) NOT NULL,
+	mbname varchar2(100),
+	mblevel VARCHAR(100), -- 직급
+	mbaccess varchar2(100), -- 권한
+	password varchar2(100),
+	mbsign varchar2(100), -- 사인
+	mbphone VARCHAR(100),
+	mbStartDate date DEFAULT sysdate, -- 입사일
+	mbEndDate date, -- 퇴사일
+	dept varchar2(100) NOT NULL, -- 부서
+	msalary number DEFAULT 0 NOT NULL, -- 급여
+	mstate varchar2(100) DEFAULT '재직' NOT NULL -- 근무상태
+);
+
+insert into member
+values(1, 'admin123@pixelpro.com', '김사장', '사장', 'admin', '1234', null, '010-7777-7777', '2000-08-01', null, '관리직', '0', '재직');
