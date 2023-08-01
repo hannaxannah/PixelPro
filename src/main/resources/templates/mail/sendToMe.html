@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}">
+
+
+<head><title>PixelPro</title></head>
+
+<body class="content toggle-sidebar" layout:fragment="content">
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>내게쓰기</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/mail/inbox">메일</a></li>
+                <li class="breadcrumb-item active">내게쓰기</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <div class="row">
+
+        <div th:replace="mail/sideMenu::mail"></div>
+
+        <!-- 오른쪽 컬럼 -->
+        <div class="col-lg-10">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"></h5>
+                    보내기 임시저장
+                    <hr>
+                    <div>
+                        제목 중요(체크박스) (입력)
+                    </div>
+                    <div>
+                        파일첨부
+                    </div>
+                    <hr>
+                    <div>
+                        내용 -> 에디터 첨부할것
+
+                    </div>
+                </div>
+            </div>
+        </div><!-- END 오른쪽 컬럼 -->
+    </div>
+
+
+</main><!-- End #main -->
+</body>

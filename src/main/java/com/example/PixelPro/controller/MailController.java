@@ -1,5 +1,6 @@
 package com.example.PixelPro.controller;
 
+import com.example.PixelPro.entity.Member;
 import com.example.PixelPro.service.MailService;
 import com.example.PixelPro.mapper.MailMapper;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,8 @@ public class MailController {
     @GetMapping("/mail/fullMail")
     public String gotoFullMail(HttpSession session){
         session.setAttribute("MailBar","fullMail");
+        Member member = (Member)session.getAttribute("loginInfo");
+
         return "mail/fullMail";
     }
 
@@ -64,7 +67,7 @@ public class MailController {
         return "mail/unreadMail";
     }
 
-    /* 안읽음 */
+    /* 중요 */
     @GetMapping("/mail/scrapMail")
     public String gotoScrapMail(HttpSession session){
         session.setAttribute("MailBar","scrapMail");
@@ -77,5 +80,20 @@ public class MailController {
         session.setAttribute("MailBar","clipMail");
         return "mail/clipMail";
     }
+
+    /* 메일 쓰기 */
+    @GetMapping("/mail/send")
+    public String gotoSend(HttpSession session){
+        session.setAttribute("MailBar","send");
+        return "mail/send";
+    }
+
+    /* 내게 쓰기 */
+    @GetMapping("/mail/sendToMe")
+    public String gotoSendToMe(HttpSession session){
+        session.setAttribute("MailBar","sendToMe");
+        return "mail/sendToMe";
+    }
+
 
 }
