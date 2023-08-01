@@ -26,6 +26,9 @@ body {
     backgroundColor:cyan;
 }
 
+.main-Font-Color{
+    color: #198754;
+}
 
 /* =========== mail css =========== */
 .mailTopIcon{
@@ -38,7 +41,9 @@ body {
     text-align: center;
     text-align: center;
     color: #808080;
-
+}
+.mailBottom:hover{
+    color: #198754;
 }
 .mailTopmenu{
     padding: 10px;
