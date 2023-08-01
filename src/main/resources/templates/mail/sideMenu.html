@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}">
+<!-- 왼쪽 컬럼 -->
+<div class="col-lg-2" th:fragment="mail">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"></h5>
+
+            <div style="text-align: center;">
+                <button type="button" class="btn btn-success" onclick="">메일 쓰기</button>
+                <button type="button" class="btn btn-success" onclick="">내게 쓰기</button>
+            </div>
+
+            <div class="row mailTopmenu">
+                <div class="col-4">
+                    <a href="">
+                        <i class="bx mailTopIcon">0</i>
+                        <div class="mailBottom">안읽음</div>
+                    </a>
+                </div>
+                <div class="col-4">
+                    <a href="">
+                        <i class="bx bx-star mailTopIcon"></i>
+                        <div class="mailBottom">중요</div>
+                    </a>
+                </div>
+                <div class="col-4">
+                    <a href="">
+                        <i class="bx bx-paperclip mailTopIcon"></i>
+                        <div class="mailBottom">첨부</div>
+                    </a>
+                </div>
+            </div>
+            <hr>
+
+            <ul class="sidebar-nav" id="sidebar-nav">
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/mail/fullMail">
+                        <i class="bx bx-envelope"></i><span>전체메일함</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/mail/inbox">
+                        <i class="bx bx-box"></i><span>받은메일함</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/mail/sentMail">
+                        <i class="bx bx-send"></i><span>보낸메일함</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/mail/draftBox">
+                        <i class="bx bx-file-blank"></i><span>임시보관함</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/mail/mailToMe">
+                        <i class="bx bx-file"></i><span>내게쓴메일함</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/mail/trashCan">
+                        <i class="bx bx-trash"></i><span>휴지통</span>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div><!-- END 왼쪽 컬럼 -->
+
+</html>
