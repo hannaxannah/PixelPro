@@ -1,10 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    전체 퇴직금 목록
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}">
+
+<th:block layout:fragment="css">
+    <style>
+        .card-body{
+          width: 80%;
+        }
+         .card{
+          width: 80%;
+        }
+    </style>
+</th:block>
+
+<body class="content" layout:fragment="content">
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>퇴직금 계산/대장</h1>
+    </div><!-- End Page Title -->
+    <form name="myform" action="/salary/checkDelete" method="post">
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">전체 퇴직금 추계액</h5>
+                            <!-- Table with stripped rows -->
+                            <table class="table datatable">
+                                <thead>
+                                <tr>
+                                    <th scope="col">번호</th>
+                                    <th scope="col">사원번호</th>
+                                    <th scope="col">성명</th>
+                                    <th scope="col">평균임금(1일)</th>
+                                    <th scope="col">통상임금(1일)</th>
+                                    <th scope="col">급여(3개월)</th>
+                                    <th scope="col">근무일수(3개월)</th>
+                                    <th scope="col">지급확인</th>
+                                    <th scope="col">수정|삭제</th>
+                                    <th scope="col">명세서</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>M20201842</td>
+                                    <td>신주영</td>
+                                    <td>110,000</td>
+                                    <td>97,985</td>
+                                    <td>8,975,410</td>
+                                    <td>97</td>
+                                    <td>미지급</td>
+                                    <td>
+                                        <a type="button" class="btn btn-primary">수정</a>
+                                        <a type="button" class="btn btn-danger"> 삭제 </a>
+                                    </td>
+                                    <td><button type="button" class="btn btn-success" onClick="location.href=''">확정</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <!-- End Table with stripped rows -->
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </form>
+</main><!-- End #main -->
 </body>
-</html>
