@@ -6,6 +6,7 @@ import lombok.*;
 import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Entity(name = "attendance")
 @Setter
@@ -17,9 +18,9 @@ import javax.persistence.*;
 public class Attendance {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int mbnum;
+    private Integer mbnum;
     private String atcategory;
-    private String atdate;
+    private Date atdate;
 
     private static ModelMapper modelMapper = new ModelMapper();
     public static Attendance createAttendance(AttendanceBean attendanceBean) {

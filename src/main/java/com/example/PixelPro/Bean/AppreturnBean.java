@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ReturnBean { //반려
-    private int ganum;
+public class AppreturnBean { //반려
+    private Integer ganum;
     private String rcontent;
 }

@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class CommuteBean { //출퇴근
-    private int mbnum;
+    private Integer mbnum;
     private String gotowork;
     private String getoff;
 }
