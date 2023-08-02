@@ -18,7 +18,7 @@ import java.sql.Date;
 public class Attendance {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int mbnum;
+    private Integer mbnum;
     private String atcategory;
     private Date atdate;
 

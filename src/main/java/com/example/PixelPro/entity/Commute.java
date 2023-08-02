@@ -19,7 +19,7 @@ import java.sql.Date;
 public class Commute {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int mbnum;
+    private Integer mbnum;
 
     @ColumnDefault("sysdate")
     private Date gotowork;

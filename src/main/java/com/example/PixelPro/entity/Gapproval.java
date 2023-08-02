@@ -18,13 +18,15 @@ import java.sql.Date;
 public class Gapproval {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int ganum;
+    private Integer ganum;
     private String gsubject;
     private String gcontent;
-    private int gwmbnum;
-    private int gsign1;
-    private int gsign2;
-    private int ghmbnum;
+    private Integer gwmbnum;
+    private Integer gsign1;
+
+    @ColumnDefault("0")
+    private Integer gsign2;
+    private Integer ghmbnum;
     private String gfile;
     private String gstatus;
     private String gcategory;

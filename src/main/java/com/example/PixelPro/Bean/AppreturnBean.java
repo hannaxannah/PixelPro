@@ -8,6 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class AppreturnBean { //반려
-    private int ganum;
+    private Integer ganum;
     private String rcontent;
 }

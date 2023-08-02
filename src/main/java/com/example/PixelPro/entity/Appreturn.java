@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class Appreturn {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int ganum;
+    private Integer ganum;
     private String rcontent;
 
     private static ModelMapper modelMapper = new ModelMapper();
