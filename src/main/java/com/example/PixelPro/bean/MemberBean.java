@@ -1,4 +1,4 @@
-package com.example.PixelPro.bean;
+package com.example.PixelPro.Bean;
 
 import lombok.Getter;
 import lombok.Setter;
