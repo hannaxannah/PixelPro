@@ -66,12 +66,12 @@
                 <!-- 프로필 아이콘 -->
                 <li class="nav-item dropdown pe-3">
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                        <span class="d-none d-md-block dropdown-toggle ps-2">홍길동</span>
+                        <span class="d-none d-md-block dropdown-toggle ps-2" th:if="${session.loginInfo != null}" th:text="${session.loginInfo.mbname}"></span>
                     </a><!-- End Profile Iamge Icon -->
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                         <li class="dropdown-header">
-                            <h6>홍길동</h6>
-                            <span>경리팀 사원</span>
+                            <h6 th:if="${session.loginInfo != null}" th:text="${session.loginInfo.mbname}"></h6>
+                            <span th:if="${session.loginInfo != null}" th:text="${session.loginInfo.dept + ' ' + session.loginInfo.mblevel}"></span>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -171,8 +171,29 @@
                 </ul>
             </li><!-- End 급여 -->
 
-        </ul>
+            <!-- 공지 -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="">
+                    <i class="bi bi-megaphone"></i><span>공지</span>
+                </a>
+            </li>
+            <!-- End 공지 -->
 
+            <!-- 커뮤니티 -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#community-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-people"></i><span>커뮤니티</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="community-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="">
+                            <i class="bi bi-circle"></i><span>동아리</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End 커뮤니티 -->
+
+        </ul>
     </aside><!-- End Sidebar-->
 </div>
 </html>
