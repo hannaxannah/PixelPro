@@ -52,19 +52,244 @@
     #main {
       margin-bottom: 60px;
     }
+     /* The Modal (background) */
+    .modal {
+        display: none; /* 처음에는 안보이게설정 */
+        position: fixed; /* 위치고정 */
+        z-index: 3;
+        left: 0;
+        top: 0;
+        width: 100%; /* 가로 꽉채우기 */
+        height: 100%; /* 세로 꽉채우기 */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 500px; /* Could be more or less, depending on screen size */
+    }
+    /* The Close Button */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    .modal{
+      --bs-modal-header-border-color: auto;
+    }
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
   </style>
 </th:block>
 
 <head><title>PixelPro</title></head>
 
-<body class="content" layout:fragment="content">
+<body class="content toggle-sidebar" layout:fragment="content">
+
+<!-- 모달창 -->
+<div class="modal fade" id="verticalycentered" tabindex="-1" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <ul class="nav nav-tabs nav-tabs-bordered" id="borderedTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">개인메모</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false" tabindex="-1">약속</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false" tabindex="-1">프로젝트</button>
+          </li>
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="tab-content pt-2" id="myTabContent">
+          <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <form>
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-3 col-form-label">제목</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">일정-시작</label>
+                <div class="col-sm-9">
+                  <input type="datetime-local" class="form-control">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">일정-끝</label>
+                <div class="col-sm-9">
+                  <input type="datetime-local" class="form-control">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-3 col-form-label">참석자</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-3 col-form-label">위치</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">카테고리</label>
+                <div class="col-sm-9">
+                  <select class="form-select" aria-label="Default select example">
+                    <option selected="">카테고리 선택</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputColor" class="col-sm-3 col-form-label">색상</label>
+                <div class="col-sm-9">
+                  <input type="color" class="form-control form-control-color" id="exampleColorInput" value="#FFF" title="Choose your color">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputPassword" class="col-sm-3 col-form-label">설명</label>
+                <div class="col-sm-9">
+                  <textarea class="form-control" style="height: 100px"></textarea>
+                </div>
+              </div>
+              <div style="float: right;">
+                <button type="button" class="btn btn-success">개인메모 만들기</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+              </div>
+
+            </form>
+          </div>
+          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <form>
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-3 col-form-label">제목</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">일정-시작</label>
+                <div class="col-sm-9">
+                  <input type="datetime-local" class="form-control">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">일정-끝</label>
+                <div class="col-sm-9">
+                  <input type="datetime-local" class="form-control">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-3 col-form-label">약속 </label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-3 col-form-label">위치</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputColor" class="col-sm-3 col-form-label">색상</label>
+                <div class="col-sm-9">
+                  <input type="color" class="form-control form-control-color" id="exampleColorInput" value="#FFF" title="Choose your color">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputPassword" class="col-sm-3 col-form-label">설명</label>
+                <div class="col-sm-9">
+                  <textarea class="form-control" style="height: 100px"></textarea>
+                </div>
+              </div>
+              <div style="float: right;">
+                <button type="button" class="btn btn-success">약속 만들기</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+              </div>
+
+            </form>
+          </div>
+          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+            <form>
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-3 col-form-label">제목</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">일정-시작</label>
+                <div class="col-sm-9">
+                  <input type="datetime-local" class="form-control">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">일정-끝</label>
+                <div class="col-sm-9">
+                  <input type="datetime-local" class="form-control">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-3 col-form-label">참여자</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="inputColor" class="col-sm-3 col-form-label">색상</label>
+                <div class="col-sm-9">
+                  <input type="color" class="form-control form-control-color" id="exampleColorInput" value="#FFF" title="Choose your color">
+                </div>
+              </div>
+
+              <div style="float: right;">
+                <button type="button" class="btn btn-success">프로젝트 일정 만들기</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 모달창 끝 -->
+
 <main id="main" class="main" style="padding:0px;">
+
 
   <div class="left-part bg-white fixed-left-part">
     <div class="position-relative ps-container ps-theme-default">
       <div class="p-15">
         <div class="p-15">
-          <button type="button" class="btn btn-success" style="width:100%"><i class="bi bi-calendar2-plus" style="float:left"></i>일정 생성</button>
+          <button type="button" class="btn btn-success" style="width:100%" data-bs-toggle="modal" data-bs-target="#verticalycentered"><i class="bi bi-calendar2-plus" style="float:left"></i>일정 생성</button>
         </div>
         <div class="p-15">
           <h4>오늘의 일정</h4>
