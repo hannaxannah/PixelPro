@@ -5,6 +5,7 @@ import lombok.*;
 import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Entity(name = "atapproval")
 @Setter
@@ -24,7 +25,7 @@ public class Atapproval {
     private int athmbnum;
     private String atstatus;
     private String atcategory;
-    private String atdate;
+    private Date atdate;
 
     private static ModelMapper modelMapper = new ModelMapper();
     public static Atapproval createGapproval(AtapprovalBean atapprovalBean) {

@@ -7,6 +7,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Entity(name = "commute")
 @Setter
@@ -19,9 +20,10 @@ public class Commute {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int mbnum;
+
     @ColumnDefault("sysdate")
-    private String gotowork;
-    private String getoff;
+    private Date gotowork;
+    private Date getoff;
 
     private static ModelMapper modelMapper = new ModelMapper();
     public static Commute createAttendance(CommuteBean commuteBean) {
