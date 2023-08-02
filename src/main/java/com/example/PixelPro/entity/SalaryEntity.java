@@ -41,6 +41,10 @@ public class SalaryEntity {
     @ColumnDefault("0")
     private Integer actsalary;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "snum", insertable = false, updatable = false)
+    private PayStubEntity payStub;
+
     /*ModelMapper안에 map이라는 메서드가 있고 2가지를 넣을 수 있음*/
     private static ModelMapper modelMapper = new ModelMapper();
 

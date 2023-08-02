@@ -5,257 +5,278 @@
       layout:decorate="~{common/mylayout}">
 
 <th:block layout:fragment="script">
-    <script th:inline = "javascript">
- $(function(){
-$('[data-filter="trigger"]').on("change", function() {
-    var t = $(this).find("option:selected").val().toLowerCase();
+    <script th:inline="javascript">
+        $(function () {
+            $('[data-filter="trigger"]').on("change", function () {
+                var t = $(this).find("option:selected").val().toLowerCase();
 
-	$('[data-filter="target"]').css("display", "none");
-	$("#" + t).css("display", "table-row-group");
-	if(t == "all") {
-		$('[data-filter="target"]').css("display", "table-row-group")
-	}
-	$(this).css("display", "block");
-});
-})
+                $('[data-filter="target"]').css("display", "none");
+                $("#" + t).css("display", "table-row-group");
+                if (t == "all") {
+                    $('[data-filter="target"]').css("display", "table-row-group")
+                }
+                $(this).css("display", "block");
+            });
+        })
     </script>
 </th:block>
 
 <th:block layout:fragment="css">
     <style>
-       body{margin-top:20px;}
+        body {
+            margin-top: 20px;
+        }
 
-.comparison-table {
-    width: 100%;
-    font-size: .875rem;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    -ms-overflow-style: -ms-autohiding-scrollbar
-}
+        .comparison-table {
+            width: 100%;
+            font-size: .875rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            -ms-overflow-style: -ms-autohiding-scrollbar
+        }
 
-.comparison-table table {
-    min-width: 41rem;
-    table-layout: fixed
-}
+        .comparison-table table {
+            min-width: 41rem;
+            table-layout: fixed
+        }
 
-.comparison-table table tbody+tbody {
-    border-top-width: 1px
-}
+        .comparison-table table tbody + tbody {
+            border-top-width: 1px
+        }
 
-.comparison-table .table-bordered thead td {
-    border-bottom-width: 1px
-}
+        .comparison-table .table-bordered thead td {
+            border-bottom-width: 1px
+        }
 
-.comparison-table .comparison-item {
-    position: relative;
-    padding: .875rem .75rem 1.125rem;
-    border: 1px solid #e7e7e7;
-    background-color: #fff;
-    text-align: center
-}
+        .comparison-table .comparison-item {
+            position: relative;
+            padding: .875rem .75rem 1.125rem;
+            border: 1px solid #e7e7e7;
+            background-color: #fff;
+            text-align: center
+        }
 
-.comparison-table .comparison-item .comparison-item-thumb {
-    display: block;
-    width: 5rem;
-    margin-right: auto;
-    margin-bottom: .75rem;
-    margin-left: auto
-}
+        .comparison-table .comparison-item .comparison-item-thumb {
+            display: block;
+            width: 5rem;
+            margin-right: auto;
+            margin-bottom: .75rem;
+            margin-left: auto
+        }
 
-.comparison-table .comparison-item .comparison-item-thumb>img {
-    display: block;
-    width: 100%
-}
+        .comparison-table .comparison-item .comparison-item-thumb > img {
+            display: block;
+            width: 100%
+        }
 
-.comparison-table .comparison-item .comparison-item-title {
-    display: block;
-    width: 100%;
-    margin-bottom: 14px;
-    color: #222;
-    font-weight: 600;
-    text-decoration: none
-}
+        .comparison-table .comparison-item .comparison-item-title {
+            display: block;
+            width: 100%;
+            margin-bottom: 14px;
+            color: #222;
+            font-weight: 600;
+            text-decoration: none
+        }
 
-.comparison-table .comparison-item .comparison-item-title:hover {
-    text-decoration: underline
-}
+        .comparison-table .comparison-item .comparison-item-title:hover {
+            text-decoration: underline
+        }
 
-.comparison-table .comparison-item .btn {
-    margin: 0
-}
+        .comparison-table .comparison-item .btn {
+            margin: 0
+        }
 
-.comparison-table .comparison-item .remove-item {
-    display: block;
-    position: absolute;
-    top: -.3125rem;
-    right: -.3125rem;
-    width: 1.375rem;
-    height: 1.375rem;
-    border-radius: 50%;
-    background-color: #f44336;
-    color: #fff;
-    text-align: center;
-    cursor: pointer
-}
+        .comparison-table .comparison-item .remove-item {
+            display: block;
+            position: absolute;
+            top: -.3125rem;
+            right: -.3125rem;
+            width: 1.375rem;
+            height: 1.375rem;
+            border-radius: 50%;
+            background-color: #f44336;
+            color: #fff;
+            text-align: center;
+            cursor: pointer
+        }
 
-.comparison-table .comparison-item .remove-item .feather {
-    width: .875rem;
-    height: .875rem
-}
-.table-bordered th, .table-bordered td {
-    border: 1px solid #e7e7e7;
-}
-.bg-secondary {
-    background-color: #f7f7f7 !important;
-}
-.payment {
-    margin-top: 30px;
-    margin-left: 250px;
-    align: center;
-}
+        .comparison-table .comparison-item .remove-item .feather {
+            width: .875rem;
+            height: .875rem
+        }
 
-.comparison-table {
-    margin-top: 70px;
-}
+        .table-bordered th, .table-bordered td {
+            border: 1px solid #e7e7e7;
+        }
 
-#secondary{
-    text-align: center;
-}
-#secondary2{
-    text-align: center;
-}
-.taxsum {
-    text-align: right;
-}
-.paysum {
-    text-align: right;
-}
+        .bg-secondary {
+            background-color: #f7f7f7 !important;
+        }
+
+        .payment {
+            margin-top: 30px;
+            margin-left: 250px;
+            align: center;
+        }
+
+        .comparison-table {
+            margin-top: 70px;
+        }
+
+        #secondary {
+            text-align: center;
+        }
+
+        #secondary2 {
+            text-align: center;
+        }
+
+        .taxsum {
+            text-align: right;
+        }
+
+        .paysum {
+            text-align: right;
+        }
     </style>
 </th:block>
 
 <body class="content" layout:fragment="content">
 <main id="main" class="main">
-<section class="section">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-<div class="container pb-5 mb-2">
-    <div class="comparison-table">
-        <table class="table table-bordered">
-            <thead class="bg-secondary">
-            <tr>
-                <td class="align-middle" colspan="2">
-                    <select class="form-control custom-select" id="compare-criteria" data-filter="trigger">
-                        <option value="all">전체</option>
-                        <option value="information">기본정보</option>
-                        <option value="price">세금</option>
-                        <option value="tax">사대보험</option>
-                    </select><small class="form-text text-muted">* 참고내용을 적는 곳입니다.</small>
-                    <div class="pt-3">
-                        <div class="custom-control custom-checkbox">
-                            <input class="custom-control-input" type="checkbox" id="differences">
-                            <label class="custom-control-label" for="differences">이 체크박스의 용도가 뭐지</label>
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="container pb-5 mb-2">
+                            <div class="comparison-table">
+                                <table class="table table-bordered">
+                                    <thead class="bg-secondary">
+                                    <tr>
+                                        <td class="align-middle" colspan="2">
+                                            <select class="form-control custom-select" id="compare-criteria"
+                                                    data-filter="trigger">
+                                                <option value="all">전체</option>
+                                                <option value="information">기본정보</option>
+                                                <option value="price">세금</option>
+                                                <option value="tax">사대보험</option>
+                                            </select><small class="form-text text-muted">* 참고내용을 적는 곳입니다.</small>
+                                            <div class="pt-3">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input class="custom-control-input" type="checkbox"
+                                                           id="differences">
+                                                    <label class="custom-control-label" for="differences">이 체크박스의 용도가
+                                                        뭐지</label>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td colspan="4">
+                                            <h1 class="payment">급 여 명 세 서</h1>
+                                        </td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="information" data-filter="target">
+                                    <tr class="bg-secondary" id="secondary">
+                                        <th>수당항목명</th>
+                                        <th>지급유형</th>
+                                        <th>근무기록(월)</th>
+                                        <th>수당금액</th>
+                                        <th>금액 합계</th>
+                                        <th>산출방법</th>
+                                    </tr>
+                                    <tr th:each="bean : ${paystub}">
+                                        <th th:text="${bean.aitem}"></th>
+                                        <td th:text="${bean.ptype}"></td>
+                                        <td th:text="${bean.wrecord}"></td>
+                                        <td th:text="${#numbers.formatInteger(bean.allowance, 0, 'COMMA')}"></td><!--1시간 임금-->
+                                        <td th:text="${#numbers.formatInteger(bean.tsum, 0, 'COMMA')}"></td>
+                                        <!--근로기록 * 수당금액-->
+                                        <td th:text="${bean.putitem}"></td>
+                                    </tr>
+                                    <!--            <tr>-->
+                                    <!--                <th>결근</th>-->
+                                    <!--                <td>3,174 mAh</td>-->
+                                    <!--                <td>3,430 mAh</td>-->
+                                    <!--                <td>4,100 mAh</td>-->
+                                    <!--                <td>3,430 mAh</td>-->
+                                    <!--                <td></td>-->
+                                    <!--            </tr>-->
+                                    <!--            <tr>-->
+                                    <!--                <th>조퇴</th>-->
+                                    <!--                <td>3,174 mAh</td>-->
+                                    <!--                <td>3,430 mAh</td>-->
+                                    <!--                <td>4,100 mAh</td>-->
+                                    <!--                <td>3,430 mAh</td>-->
+                                    <!--                <td></td>-->
+                                    <!--                </tr>-->
+                                    <tr class="paysum">
+                                        <th colspan="6">급여 합계 : <span th:text="${#numbers.formatInteger(paystub.tsum, 0, 'COMMA')}" /> 원</th><!--금액합계를 다 더한 값이 나오도록-->
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <br><br>
+                                <table class="table table-bordered" th:object="${salaryBean}">
+                                    <tbody id="price" data-filter="target">
+                                    <tr id="secondary2">
+                                        <th colspan="2">공제항목명</th>
+                                        <th colspan="2">금액</th>
+                                        <th colspan="2">산출방법</th>
+                                    </tr>
+
+                                    <tr>
+                                        <th colspan="2">소득세</th>
+                                        <td colspan="2"
+                                            th:text="${#numbers.formatInteger(salaryBean.cometax, 0, 'COMMA')}"></td>
+                                        <td colspan="2">1인가구를 기준 월급여 * 3%(최대 5000만원 이상이면 34%)</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th colspan="2">지방소득세</th>
+                                        <td colspan="2"
+                                            th:text="${#numbers.formatInteger(salaryBean.taxes, 0, 'COMMA')}"></td>
+                                        <td colspan="2">소득세 * 10%</td>
+                                    </tr>
+                                    </tbody>
+                                    <tbody id="tax" data-filter="target">
+                                    <tr>
+                                        <th colspan="2">국민연금</th>
+                                        <td colspan="2"
+                                            th:text="${#numbers.formatInteger(salaryBean.pension, 0, 'COMMA')}"></td>
+                                        <td colspan="2">월급여 * 4.5%</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th colspan="2">건강보험</th>
+                                        <td colspan="2"
+                                            th:text="${#numbers.formatInteger(salaryBean.health, 0, 'COMMA')}"></td>
+                                        <td colspan="2">월급여 * 3.545%</td>
+                                    </tr>
+                                    <tr class="bg-secondary">
+                                        <th colspan="2">고용보험</th>
+                                        <td colspan="2"
+                                            th:text="${#numbers.formatInteger(salaryBean.employment, 0, 'COMMA')}"></td>
+                                        <td colspan="2">월급여 * 0.9%</td>
+                                    </tr>
+                                    <tr class="taxsum">
+                                        <th colspan="6">공제금액 합계 : <span
+                                                th:text="${#numbers.formatInteger((salaryBean.cometax+salaryBean.taxes+salaryBean.pension+salaryBean.health+salaryBean.employment), 0, 'COMMA')}"/> 원
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+                                            <a href="javascript:window.print()" class="btn btn-success me-1"> <i
+                                                    class="bi bi-printer-fill"></i></a>
+                                            <a href="#" class="btn btn-primary w-md">전송</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </td>
-                <td colspan="4">
-                    <h1 class="payment">급 여 명 세 서</h1>
-                </td>
-            </tr>
-            </thead>
-            <tbody id="information" data-filter="target">
-            <tr class="bg-secondary" id="secondary">
-                <th>수당항목명</th>
-                <th>지급유형</th>
-                <th>근무기록(월)</th>
-                <th>수당금액</th>
-                <th>금액 합계</th>
-                <th>산출방법</th>
-            </tr>
-            <tr th:each="bean : ${paystub}">
-                <th th:text="${bean.aitem}"></th>
-                <td th:text="${bean.ptype}"></td>
-                <td th:text="${bean.wrecord}"></td>
-                <td th:text="${bean.allowance}"></td><!--1시간 임금-->
-                <td th:text="${bean.tsum}"></td><!--근로기록 * 수당금액-->
-                <td th:text="${bean.putitem}"></td>
-            </tr>
-<!--            <tr>-->
-<!--                <th>결근</th>-->
-<!--                <td>3,174 mAh</td>-->
-<!--                <td>3,430 mAh</td>-->
-<!--                <td>4,100 mAh</td>-->
-<!--                <td>3,430 mAh</td>-->
-<!--                <td></td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <th>조퇴</th>-->
-<!--                <td>3,174 mAh</td>-->
-<!--                <td>3,430 mAh</td>-->
-<!--                <td>4,100 mAh</td>-->
-<!--                <td>3,430 mAh</td>-->
-<!--                <td></td>-->
-<!--                </tr>-->
-            <tr class="paysum">
-                <th colspan="6">급여 합계 : 2,775,000원</th><!--금액합계를 다 더한 값이 나오도록-->
-            </tr>
-            </tbody>
-        </table><br><br>
-               <table class="table table-bordered" th:object="${salaryBean}">
-            <tbody id="price" data-filter="target">
-            <tr id="secondary2">
-                <th colspan="2">공제항목명</th>
-                <th colspan="2">금액</th>
-                <th colspan="2">산출방법</th>
-            </tr>
-
-            <tr>
-                <th colspan="2">소득세</th>
-                <td colspan="2" th:field="${salaryBean.cometax}"></td>
-                <td colspan="2">1인가구를 기준 월급여 * 3%(최대 5000만원 이상이면 34%)</td>
-            </tr>
-
-            <tr>
-                <th colspan="2">지방소득세</th>
-                <td colspan="2" th:field="${salaryBean.taxes}"></td>
-                <td colspan="2">소득세 * 10%</td>
-            </tr>
-            </tbody>
-            <tbody id="tax" data-filter="target">
-            <tr>
-                <th colspan="2">국민연금</th>
-                <td colspan="2" th:field="${salaryBean.pension}"></td>
-                <td colspan="2">월급여 * 4.5%</td>
-            </tr>
-
-            <tr>
-                <th colspan="2">건강보험</th>
-                <td colspan="2" th:field="${salaryBean.health}"></td>
-                <td colspan="2">월급여 * 3.545%</td>
-            </tr>
-            <tr class="bg-secondary">
-                <th colspan="2">고용보험</th>
-                <td colspan="2" th:field="${salaryBean.employment}"></td>
-                <td colspan="2">월급여 * 0.9%</td>
-            </tr>
-            <tr class="taxsum">
-                <th colspan="6">공제금액 합계 : </th>
-            </tr>
-            <tr>
-                <td colspan="6">
-                    <a href="javascript:window.print()" class="btn btn-success me-1"> <i class="bi bi-printer-fill"></i></a>
-                    <a href="#" class="btn btn-primary w-md">전송</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 </main>
 </body>
