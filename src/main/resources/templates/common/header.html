@@ -66,6 +66,7 @@
                     </ul><!-- End Messages Dropdown Items -->
                 </li><!-- End 메세지 -->
                 <!-- 프로필 아이콘 -->
+                <span th:if="${session.loginInfo == null}"><a href="/login"><button type="button" class="btn btn-success">로그인</button></a></span>
                 <li class="nav-item dropdown pe-3">
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                         <span class="d-none d-md-block dropdown-toggle ps-2" th:if="${session.loginInfo != null}" th:text="${session.loginInfo.mbname}"></span>
@@ -88,7 +89,7 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
+                            <a class="dropdown-item d-flex align-items-center" href="/logout">
                                 <i class="bi bi-box-arrow-right"></i>
                                 <span>로그아웃</span>
                             </a>
