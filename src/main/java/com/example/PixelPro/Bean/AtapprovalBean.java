@@ -17,8 +17,10 @@ public class AtapprovalBean { //근태 결재
 
     private int atwmbnum; //서류 작성자
 
-    @NotBlank(message = "승인자를 선택해 주세요.")
-    private String atsign; //ex)작성자(사원) - 상사- 팀장
+    @NotBlank(message = "1차 승인자는 필수입니다.")
+    private int atsign1; //ex)작성자(사원) - 상사- 팀장
+
+    private int atsign2;
 
     private int athmbnum; //현재 서류 처리자
 

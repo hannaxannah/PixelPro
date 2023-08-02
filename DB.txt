@@ -45,3 +45,61 @@ CREATE TABLE member (
 
 insert into member
 values(1, 'admin123@pixelpro.com', '김사장', '사장', 'admin', '1234', null, '010-7777-7777', '2000-08-01', null, '관리직', '0', '재직');
+
+--근태 결재
+drop table atapproval cascade constraints;
+create table atapproval (
+   atnum number(10,0) not null,
+    atcategory varchar2(255 char),
+    atcontent varchar2(3000),
+    atdate date,
+    athmbnum number(10,0) not null,
+    atsign1 number(10,0) not null,
+    atsign2 number(10,0) not null,
+    atstatus varchar2(255 char),
+    atwmbnum number(10,0) not null,
+    primary key (atnum)
+);
+
+--근태 상태
+drop table attendance cascade constraints;
+create table attendance (
+   mbnum number(10,0) not null,
+    atcategory varchar2(255 char),
+    atdate varchar2(255 char),
+    primary key (mbnum)
+);
+
+--출퇴근
+drop table commute cascade constraints;
+create table commute (
+   mbnum number(10,0) not null,
+    getoff date,
+    gotowork date default sysdate,
+    primary key (mbnum)
+);
+
+--일반 결재
+drop table gapproval cascade constraints;
+create table gapproval (
+   ganum number(10,0) not null,
+    gcategory varchar2(255 char),
+    gcontent varchar2(3000),
+    gdate date default sysdate,
+    gfile varchar2(255 char),
+    ghmbnum number(10,0) not null,
+    gsign1 number(10,0) not null,
+    gsign2 number(10,0) not null,
+    gstatus varchar2(255 char),
+    gsubject varchar2(255 char),
+    gwmbnum number(10,0) not null,
+    primary key (ganum)
+);
+
+--반려
+drop table appreturn cascade constraints;
+create table appreturn (
+   ganum number(10,0) not null,
+    rcontent varchar2(3000),
+    primary key (ganum)
+);

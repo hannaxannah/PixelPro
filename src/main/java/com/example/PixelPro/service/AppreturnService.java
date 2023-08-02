@@ -1,11 +1,11 @@
 package com.example.PixelPro.service;
 
-import com.example.PixelPro.repository.ReturnRepository;
+import com.example.PixelPro.repository.AppreturnRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ReturnService {
-    private final ReturnRepository returnRepository;
+public class AppreturnService {
+    private final AppreturnRepository returnRepository;
 }

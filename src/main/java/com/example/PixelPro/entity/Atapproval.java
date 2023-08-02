@@ -19,7 +19,8 @@ public class Atapproval {
     private int atnum;
     private String atcontent;
     private int atwmbnum;
-    private String atsign;
+    private int atsign1;
+    private int atsign2;
     private int athmbnum;
     private String atstatus;
     private String atcategory;
