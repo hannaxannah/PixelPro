@@ -4,31 +4,25 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/mylayout}">
 
-<th:block layout:fragment="css">
-    <style>
-        .fieldError{
-            color : red;
-            font-size:11pt;
-        }
-    </style>
-</th:block>
 
 <body class="content" layout:fragment="content">
 <main id="main" class="main">
-    <section class="section">
-        <div class="row">
-            <div class="col-lg-6">
+    <!-- General Form Elements -->
+    <form name="myform" id="myform" method="post" action="/paystubInsert" th:object="${paystubBean}">
+        <input type="hidden" name="snum" id="snum" th:value="${snum}"/>
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-6">
 
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">급여명세서 내용추가</h5>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">급여명세서 내용추가</h5>
 
-                        <!-- General Form Elements -->
-                        <form name="myform" method="post" action="/paystubInsert" th:object="${paystubBean}">
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">수당항목</label>
                                 <div class="col-sm-10">
-                                    <select class="form-select" aria-label="Default select example" th:field="${paystubBean.aitem}">
+                                    <select class="form-select" aria-label="Default select example"
+                                            th:field="${paystubBean.aitem}">
                                         <option selected value="">선택해주세요.</option>
                                         <option th:field="${paystubBean.aitem}" value="기본금(고정)">기본금(고정)</option>
                                         <option th:field="${paystubBean.aitem}" value="식대(고정)">식대(고정)</option>
@@ -41,7 +35,8 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">지급유형</label>
                                 <div class="col-sm-10">
-                                    <select class="form-select" aria-label="Default select example" th:field="${paystubBean.ptype}">
+                                    <select class="form-select" aria-label="Default select example"
+                                            th:field="${paystubBean.ptype}">
                                         <option selected value="">선택해주세요.</option>
                                         <option th:field="${paystubBean.ptype}" value="급여">급여</option>
                                         <option th:field="${paystubBean.ptype}" value="수당">수당</option>
@@ -55,22 +50,26 @@
                                 <label class="col-sm-2 col-form-label">근무기록</label>
                                 <div class="col-sm-10">
                                     <input type="number" class="form-control" th:field="${paystubBean.wrecord}">
-                                    <p th:if="${#fields.hasErrors('wrecord')}" th:errors="*{wrecord}" class="fieldError"></p>
+                                    <p th:if="${#fields.hasErrors('wrecord')}" th:errors="*{wrecord}"
+                                       class="fieldError"></p>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">수당금액</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" value="" th:field="${paystubBean.allowance}">
-                                    <p th:if="${#fields.hasErrors('allowance')}" th:errors="*{allowance}" class="fieldError"></p>
+                                    <input type="text" class="form-control" value=""
+                                           th:field="${paystubBean.allowance}">
+                                    <p th:if="${#fields.hasErrors('allowance')}" th:errors="*{allowance}"
+                                       class="fieldError"></p>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">합계</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" value="" th:field="${paystubBean.tsum}" placeholder="근무기록 * 수당금액으로 계산">
+                                    <input type="text" class="form-control" value="" th:field="${paystubBean.tsum}"
+                                           placeholder="근무기록 * 수당금액으로 계산" readonly>
                                     <p th:if="${#fields.hasErrors('tsum')}" th:errors="*{tsum}" class="fieldError"></p>
                                 </div>
                             </div>
@@ -79,24 +78,91 @@
                                 <label class="col-sm-2 col-form-label">산출방법</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" value="" th:field="${paystubBean.putitem}">
-                                    <p th:if="${#fields.hasErrors('putitem')}" th:errors="*{putitem}" class="fieldError"></p>
+                                    <p th:if="${#fields.hasErrors('putitem')}" th:errors="*{putitem}"
+                                       class="fieldError"></p>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-success">추가</button>
+                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                            data-target="#myModal">추가
+                                    </button>
                                     <button type="reset" class="btn btn-primary">초기화</button>
                                 </div>
                             </div>
 
-                        </form><!-- End General Form Elements -->
 
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </form><!-- End General Form Elements -->
+
+    <script>
+        alert('명세서 작업 내용이 없습니다 ');
+        $("#wrecord").keyup(function (event) {
+            const wrecord = $("#wrecord").val() ? parseInt($("#wrecord").val()) : null;
+            const allowance = $("#allowance").val() ? parseInt($("#allowance").val()) : null;
+            $("#tsum").val(numberWithCommas(wrecord * allowance));
+        });
+
+        $("#allowance").keyup(function (event) {
+            const wrecord = $("#allowance").val() ? parseInt($("#wrecord").val()) : null;
+            const allowance = $("#allowance").val() ? parseInt($("#allowance").val()) : null;
+            $("#tsum").val(wrecord * allowance);
+        });
+
+        document.querySelector(".btn-success").addEventListener("click", function () {
+            if ($("#aitem").val() === '') {
+                alert("수당항목을 선택해주세요.");
+                $("#aitem").focus();
+                return;
+            }
+            if ($("#ptype").val() === '') {
+                alert("지급유형을 선택해주세요.");
+                $("#ptype").focus();
+                return;
+            }
+            if ($("#wrecord").val() === '') {
+                alert("근무기록을 입력해주세요.");
+                $("#wrecord").focus();
+                return;
+            }
+            if ($("#allowance").val() === '') {
+                alert("수당금액을 입력해주세요.");
+                $("#allowance").focus();
+                return;
+            }
+            if ($("#putitem").val() === '') {
+                alert("산출방법을 입력해주세요.");
+                $("#putitem").focus();
+                return;
+            }
+
+            const snum = $("#snum").val();
+            $.ajax({
+                url: "/paystubInsert/" + snum,
+                method: "POST",
+                data: $("#myform").serialize(),
+                success: function (response) {
+                    if (response.status === "success") {
+                        location.href = "/salary/payOneStub/"+ snum;
+                    } else {
+                        alert("등록을 실패하였습니다.");
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("등록을 실패하였습니다.");
+                }
+            });
+        });
+
+        function numberWithCommas(number) {
+            return number.toLocaleString();
+        }
+    </script>
 </main>
 </body>
 

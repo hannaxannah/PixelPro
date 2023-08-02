@@ -52,6 +52,10 @@
              document.myform.submit();
          }
       }
+
+      function goToCsv() {
+          window.location.href = "./oneListCvs";
+      }
       </script>
 </th:block>
 
@@ -115,7 +119,7 @@
                             </tbody>
                         </table>
                         <button type="button" class="btn btn-danger" onClick="return selectDelete()">선택항목 삭제</button>
-                        <button type="button" class="btn btn-success" onClick="">CSV</button>
+                        <button type="button" class="btn btn-success" onClick="goToCsv();">CSV</button>
                         <!-- End Table with stripped rows -->
 
                     </div>

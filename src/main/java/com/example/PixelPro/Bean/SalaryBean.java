@@ -39,9 +39,9 @@ public class SalaryBean {
 }
 
 /*
-insert into salary(snum,sortation,sname,allpayment,cometax,taxes,pension,health,employment,actsalary)
-values(1,'급여','신주영',3000000,90000,9000,64510,4600,3700,2876000);
+insert into salary(snum,stitle,sortation,pdate,sname,allpayment,cometax,taxes,pension,health,employment,actsalary)
+values(1,'7월 급여대장','급여','2023/07/25','신주영',3000000,90000,9000,64510,4600,3700,2876000);
 
-insert into salary(snum,sortation,sname,allpayment,cometax,taxes,pension,health,employment,actsalary)
-values(2,'급여','김재명',3452000,114000,10000,72270,7600,4300,3092400);
+insert into salary(snum,stitle,sortation,pdate,sname,allpayment,cometax,taxes,pension,health,employment,actsalary)
+values(2,'8월 급여대장','급여','2023/08/25','김재명',3452000,114000,10000,72270,7600,4300,3092400);
 */
