@@ -3,20 +3,33 @@ package com.example.PixelPro.controller;
 import com.example.PixelPro.Bean.PayStubBean;
 import com.example.PixelPro.Bean.ResignBean;
 import com.example.PixelPro.Bean.SalaryBean;
+import com.example.PixelPro.entity.Member;
+import com.example.PixelPro.entity.ResignEntity;
 import com.example.PixelPro.entity.SalaryEntity;
+import com.example.PixelPro.service.MemberService;
 import com.example.PixelPro.service.PayStubService;
 import com.example.PixelPro.service.ResignService;
+import com.opencsv.CSVWriter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class ResignController {
 
     private final ResignService resignService;
+    private final MemberService memberService;
 
    /* 퇴직금(개인) 추가 폼*/
     @GetMapping(value = "resignInsert")
@@ -45,7 +58,38 @@ public class ResignController {
         return "/resign/retirestatement";
     }
 
+    /*csv*/
+    @GetMapping("oneservListCvs")
+    public void oneListCvs(HttpServletResponse response) throws IOException {
+        // 파일 이름 설정
+        String encodedFileName = URLEncoder.encode("개인퇴직금.csv", StandardCharsets.UTF_8);
+        response.setContentType("text/csv; charset=UTF-8");
+        response.setHeader("Content-Disposition", "attachment; filename=" + encodedFileName);
 
+        List<Member> member = memberService.findByOrderByMbnumDesc();
+
+        // CSV 데이터 생성 (여기서는 가상의 데이터를 생성하겠습니다)
+        List<String[]> csvData = new ArrayList<>();
+        csvData.add(new String[]{"사원번호", "성명", "부서", "직급", "입사일","근무상태","퇴사일"});
+        for (Member m : member) {
+            csvData.add(
+                    new String[]{String.valueOf(m.getMbnum()), m.getMbname(), m.getDept(), m.getMblevel().toString(),
+                            m.getMbStartDate().toString(),
+                            m.getMstate().toString(),
+                            m.getMbEndDate().toString()}
+            );
+        }
+
+        // CSV 파일 작성
+        OutputStreamWriter writer = new OutputStreamWriter(response.getOutputStream(),
+                StandardCharsets.UTF_8);
+        writer.write("\uFEFF");
+
+        CSVWriter csvWriter = new CSVWriter(writer);
+        csvWriter.writeAll(csvData);
+        csvWriter.close();
+        writer.close();
+    }
 
 
 //    수정 폼

@@ -53,6 +53,7 @@ public class SalaryController {
         return "salary/salaryOneList";
     }
 
+    /*csv*/
     @GetMapping("oneListCvs")
     public void oneListCvs(HttpServletResponse response) throws IOException {
         // 파일 이름 설정
