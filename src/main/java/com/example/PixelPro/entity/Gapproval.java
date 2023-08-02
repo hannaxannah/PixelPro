@@ -6,6 +6,8 @@ import org.hibernate.annotations.ColumnDefault;
 import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
+import java.sql.Date;
+
 @Entity(name = "gapproval")
 @Setter
 @Getter
@@ -20,14 +22,15 @@ public class Gapproval {
     private String gsubject;
     private String gcontent;
     private int gwmbnum;
-    private String gsign;
+    private int gsign1;
+    private int gsign2;
     private int ghmbnum;
     private String gfile;
     private String gstatus;
     private String gcategory;
 
     @ColumnDefault("sysdate")
-    private String gdate;
+    private Date gdate;
 
     private static ModelMapper modelMapper = new ModelMapper();
     public static Gapproval createGapproval(GapprovalBean gapprovalBean) {
