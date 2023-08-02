@@ -8,43 +8,75 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 </th:block>
 
-<div class="content" layout:fragment="content" style = "height: 800px; padding: 60px 200px; margin-left: 240px; margin-top:50px;">
-    <input type = "hidden" name = "mbnum" th:value = "${session.member.mbnum}">
+<div class="content" layout:fragment="content" style = "height: 800px; padding: 60px 0px; margin-left: 340px; margin-top:50px;">
+    <input type = "hidden" name = "cnum" value = "">
     <div class="container">
         <div class="messaging">
             <div class="inbox_msg">
                 <div class="inbox_people">
+                    <div class = "heading-top" style = "display:flex; justify-content:center; align-content:space-around; flex-wrap: wrap;">
                     <div class="headind_srch">
                         <div class="recent_heading">
-                            <h4>Recent</h4>
+                            <!-- 모달 버튼 -->
+                            <button id="myBtn" class = "btn-success" onclick = "modalBlock()" style = "width:236px; margin-bottom:14px; border-radius: 8px;">대화 시작하기</button>
+                            <!-- 모달 영역-->
+                            <div id="myModal" class="modal">
+
+                                <!-- 모달 -->
+                                <div class="modal-content">
+                                    <span class="close" onclick = "spanNone()">&times;</span>
+                                    <form autocomplete="off" action="/chat/createConversation" onsubmit = "return startConversation()">
+                                        <input type = "hidden" name = "mbnum" th:value = "${session.member.mbnum}">
+                                        <div class="autocomplete" style="width:300px;">
+                                            <span style = "font-weight:bold; font-size: 20px; color: #198754">대화 시작하기 </span>
+
+                                            <input type="text" class = "form-control" id = "search_area" name="mbnum" placeholder="대화 참여자 검색하고 선택하세요" style = "width: 300px;">
+                                            <div id='autoMaker' style = "width:300px;"></div>
+                                            <div id = "selected" style = "margin-bottom: 24px; width: 530px;">
+                                                <span style = "font-weight:bold; font-size: 18px;">대화 참여자 : </span>
+                                            <!--선택된 참여자 표시 -->
+
+                                            </div>
+                                        </div>
+                                        <span style = "font-weight:bold; font-size: 18px;">대화명 : </span>
+                                        <input class = "form-control" type = "text" name = "cname" style = "height: 35px; width: 580px; margin-bottom: 12px;">
+                                        <span style = "font-weight:bold; font-size: 18px;">메시지 작성 : </span>
+                                        <input class = "form-control" type = "text" name = "mcontent" style = "height: 80px; width: 580px; margin-bottom: 12px;">
+                                        <div><input type="submit" class = "btn-success" value = "메시지 보내기"></div>
+                                    </form>
+                                </div>
+
+                            </div>
                         </div>
                         <div class="search_bar">
                             <div class="stylish-input-group">
-                                <input type="text" class="search-bar"  placeholder="Search" >
+                                <input type="text" class="search-bar" placeholder="Search" >
                                 <span class="input-group-addon">
-                <button type="button"> <i class="bi bi-search" aria-hidden="true"></i> </button>
+                <button type="button" style = "padding: 0px; border: 1px;"> <i class="bi bi-search" aria-hidden="true" style = "background-color: #198754; font-size:20px; padding: 0px 8px 2px 8px;"></i> </button>
                 </span> </div>
                         </div>
                     </div>
-                    <div class="inbox_chat" id = "inbox">
 
-                        <!-- 대화 목록 들어가는 부분 --!>
+
+                    </div>
+                    <div class="inbox_chat" id = "inbox">
+                        <!--대화 목록-->
                     </div>
                 </div>
-                <div class="mesgs">
-                    <input type = "hidden" name = "cnum" value = "1">
-                    <div class="msg_history" id = "msg_history">
+                <div class="mesgs" style = "height:600px;">
+                    <div class = "msg_top">
+                        <p id = "conversationName" style = "border-bottom:1px solid #198754; font-size:20px; font-weight:bold;"></p>
+
+
+                    </div>
+                    <div class="msg_history" id = "msg_history" style = "height: 500px;">
                         <!--메시지를 들어가는 부분-->
                     </div>
-                    <div class="type_msg">
-                        <div class="input_msg_write">
-                            <input type="text" name = "mcontent" class="write_msg"/>
-                            <button class="msg_send_btn" type="button" onclick = "sendMessage()"><i class="bi bi-send-fill"></i></button>
-                        </div>
+                    <div id = "inputBox">
+                        <!--입력 박스 들어가는 부분-->
                     </div>
                 </div>
             </div>
-
 
 
         </div></div>
@@ -82,8 +114,48 @@ $(document).ready(  function() {
 
         }
     });
+
+    $('#search_area').keyup(function(){
+        var txt = $(this).val();
+        if(txt != ''){  //빈줄이 들어오면
+            $('#autoMaker').children().remove();
+
+            allUsers.forEach(function(args){
+                if(args.indexOf(txt) > -1 ){
+                    $('#autoMaker').append(
+                        $('<div>').text(args)
+                    );
+                    var mbnumText = '<input type = "hidden" value = "'
+                                        + allMbnum[allUsers.indexOf(args)]
+                                        + '" name = "'
+                                        + args
+                                        + '">';
+                    $('#autoMaker').append(mbnumText);
+                }
+            });
+            $('#autoMaker').children().each(function(){
+                $(this).click(function(){
+                    $('#search_area').val($(this).text());
+                    $('#autoMaker').children().remove();
+                    var mbnumber = allMbnum[allUsers.indexOf($(this).text())];
+                    var selectedUser = '<span class = "selectedUser" id = "selectedUser' + mbnumber + '">' + $(this).text()
+                                        + '<span class = "closeSelectedUser" onclick = "userSpanClose(' + mbnumber +')">x</span>'
+                                        + '<input type = "hidden" class = "addedUsers" name = "mbnum" value = "'
+                                        + mbnumber
+                                        + '"></span>'
+                    $('#selected').append(selectedUser);
+                    $('#search_area').val("");
+                });
+            });
+        } else {
+            $('#autoMaker').children().remove();
+        }
+    });
+
 });
 
+var allUsers = [];
+var allMbnum = [];
 var socket = null;
 var isStomp = false;
 
@@ -92,64 +164,96 @@ function connectStomp() { //연결해주는 함수
     var client = Stomp.over(sock);
 	isStomp = true;
 	socket = client;
+    var mbnum = $('input[name="mbnum"]').val();
 
     client.connect({}, function () { //연결!
         console.log("Connected stompTest!");
         // Controller's MessageMapping, header, message(자유형식)
+        getConversation();
         var mbnum = $('input[name="mbnum"]').val();
-        console.log("mbnum", mbnum);
-        client.send('/chat/conversation', {}, mbnum);
-        // 해당 토픽을 구독한다!
-        client.subscribe('/topic/conversation/' + mbnum, function(event){
-            console.log("event:" , event);
+
+        socket.subscribe('/topic/receiveMessage/' + mbnum, function(event){ //메시지 받을 준비 - 미리 연결 해준다.
             var data = JSON.parse(event.body);
-            console.log("data:", data)
-            var messageTemplateHTML = "";
-            var i = 1;
-            $.each(data, function(){
-                messageTemplateHTML = '<a href = "#" class = "chatList"'
-                                    + '><div class="chat_list" id = "chat' + i + '" onclick = "highlight(' + i + ')">'
-                                    + '<div class="chat_people">'
-                                    + '<div class="chat_ib">'
-                                    + '<h5>대화명: ' + this.cname +  '<span class="chat_date">안 읽은 메시지 수 : ' + this.unreadCount+ ' </span></h5>'
-                                    + '<p>' + this.recentSenderName  + ' : ' + '"' + this.recentMsg +  '"' + '</p></div></div></div></a>';
-                $('#inbox').append(messageTemplateHTML);
-                i++;
-            });
+            console.log("receiveData", data);
+            //원래 선택 되어있던 대화번호.
+            var mbnum = $('input[name="mbnum"]').val();
+            //현재 선택된 대화번호
+            var cnum = $('input[name="cnum"]').val();
+            var sendData = mbnum + "/" + cnum;
+
+            if(cnum == data.cnum){
+                //socket.send('/chat/message', {}, sendData);
+                highlight(cnum);
+            }
+            getConversation();
+            //socket.send('/chat/conversation/', {}, mbnum);
 
         }); //subscribe
 
-        client.subscribe('topic/receiveMessage/' + mbnum, function(event){
+        socket.send('/chat/allUsers', {}, mbnum);
+        socket.subscribe('/topic/allUsers', function(event){
             var data = JSON.parse(event.body);
-            console("receiveData", data);
-            //원래 선택 되어있던 대화번호.
-            var cnum = $('input[name="cnum"]').val();
-            highlight(data.cnum);
-            client.send('/chat/conversation/', {}, mbnum);
-            var selected = document.getElementById("chat" + data.cnum);
-            var sendData = mbnum + "/" + data.cnum; //보낼 직원 번호, 대화번호 합쳐서 보낸다. MessageMapping에는 세션 접근 불가능
-            client.send('/chat/message', {}, sendData);
+            console.log("USERDATA", data);
+            allUsers = [];
+            allMbnum = [];
+            i = 0;
+            $('#myInput').empty();
+             $.each(data, function(){
+                allUsers[i] = this.mbname + " (" + this.mblevel + " / " + this.dept + ")" ;
+                allMbnum[i] = this.mbnum;
+                i++;
+             });
         }); //subscribe
     });
 }
 
+function getConversation(){
+    var mbnum = $('input[name="mbnum"]').val();
+    console.log("mbnum", mbnum);
+    socket.send('/chat/conversation', {}, mbnum);
+    $('#inbox').empty();
+    // 해당 토픽을 구독한다!
+    socket.subscribe('/topic/conversation/' + mbnum, function(event){
+        console.log("event:" , event);
+        var data = JSON.parse(event.body);
+        console.log("data:", data)
+        var messageTemplateHTML = "";
+        var cnum = $('input[name="cnum"]').val();
+        $.each(data, function(){
+            if(cnum == this.cnum){
+                messageTemplateHTML += '<a href = "#" class = "chatList"'
+                                    + '><div class="chat_list active_chat" id = "chat' + this.cnum + '" onclick = "highlight(' + this.cnum + ')">'
+                                    + '<div class="chat_people">'
+                                    + '<div class="chat_ib">'
+                                    + '<h5 id = "convName' + this.cnum +'">대화명: ' + this.cname +  '<span class="chat_date">안 읽은 메시지 수 : ' + this.unreadCount+ ' </span></h5>'
+                                    + '<p>' + this.recentSenderName  + ' : ' + '"' + this.recentMsg +  '"' + '</p></div></div></div></a>';
+            } else {
+                    messageTemplateHTML += '<a href = "#" class = "chatList"'
+                                    + '><div class="chat_list" id = "chat' + this.cnum + '" onclick = "highlight(' + this.cnum + ')">'
+                                    + '<div class="chat_people">'
+                                    + '<div class="chat_ib">'
+                                    + '<h5 id = "convName' + '">대화명: ' + this.cname +  '<span class="chat_date">안 읽은 메시지 수 : ' + this.unreadCount+ ' </span></h5>'
+                                    + '<p>' + this.recentSenderName  + ' : ' + '"' + this.recentMsg +  '"' + '</p></div></div></div></a>';
+            }
+        });
+        $('#inbox').html(messageTemplateHTML);
+
+    }); //subscribe
+}
+
 function highlight(num){ //대화 선택시 실행되는 함수,
-    //색갈 변견해준다
-    var chatList = document.getElementsByClassName("chat_list");
-    var selected = document.getElementById("chat" + num);
-    for(i = 0; i < chatList.length; i++){
-        chatList[i].classList.remove("active_chat");
-    }
-    selected.classList.add("active_chat");
+
     console.log("chatList", chatList);
     $('input[name=cnum]').val(num);
+
+    //해당 대화의 메시지 모든 읽음으로 변경
+
 
     //대화를 가져오기.
     $('#msg_history').empty();
     var mbnum = $('input[name="mbnum"]').val();
     var sendData = mbnum + "/" + num; //보낼 직원 번호, 대화번호 합쳐서 보낸다. MessageMapping에는 세션 접근 불가능
     socket.send('/chat/message', {}, sendData);
-
     socket.subscribe('/topic/message/' + mbnum, function(event){
         var data = JSON.parse(event.body);
         console.log("message Data:" , data);
@@ -163,27 +267,150 @@ function highlight(num){ //대화 선택시 실행되는 함수,
                               + this.mtime
                               + '<br>' + this.sender + ' (' + this.mblevel + ')'
                                 + '</span></div></div>';
-            } else {
+            } else { //받는 메시지 생성.
                 messageBoxHtml += '<div class="incoming_msg"><div class="incoming_msg_img"></div><div class="received_msg"><div class="received_withd_msg"><p>'
                                 + this.mcontent
                                 + '</p><span class="time_date">'
                                 + this.mtime
-                                + '<br>' + i + this.sender + ' (' + this.mblevel + ')'
-                                + '</span></div></div>';
+                                + '<br>' + this.sender + ' (' + this.mblevel + ')'
+                                + '</span></div></div></div>';
             }
         });
+
         $('#msg_history').html(messageBoxHtml);
+
     });
+   var inputBox = '<div class= "type_msg">'
+                        + '<div class="input_msg_write">'
+                        + '<input type="text" name = "mcontent2" id = "messageText" onkeyup = "enterCheck(event)" class="write_msg" style = "border:rgb(169, 169, 169) solid !important;"/>'
+                        + '<button class="msg_send_btn" type="button" onclick = "sendMessage()" style = "margin-right: 15px; margin-top: 10px;"><i class="bi bi-send-fill"></i></button>'
+                        + '</div></div>'
+    $('#inputBox').html(inputBox);
+    var timesRun = 0;
+    var interval = setInterval(function(){
+    timesRun += 1;
+    if(timesRun === 3){
+        clearInterval(interval);
+    }
+    updateScroll();
+    }, 110);
+
+    //선택한 대화 표시 - 색갈 변경해준다.
+    var chatList = document.getElementsByClassName("chat_list");
+    for(i = 0; i < chatList.length; i++){
+        chatList[i].classList.remove("active_chat");
+    }
+    var selected = document.getElementById("chat" + num);
+    if(selected != null){
+        selected.classList.add("active_chat");
+    }
 }
 
 function sendMessage(){ //메시지 보내는 함수
     var mbnum = $('input[name="mbnum"]').val();
     //현재 선택된 대화번호
     var cnum = $('input[name="cnum"]').val();
-    var mcontent = $('input[name="mcontent"]').val();
+    var mcontent = $('input[name="mcontent2"]').val();
     var sendData = mbnum + "/" + cnum + "/" + mcontent;
     socket.send('/chat/sendMessage', {}, sendData);
+    $('input[name="mcontent2"]').val('');
+    socket.subscribe('/topic/receiveMessage/' + mbnum, function(event){
+        var data = JSON.parse(event.body);
+        console.log("receiveData", data);
+        //원래 선택 되어있던 대화번호.
+        var mbnum = $('input[name="mbnum"]').val();
+        //현재 선택된 대화번호
+        var cnum = $('input[name="cnum"]').val();
+        var sendData = mbnum + "/" + cnum;
+
+        if(cnum == data.cnum){
+            //socket.send('/chat/message', {}, sendData);
+            highlight(cnum);
+        }
+        getConversation();
+        //socket.send('/chat/conversation/', {}, mbnum);
+
+    }); //subscribe
+    var selected = document.getElementById("chat" + cnum);
+    if(selected != null){
+        selected.classList.add("active_chat");
+    }
+
+    var timesRun = 0;
+    var interval = setInterval(function(){
+    timesRun += 1;
+    if(timesRun === 2){
+        clearInterval(interval);
+    }
+    updateScroll();
+    document.getElementById("messageText").focus();
+
+    }, 110);
+
+
 }
-</script>
+
+//메시지 많은 경우 스크롤바 제일 밑으로 설정해준다.
+function updateScroll(){
+    var messageBody = document.querySelector('#msg_history');
+    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+}
+
+function enterCheck(e){
+    //enter치면 메시지 전송
+
+    if (e.key === 'Enter' || e.keyCode === 13) {
+        sendMessage();
+    }
+}
+
+// 모달 가져오기
+var modal = document.getElementById("myModal");
+// 모달 버튼 가져오기
+var btn = document.getElementById("myBtn");
+// 닫는 span 가져오기
+var span = document.getElementsByClassName("close")[0];
+// 모달 버튼 누르면 모달 보이게 한다
+function modalBlock() {
+  $('#myModal').css("display", "block");
+}
+
+// <span> (x) 클릭 하면 모달을 닫는다.
+function spanNone() {
+    $('#myModal').css("display", "none");
+    $('#selected').empty();
+    $('#search_area').val("");
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+//대화 참여자 추가한거 없어버린다
+function userSpanClose(mbnumber){
+    $('#selectedUser'+mbnumber).remove();
+}
+//대화 시작 유효성검사
+function startConversation(){
+    var mbnumList = $('.addedUsers').val();
+    var messageContent = $('input[name="mcontent"]').val();
+    var cname = $('input[name=cname]').val();
+    if(mbnumList.length < 1){
+        alert("대화 참여자 최소 한명 추가하세요");
+        return false;
+    }
+    if(cname == ""){
+        alert("대화명 입력하세요");
+        return false;
+    }
+    if(messageContent == ""){
+        alert("메시지를 입력하세요");
+        return false;
+    }
+}
+    </script>
 </th:block>
 </html>

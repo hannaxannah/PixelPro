@@ -15,4 +15,13 @@ public class ConversationService {
         Conversation conversation = conversationRepository.findByCnum(cnum);
         return conversation;
     }
+
+    public void save(Conversation conversation) {
+        conversationRepository.save(conversation);
+    }
+
+    public int getMaxCnum() {
+        int cnum = conversationRepository.findMaxCnum();
+        return cnum;
+    }
 }

@@ -17,4 +17,5 @@ public class MessageBean {
     private String mtime;
     private String mblevel;
     private String loginName;
+    private String cname;
 }

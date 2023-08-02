@@ -12,4 +12,6 @@ public class ChatListBean {
     private String recentMsg;
     private int unreadCount;
     private String recentSenderName;
+    private int cnum;
+    
 }
