@@ -17,7 +17,6 @@ import javax.validation.constraints.NotNull;
 @ToString
 public class PayStubEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer snum;
     private String aitem;
     private String ptype;
