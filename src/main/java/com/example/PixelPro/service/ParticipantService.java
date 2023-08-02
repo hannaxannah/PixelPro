@@ -26,4 +26,8 @@ public class ParticipantService {
         List<Participant> participantList = participantRepository.findAllByCnum(cnum);
         return participantList;
     }
+
+    public void save(Participant participant) {
+        participantRepository.save(participant);
+    }
 }

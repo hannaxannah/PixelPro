@@ -2,10 +2,7 @@ package com.example.PixelPro.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -13,9 +10,15 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@SequenceGenerator(
+        name = "MSGSTATUSGENERATOR",
+        sequenceName = "MSGSTATUSSEQ", // 매핑할 데이터베이스 시퀀스 이름
+        initialValue = 13,
+        allocationSize = 1)
 public class Msgstatus {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "MSGSTATUSGENERATOR")
     private int msnum; //메시지 상태 번호
     private int mnum; //메시지 번호
     private int cpnum; //참여자 번호

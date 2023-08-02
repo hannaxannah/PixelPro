@@ -15,4 +15,8 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
     List<Message> findAllByCnumOrderByMtimeAsc(int cnum);
 
     List<Message> findAllByCnum(int cnum);
+
+    List<Message> findAllByCnumOrderByCnumAsc(int cnum);
+
+    List<Message> findAllByCnumOrderByMnumAsc(int cnum);
 }

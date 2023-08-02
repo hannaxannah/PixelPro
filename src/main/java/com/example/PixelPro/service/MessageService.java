@@ -18,7 +18,7 @@ public class MessageService {
     }
 
     public List<Message> getMessageList(int cnum) {
-        List<Message> messageList = messageRepository.findAllByCnumOrderByMtimeAsc(cnum);
+        List<Message> messageList = messageRepository.findAllByCnumOrderByMnumAsc(cnum);
         return messageList;
     }
 

@@ -1,3 +1,42 @@
+/*채팅용 CSS*/
+/* 모달 */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 650px !important; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .container{max-width:1170px; margin:auto;}
 img{ max-width:100%;}
 .inbox_people {
@@ -20,10 +59,10 @@ img{ max-width:100%;}
   text-align: right;
   width: 60%;
 }
-.headind_srch{ padding:10px 29px 10px 20px; overflow:hidden; border-bottom:1px solid #c4c4c4;}
+.headind_srch{ padding:10px 29px 10px 20px; overflow:hidden;}
 
 .recent_heading h4 {
-  color: #05728f;
+  color: #198754;
   font-size: 21px;
   margin: auto;
 }
@@ -55,6 +94,9 @@ img{ max-width:100%;}
   border-bottom: 1px solid #c4c4c4;
   margin: 0;
   padding: 18px 16px 10px;
+}
+.chat_list:first-child{
+border-top:1px solid #c4c4c4;
 }
 .inbox_chat { height: 550px; overflow-y: scroll;}
 
@@ -93,7 +135,7 @@ img{ max-width:100%;}
 }
 
  .sent_msg p {
-  background: #05728f none repeat scroll 0 0;
+  background: #198754 none repeat scroll 0 0;
   border-radius: 3px;
   font-size: 14px;
   margin: 0; color:#fff;
@@ -108,15 +150,16 @@ img{ max-width:100%;}
 .input_msg_write input {
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
   border: medium none;
-  color: #4c4c4c;
+  color: #464646;
   font-size: 15px;
-  min-height: 48px;
+  min-height: 80px;
   width: 100%;
+  padding:20px;
 }
 
 .type_msg {border-top: 1px solid #c4c4c4;position: relative;}
 .msg_send_btn {
-  background: #05728f none repeat scroll 0 0;
+  background: #198754 none repeat scroll 0 0;
   border: medium none;
   border-radius: 50%;
   color: #fff;
@@ -132,4 +175,30 @@ img{ max-width:100%;}
 .msg_history {
   height: 516px;
   overflow-y: auto;
+}
+
+  #autoMaker{
+            padding : 3px;
+            height: auto; background: white;
+            margin-top: 3px; cursor:pointer;
+        }
+        #autoMaker > div{
+            border : 1px solid #e6e6e6;
+            margin-top : 3px;
+            padding: 5px;
+        }
+        #autoMaker > div:hover{
+            background : #90EE90;
+        }
+
+.selectedUser {
+    margin: 8px 6px;
+    color: #198754;
+    font-weight: bold;
+    font-size:16px;
+}
+
+.closeSelectedUser{
+    color : red;
+    margin-left: 4px;
 }

@@ -5,6 +5,8 @@ import com.example.PixelPro.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserAndGroupService {
     @Autowired
@@ -23,6 +25,16 @@ public class UserAndGroupService {
     public Member getMemberByMbnum(int mbnum) {
         Member member = memberRepository.findByMbnum(mbnum);
         return member;
+    }
+
+    public List<Member> getAllMembers() {
+        List<Member> memberList = memberRepository.findAll();
+        return memberList;
+    }
+
+    public List<Member> getAllMembersExcludingLogin(int mbnum) {
+        List<Member> memberList = memberRepository.findAllByNotMbnum(mbnum);
+        return memberList;
     }
    /* public List<Map<String,Object>> fetchAll(String myId) {
         //List<Map<String,Object>> getAllUser=jdbcTemplate.queryForList("select * from users where id!=?",myId);
