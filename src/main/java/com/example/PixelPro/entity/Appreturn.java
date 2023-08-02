@@ -1,7 +1,6 @@
 package com.example.PixelPro.entity;
 
-import com.example.PixelPro.Bean.CommuteBean;
-import com.example.PixelPro.Bean.ReturnBean;
+import com.example.PixelPro.Bean.AppreturnBean;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 
@@ -14,15 +13,15 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "return")
 @ToString
-public class Return {
+public class Appreturn {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int ganum;
     private String rcontent;
 
     private static ModelMapper modelMapper = new ModelMapper();
-    public static Return createAttendance(ReturnBean returnBean) {
-        Return returnEntity = modelMapper.map(returnBean, Return.class);
+    public static Appreturn createAttendance(AppreturnBean returnBean) {
+        Appreturn returnEntity = modelMapper.map(returnBean, Appreturn.class);
         return returnEntity;
     }
 }
