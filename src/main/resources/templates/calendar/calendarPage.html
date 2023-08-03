@@ -4,6 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/mylayout}"
 >
+
 <th:block layout:fragment="css">
   <style>
     body {
@@ -147,7 +148,7 @@
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-3 col-form-label">위치</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control">
+                  <input type="text" class="form-control" id="address_kakao1" name="address" readonly />
                 </div>
               </div>
               <div class="row mb-3">
@@ -201,7 +202,7 @@
                 </div>
               </div>
               <div class="row mb-3">
-                <label for="inputText" class="col-sm-3 col-form-label">약속 </label>
+                <label for="inputText" class="col-sm-3 col-form-label">약속 참가자</label>
                 <div class="col-sm-9">
                   <input type="text" class="form-control">
                 </div>
@@ -209,7 +210,7 @@
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-3 col-form-label">위치</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control">
+                  <input type="text" class="form-control" id="address_kakao2" name="address" readonly />
                 </div>
               </div>
               <div class="row mb-3">
