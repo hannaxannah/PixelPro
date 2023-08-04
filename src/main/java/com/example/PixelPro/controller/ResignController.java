@@ -74,9 +74,9 @@ public class ResignController {
         for (Member m : member) {
             csvData.add(
                     new String[]{String.valueOf(m.getMbnum()), m.getMbname(), m.getDept(), m.getMblevel().toString(),
-                            m.getMbStartDate().toString(),
+                            m.getMbstartdate().toString(),
                             m.getMstate().toString(),
-                            m.getMbEndDate().toString()}
+                            m.getMbenddate().toString()}
             );
         }
 
