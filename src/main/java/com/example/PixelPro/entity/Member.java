@@ -33,9 +33,9 @@ public class Member {
 
     private String mbphone; // 전호번호
 
-    private String mbStartDate; // 입사일
+    private String mbstartdate; // 입사일
 
-    private String mbEndDate; // 퇴사일
+    private String mbenddate; // 퇴사일
 
     private String dept; // 부서
 
