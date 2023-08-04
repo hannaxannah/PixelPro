@@ -62,12 +62,19 @@ public class MemberController {
     @PostMapping("/login")
     public String login(@RequestParam("id") String id, @RequestParam("pw") String pw, HttpSession session){
         Member member = memberService.findByEmail(id);
+        String destination = (String)session.getAttribute("destination");
+
         if(member == null){
             System.out.println("로그인실패");
             return "redirect:/login";
         }
         else{
             session.setAttribute("loginInfo",member);
+
+            if(destination != null){
+                return destination;
+            }
+
             return "redirect:/";
         }
     }
