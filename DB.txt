@@ -43,8 +43,8 @@ CREATE TABLE member (
 	mstate varchar2(100) DEFAULT '재직' NOT NULL -- 근무상태
 );
 
-insert into member
-values(1, 'admin123@pixelpro.com', '김사장', '사장', 'admin', '1234', null, '010-7777-7777', '2000-08-01', null, '관리직', '0', '재직');
+insert into member(mbnum, email, mbname, mblevel, mbaccess, password, mbphone, mbStartDate, dept)
+values(1, 'admin123@pixelpro.com', '김사장', '사장', 'admin', '1234', '010-7777-7777', '2000-08-01', '관리직');
 
 --근태 결재
 drop table atapproval cascade constraints;
