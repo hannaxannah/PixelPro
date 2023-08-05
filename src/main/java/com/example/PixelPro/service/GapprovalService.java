@@ -13,4 +13,8 @@ public class GapprovalService {
     public void save(Gapproval gapproval) {
         gapprovalRepository.save(gapproval);
     }
+
+    public Gapproval findByGanum(Integer ganum) {
+        return gapprovalRepository.findByGanum(ganum);
+    }
 }

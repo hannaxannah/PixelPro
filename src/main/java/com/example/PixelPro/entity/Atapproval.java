@@ -19,15 +19,19 @@ public class Atapproval {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer atnum;
+
+    @Column(length = 3000)
     private String atcontent;
     private Integer atwmbnum;
     private Integer atsign1;
 
-    @ColumnDefault("0")
+    @ColumnDefault("-1")
     private Integer atsign2;
     private Integer athmbnum;
     private String atstatus;
     private String atcategory;
+
+    @ColumnDefault("sysdate")
     private Date atdate;
 
     private static ModelMapper modelMapper = new ModelMapper();

@@ -19,6 +19,8 @@ public class GapprovalBean { //일반 결재
     @NotBlank(message = "내용은 필수 입력 사항입니다.")
     private String gcontent;
 
+    private String signcontent;
+
     private Integer gwmbnum; //서류 작성자
 
     @NotNull(message = "1차 승인자는 필수입니다.")
@@ -30,9 +32,6 @@ public class GapprovalBean { //일반 결재
     private String gfile;
 
     private String gstatus;
-
-    @NotBlank(message = "유형을 선택해 주세요.")
-    private String gcategory;
 
     private String gdate;
 }
