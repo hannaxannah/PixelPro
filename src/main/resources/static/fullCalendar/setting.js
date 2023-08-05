@@ -1,3 +1,24 @@
+//카카오 지도 api 호출
+  window.onload = function(){
+      document.getElementById("address_kakao1").addEventListener("click", function(){ //개인 메모의 위치칸을 클릭하면
+          //카카오 지도 호출
+          new daum.Postcode({
+              oncomplete: function(data) { //선택시 입력값 세팅
+                  document.getElementById("address_kakao1").value = data.address; // 주소 넣기
+              }
+          }).open();
+      });
+      document.getElementById("address_kakao2").addEventListener("click", function(){ //약속의 위치칸을 클릭하면
+            //카카오 지도 호출
+            new daum.Postcode({
+                oncomplete: function(data) { //선택시 입력값 세팅
+                    document.getElementById("address_kakao2").value = data.address; // 주소 넣기
+                }
+            }).open();
+        });
+
+  }
+
 // 캘린더 초기설정
 
  document.addEventListener('DOMContentLoaded', function() {
@@ -5,31 +26,46 @@
     var miniCalendarEl = document.getElementById('MiniCalendar'); //미니 캘린더
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-      locale: 'ko', //언어는 한국어
-      initialDate: new Date(), //오늘 날짜 기준으로 초기설정
-      initialView: 'dayGridMonth', //처음 보기 기준은 달
-      nowIndicator: true,
-      headerToolbar: {
-        left: 'prevYear,prev,next,nextYear today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-      },
-      buttonText:{
-        today: '오늘',
-        month:  '월',
-        week:   '주',
-        day:    '일',
-        list:   '목록'
-      },
-      navLinks: true, // can click day/week names to navigate views
-      editable: true, //
-      selectable: true, //클릭이랑 드래그 설정
-      selectMirror: true, //드래그해서 옮길때 영역 표시
-      dayMaxEvents: true, // allow "more" link when too many events
+          locale: 'ko', //언어는 한국어
+          initialDate: new Date(), //오늘 날짜 기준으로 초기설정
+          initialView: 'dayGridMonth', //처음 보기 기준은 달
+          nowIndicator: true,
+          timeFormat: 'HH:mm',
+          slotLabelFormat: 'HH:mm',
+          dayPopoverFormat: 'dddd DD/MM',
+           longPressDelay : 0,
+           eventLongPressDelay : 0,
+           selectLongPressDelay : 0,
+          headerToolbar: {
+            left: 'prevYear,prev,next,nextYear today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+          },
+          buttonText:{
+            today: '오늘',
+            month:  '월',
+            week:   '주',
+            day:    '일',
+            list:   '목록'
+          },
+          navLinks: true, // can click day/week names to navigate views
+          editable: true, //
+          selectable: true, //클릭이랑 드래그 설정
+          selectMirror: true, //드래그해서 옮길때 영역 표시
+          dayMaxEvents: true, // allow "more" link when too many events
       events: [
         {
-          title: '하루종일',
-          start: '2023-08-01',
+           _id: 1,
+           title: 'Michigan University',
+           description: 'Lorem ipsum dolor sit incid idunt ut Lorem ipsum sit.',
+           start: '2023-08-01',
+           type: 'Appointment',
+           calendar: 'Sales',
+           className: 'colorAppointment',
+           username: 'Caio Vitorelli',
+           backgroundColor: "#f4516c",
+           textColor: "#ffffff",
+           allDay: true
         },
         {
           title: '범위 표시',
@@ -64,8 +100,19 @@
           url: 'http://naver.com/',
           start: '2023-08-28'
         }
-      ]
+      ],
+               height: 650,
+               editable: true,
+               dayMaxEventRows:true,
+
+               eventDidMount: function(info) {
+                   tippy(info.el, {
+                       content: info.event.title+info.event.start + info.event.end,
+                   });
+               }
     });
+
+
 
     var mCalendar = new FullCalendar.Calendar(miniCalendarEl, {
           locale: 'ko', //언어는 한국어
@@ -131,23 +178,3 @@
     mCalendar.render(); //미니 캘린더 구현
   });
 
- //카카오 지도 api 호출
-  window.onload = function(){
-      document.getElementById("address_kakao1").addEventListener("click", function(){ //개인 메모의 위치칸을 클릭하면
-          //카카오 지도 호출
-          new daum.Postcode({
-              oncomplete: function(data) { //선택시 입력값 세팅
-                  document.getElementById("address_kakao1").value = data.address; // 주소 넣기
-              }
-          }).open();
-      });
-      document.getElementById("address_kakao2").addEventListener("click", function(){ //약속의 위치칸을 클릭하면
-            //카카오 지도 호출
-            new daum.Postcode({
-                oncomplete: function(data) { //선택시 입력값 세팅
-                    document.getElementById("address_kakao2").value = data.address; // 주소 넣기
-                }
-            }).open();
-        });
-
-  }
