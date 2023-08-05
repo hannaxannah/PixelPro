@@ -32,4 +32,12 @@ public class MemberService {
         List<Member> member = memberRepository.findByOrderByMbnumDesc();
         return member;
     }
+    public List<Member> findByOrderByDeptAscMblevelAsc() {
+        List<Member> member = memberRepository.findByOrderByDeptAscMblevelAsc();
+        return member;
+    }
+
+    public Member findByMbnum(Integer mbnum){
+        return memberRepository.findByMbnum(mbnum);
+    }
 }

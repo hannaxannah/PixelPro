@@ -20,16 +20,20 @@ public class Gapproval {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer ganum;
     private String gsubject;
+
+    @Column(length = 3000)
     private String gcontent;
+
+    @Column(length = 3000)
+    private String signcontent;
     private Integer gwmbnum;
     private Integer gsign1;
 
-    @ColumnDefault("0")
+    @ColumnDefault("-1")
     private Integer gsign2;
     private Integer ghmbnum;
     private String gfile;
     private String gstatus;
-    private String gcategory;
 
     @ColumnDefault("sysdate")
     private Date gdate;

@@ -20,6 +20,8 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     /*주영 - select 작업*/
     List<Member> findByOrderByMbnumDesc();
 
+    List<Member> findByOrderByDeptAscMblevelAsc();
+
     @Query(value = "select * from member where mbnum != :mbnum", nativeQuery = true)
     List<Member> findAllByNotMbnum(@RequestParam("mbnum") int mbnum);
 }

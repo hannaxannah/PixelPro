@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}">
+<head><title>PixelPro</title></head>
+
+<body class="content" layout:fragment="content">
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>일반 결재</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/approval/gapprovalList">결재</a></li>
+        <li class="breadcrumb-item active">일반 결재</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <table style="border-collapse: collapse; width: 30%; border-width: 1px; margin-right: 0px; margin-left: auto; height: 88.7968px;" border="1">
+    <colgroup>
+      <col style="width: 33.2762%;">
+      <col style="width: 33.2762%;">
+      <col style="width: 33.2762%;" th:if="${member2 != null}">
+    </colgroup>
+  <tbody>
+  <tr style="height: 22.3984px;">
+    <td style="border-width: 1px; height: 22.3984px;" th:text="${member.mbname}"></td>
+    <td style="border-width: 1px; height: 22.3984px;" th:text="${member1.mbname}"></td>
+    <td style="border-width: 1px; height: 22.3984px;" th:if="${member2 != null}" th:text="${member2.mbname}"></td>
+  </tr>
+  <tr style="height: 66.3984px;" th:utext="${gapproval.signcontent}">
+  </tr>
+  </tbody>
+  </table>
+  <br>
+  <div th:utext="${gapproval.gcontent}"></div>
+</main><!-- End #main -->
+</body>
