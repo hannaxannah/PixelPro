@@ -92,14 +92,7 @@
                         <i class="bx bx-file"></i><span>내게쓴메일함</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a th:if="${session.MailBar == 'trashCan'}" class="nav-link" href="/mail/trashCan">
-                        <i class="bx bx-trash"></i><span>휴지통</span>
-                    </a>
-                    <a th:if="${session.MailBar != 'trashCan'}" class="nav-link collapsed" href="/mail/trashCan">
-                        <i class="bx bx-trash"></i><span>휴지통</span>
-                    </a>
-                </li>
+
             </ul>
 
         </div>
