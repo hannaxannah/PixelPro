@@ -32,7 +32,7 @@ CREATE TABLE member (
 	email varchar2(100) NOT NULL,
 	mbname varchar2(100),
 	mblevel VARCHAR(100), -- 직급
-	mbaccess varchar2(100), -- 권한
+	mbaccess varchar2(100), -- 권한 0사장 ~ 8사원
 	password varchar2(100),
 	mbsign varchar2(100), -- 사인
 	mbphone VARCHAR(100),
@@ -44,7 +44,7 @@ CREATE TABLE member (
 );
 
 insert into member(mbnum, email, mbname, mblevel, mbaccess, password, mbphone, mbStartDate, dept)
-values(1, 'admin123@pixelpro.com', '김사장', '사장', 'admin', '1234', '010-7777-7777', '2000-08-01', '관리직');
+values(1, 'admin123@pixelpro.com', '김사장', '사장', 0, '1234', '010-7777-7777', '2000-08-01', '관리직');
 
 --근태 결재
 drop table atapproval cascade constraints;

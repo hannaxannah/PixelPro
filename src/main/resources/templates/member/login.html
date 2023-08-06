@@ -31,9 +31,11 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <th:block layout:fragment="script"></th:block>
+
     <th:block layout:fragment="css"></th:block>
+    <th:block layout:fragment="script"></th:block>
 </head>
+
 <body>
 <main>
     <div class="container">
@@ -82,7 +84,7 @@
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <button class="btn btn-primary w-100" type="submit">Login</button>
+                                        <button class="btn btn-primary w-100" type="submit" id="loginButton">Login</button>
                                     </div>
 
                                 </form>
@@ -96,6 +98,7 @@
         </section>
 
     </div>
+
 </main><!-- End #main -->
 </body>
 <!-- Vendor JS Files -->
@@ -110,4 +113,7 @@
 
 <!-- Template Main JS File -->
 <script th:src="@{/NiceAdmin/assets/js/main.js}"></script>
+
+
+
 </html>
