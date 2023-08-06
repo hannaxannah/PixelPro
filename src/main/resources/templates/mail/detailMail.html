@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}">
+
+
+<head><title>PixelPro</title></head>
+
+<body class="content toggle-sidebar" layout:fragment="content">
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>메일 상세보기</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/mail/inbox">메일</a></li>
+        <li class="breadcrumb-item active">메일 상세보기</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <div class="row">
+
+    <div th:replace="mail/sideMenu::mail"></div>
+
+    <!-- 오른쪽 컬럼 -->
+    <div class="col-lg-10">
+      <div class="card">
+        <div class="card-body">
+
+          <button type="button" class="btn btn-outline-light" onclick="" style="color:#000000; margin-top: 20px;">
+            <i class="bi bi-chevron-left"></i> 이전으로
+          </button>
+
+          <hr>
+          <div>
+            <button type="button" class="btn btn-outline-light" onclick="" style="color:#000000">답장</button>
+            <button type="button" class="btn btn-outline-light" th:onclick="|location.href='@{/mail/deleteOne(inum=${inbox.inum})}'|" style="color:#000000">삭제</button>
+          </div>
+          <hr>
+
+          <div style="margin-left: 10px;">
+
+            <h5>
+              <i th:if="${inbox.impo == 0}" class="bx bx-star"></i>
+              <i th:if="${inbox.impo != 0}" class="bx bxs-star"></i>
+              <span class="card-title" th:text="${inbox.ititle}"></span>
+            </h5>
+
+
+            <div>
+              <b>보낸사람</b>
+              <span th:text="${member.mbname + ' ( ' + member.mblevel + ' ) ' + ' <' + member.email + '>'}"></span>
+            </div>
+
+            <div>
+              <b>받는사람</b>
+              <span th:text="${session.loginInfo.mbname + ' ( ' + session.loginInfo.mblevel + ' ) ' + ' <' + session.loginInfo.email + '>'}"></span>
+            </div>
+
+            <div style="margin: 1% 0 1% 0; font-size: 13px; color: gray;">
+              <span th:text="${inbox.senddate}"></span>
+            </div>
+          </div>
+
+          <hr>
+
+          <div th:if="${inbox.attach != null}">
+            <strong style="margin-left: 10px;">첨부파일 : </strong>
+            <a class="card-text" style="margin-left: 10px;"
+               th:href="@{'/download/mail/' + ${inbox.attach}}"
+               th:text="${inbox.attach}" ></a>
+            <hr>
+          </div>
+
+
+
+          <div th:utext="${inbox.icontent}" style="margin-left: 10px;"></div>
+
+        </div>
+      </div>
+    </div><!-- END 오른쪽 컬럼 -->
+  </div>
+
+
+</main><!-- End #main -->
+</body>

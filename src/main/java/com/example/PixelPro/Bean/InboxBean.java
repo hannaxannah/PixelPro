@@ -1,6 +1,7 @@
 package com.example.PixelPro.Bean;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
@@ -18,15 +19,28 @@ public class InboxBean {
     private String icontent;
     private String attach;
     private String trash;
-    private Date tdate;
-    private Date senddate;
+    private String tdate;
+    private String senddate;
     private String status;
-    private Date readdate;
+    private String readdate;
     private int impo;
     private int iref;
     private int istep;
 
 
+    private MultipartFile upload;
+    public MultipartFile getUpload() {
+        return upload;
+    }
+
+    public void setUpload(MultipartFile upload) {
+        this.upload = upload;
+        String fileName = upload.getOriginalFilename();
+
+        System.out.println("fileName : " + fileName);
+
+        this.attach = fileName;
+    }
 
 
 

@@ -5,8 +5,8 @@
 
 <mapper namespace="com.example.PixelPro.mapper.MailMapper">
 
-    <select id="" resultType="inboxBean">
-        SELECT * FROM inbox
+    <select id="updateInbox">
+        update inbox set readdate = sysdate, status='read' where inum = #{inum}
     </select>
 
 </mapper>

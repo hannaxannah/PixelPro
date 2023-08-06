@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}">
+
+
+<head><title>PixelPro</title></head>
+<th:block layout:fragment="css">
+  <style>
+        .mailcenter{
+            width: 169px;
+            top: 50%;
+            position: absolute;
+            left: 50%;
+            margin: -25px 0 0 -170px;
+            text-align: center;
+        }
+        .btncenter {
+            width: 216px;
+            top: 50%;
+            position: absolute;
+            left: 50%;
+            margin: 0px 0 0 -196px;
+            text-align: center;
+        }
+    </style>
+</th:block>
+
+<body class="content toggle-sidebar" layout:fragment="content">
+<main id="main" class="main">
+
+  <div class="pagetitle">
+      <h1>메일 쓰기</h1>
+      <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/mail/inbox">메일</a></li>
+            <li class="breadcrumb-item active">메일 쓰기</li>
+          </ol>
+        </nav>
+      </div><!-- End Page Title -->
+
+      <div class="row">
+
+        <div th:replace="mail/sideMenu::mail"></div>
+
+        <!-- 오른쪽 컬럼 -->
+        <div class="col-lg-10">
+          <div class="card">
+            <div class="card-body" style="height: 530px; text-align: center;">
+              <div class="mailcenter">
+                메일이 전송되었습니다.
+                <input type="hidden" th:value="${inum}" id="inum">
+              </div>
+              <div class="btncenter">
+                <button type="button" class="btn btn-success" onclick="location.href='/mail/sentMail'">보낸메일함</button>
+                <button type="button" class="btn btn-success" onclick="location.href='/mail/inbox'">받은메일함</button>
+              </div>
+            </div>
+          </div>
+        </div><!-- END 오른쪽 컬럼 -->
+      </div>
+
+
+    </main><!-- End #main -->
+    </body>
+
+    <th:block layout:fragment="script">
+      <script th:inline = "javascript">
+
+        $(document).ready(function(){
+          var inum = $('#inum').val();
+            $.ajax({
+                type : "POST",
+                url : "/mail/upload",
+                data : ({'inum' : inum}),
+                dataType : "json",
+                success : function (data) {
+                  console.log(data);
+                }
+            });
+        });
+
+      </script>
+</th:block>
