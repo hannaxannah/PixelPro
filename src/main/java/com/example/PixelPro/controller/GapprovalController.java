@@ -66,6 +66,7 @@ public class GapprovalController {
         List<Member> memberList = memberService.findByOrderByDeptAscMblevelAsc();
         model.addAttribute("gapprovalBean", gapprovalBean);
         model.addAttribute("memberList", memberList);
+        model.addAttribute("loginInfo",member);
         return "/approval/gapprovalInsert";
     }
 
@@ -78,6 +79,7 @@ public class GapprovalController {
             return "redirect:/login";
         } else {
             System.out.println("gcontent\n" + gapprovalBean.getGcontent());
+            model.addAttribute("loginInfo",member);
 
             if (result.hasErrors()) {
                 System.out.println("에러 발생");
@@ -88,7 +90,7 @@ public class GapprovalController {
                     Member member1 = memberService.findByMbnum(gapprovalBean.getGsign1());
                     Member member2 = memberService.findByMbnum(gapprovalBean.getGsign2());
 
-                    if (Integer.parseInt(member1.getMblevel()) < Integer.parseInt(member2.getMblevel())) {
+                    if (Integer.parseInt(member1.getMbaccess()) < Integer.parseInt(member2.getMbaccess())) {
                         model.addAttribute("gapprovalBean", gapprovalBean);
                         model.addAttribute("memberList", memberList);
                         model.addAttribute("comparelevel", "2차 승인자가 1차 승인자보다 직급이 높아야 합니다.");
