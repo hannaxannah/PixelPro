@@ -34,8 +34,10 @@ public class Atapproval {
     @ColumnDefault("sysdate")
     private Date atdate;
 
+    private Date reqdate;
+
     private static ModelMapper modelMapper = new ModelMapper();
-    public static Atapproval createGapproval(AtapprovalBean atapprovalBean) {
+    public static Atapproval createAtapproval(AtapprovalBean atapprovalBean) {
         Atapproval atapproval = modelMapper.map(atapprovalBean, Atapproval.class);
         return atapproval;
     }

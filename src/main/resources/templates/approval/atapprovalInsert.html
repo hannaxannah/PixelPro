@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}">
+<head><title>PixelPro</title></head>
+
+<th:block layout:fragment="css">
+    <style>
+        .fieldError{
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+</th:block>
+
+<body class="content" layout:fragment="content">
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>근태 신청</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/approval/atapprovalList">근태 결재</a></li>
+                <li class="breadcrumb-item active">근태 신청</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <div class="card">
+        <div class="card-body">
+            <form action="/approval/atapprovalInsert" method="post" class="row g-3" th:object="${atapprovalBean}">
+                <div class="col-md-12"></div>
+                <div align="right">
+                    <input type="submit" class="btn btn-success" value="근태 신청">
+                </div>
+                <br>
+
+                <div class="col-md-3">
+                    <select class="form-select" th:field="*{atsign1}">
+                        <option value="">1차 승인자</option>
+                        <option th:each="member : ${memberList}" th:if="${loginInfo.mbnum != member.mbnum}" th:value="${member.mbnum}" th:text="|${member.dept} ${member.mblevel} ${member.mbname}|"></option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <select class="form-select" th:field="*{atsign2}">
+                        <option value="">2차 승인자</option>
+                        <option th:each="member : ${memberList}" th:if="${loginInfo.mbnum != member.mbnum}" th:value="${member.mbnum}" th:text="|${member.dept} ${member.mblevel} ${member.mbname}|"></option>
+                    </select>
+                </div>
+
+<!--                <p th:if="${comparelevel != null}" th:text="${comparelevel}" class="fieldError"></p>-->
+
+                <div class="col-md-6">
+                    <select class="form-select" th:field="*{atcategory}">
+                        <option value="">유형</option>
+                        <option value="연차">연차</option>
+                        <option value="월차">월차</option>
+                        <option value="반차">반차</option>
+                        <option value="휴가">휴가</option>
+                        <option value="병가">병가</option>
+                    </select>
+                </div>
+                <div class="col-md-6 fieldError" th:if="${#fields.hasErrors('atsign1')}" th:errors="*{atsign1}"></div>
+                <div class="col-md-6 fieldError" th:if="${#fields.hasErrors('atcategory')}" th:errors="*{atcategory}"></div>
+
+                <div class="col-md-6">
+                    <select class="form-select" th:field="*{atcontent}">
+                        <option value="">사유</option>
+                        <option value="경조사">경조사</option>
+                        <option value="가족행사">가족행사</option>
+                        <option value="병원">병원</option>
+                        <option value="여행">여행</option>
+                        <option value="기타">기타</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" name="atcontent2" placeholder="기타 사유">
+                </div>
+                <p th:if="${#fields.hasErrors('atcontent')}" th:errors="*{atcontent}" class="fieldError"></p>
+
+                <div class="col-md-12">
+                    <input type="date" class="form-control" th:field="*{reqdate}">
+                </div>
+                <p th:if="${#fields.hasErrors('reqdate')}" th:errors="*{reqdate}" class="fieldError"></p>
+            </form>
+        </div>
+    </div>
+</main><!-- End #main -->
+</body>

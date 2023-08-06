@@ -101,7 +101,7 @@ public class GapprovalController {
                 String signcontent = "<td style=\"border-width: 1px; height: 66.3984px;\"><img width='100%' src='/sign/" + member.getMbsign() + "'></td>";
                 System.out.println(signcontent);
                 gapprovalBean.setGwmbnum(member.getMbnum());
-                gapprovalBean.setGstatus("승인 요청");
+                gapprovalBean.setGstatus("1차 승인 요청");
                 gapprovalBean.setSigncontent(signcontent);
                 gapprovalBean.setGhmbnum(gapprovalBean.getGsign1());
 

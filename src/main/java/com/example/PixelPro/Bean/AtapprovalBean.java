@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 public class AtapprovalBean { //근태 결재
     private int atnum;
 
-    @NotBlank(message = "내용은 필수 입력 사항입니다.")
+    @NotBlank(message = "사유는 필수 입력 사항입니다.")
     private String atcontent;
 
     private Integer atwmbnum; //서류 작성자
@@ -31,4 +31,7 @@ public class AtapprovalBean { //근태 결재
     private String atcategory; //연차,반차,월차,휴가,병가
 
     private String atdate;
+
+    @NotBlank(message = "신청 날짜를 선택해 주세요.")
+    private String reqdate;
 }
