@@ -5,6 +5,8 @@ import com.example.PixelPro.repository.GapprovalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class GapprovalService {
@@ -16,5 +18,9 @@ public class GapprovalService {
 
     public Gapproval findByGanum(Integer ganum) {
         return gapprovalRepository.findByGanum(ganum);
+    }
+
+    public List<Gapproval> findByGwmbnumOrderByGanumDesc(int mbnum) {
+        return gapprovalRepository.findByGwmbnumOrderByGanumDesc(mbnum);
     }
 }
