@@ -59,7 +59,7 @@ public class MemberController {
         return "member/login";
     }
 
-    @PostMapping("/login")
+  /*  @PostMapping("/login")
     public String login(@RequestParam("id") String id, @RequestParam("pw") String pw, HttpSession session){
         Member member = memberService.findByEmail(id);
         String destination = (String)session.getAttribute("destination");
@@ -77,7 +77,7 @@ public class MemberController {
 
             return "redirect:/";
         }
-    }
+    }*/
 
     @GetMapping("/logout")
     public String logout(HttpSession session){

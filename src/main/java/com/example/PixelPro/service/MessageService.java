@@ -25,4 +25,13 @@ public class MessageService {
     public void save(Message message) {
         messageRepository.save(message);
     }
+
+    public void deleteMessage(int mnum) {
+        messageRepository.deleteMessage(mnum);
+    }
+
+    public Message getMessageByMnum(int mnum) {
+        Message message = messageRepository.findByMnum(mnum);
+        return message;
+    }
 }

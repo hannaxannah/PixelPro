@@ -36,6 +36,11 @@ public class UserAndGroupService {
         List<Member> memberList = memberRepository.findAllByNotMbnum(mbnum);
         return memberList;
     }
+
+    public List<Member> getAllMembersExcludingConvUsers(List<Integer> mbnums) {
+        List<Member> memberList = memberRepository.findAllByNotMbnums(mbnums);
+        return memberList;
+    }
    /* public List<Map<String,Object>> fetchAll(String myId) {
         //List<Map<String,Object>> getAllUser=jdbcTemplate.queryForList("select * from users where id!=?",myId);
 
