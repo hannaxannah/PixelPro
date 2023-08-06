@@ -7,30 +7,9 @@
 
 <th:block layout:fragment="script">
 <script th:inline = "javascript">
-$(document).ready(function(){
-    //alert(1);
-    $('#myform').submit(function(){
-        alert(2);
-        gcontent = $('#gcontent').val();
-        len = gcontent.length;
-        alert(gcontent);
-        alert(len);
+    $(document).ready(function(){
+        //alert(1);
     });
-
-    $('#general').click(function(){
-        alert(3);
-        //$('#gcontent').val('gkgk');
-        //$('#gcontent').attr('value','gkgk');
-        //$('#gcontent').html('gkgk');
-        alert(4);
-        //$('#gcontent').append('gkgk');
-        //$('#gcontent').append('gkgkgk');
-        //$('#gcontent2').append('gkgkgk');
-        //document.getElementById('gcontent').textContent += '<div>TextContent<div>';
-        //gcontent = $('#gcontent').val();
-        //alert(gcontent);
-    });
-});
 </script>
 </th:block>
 
@@ -56,58 +35,57 @@ $(document).ready(function(){
             </ol>
         </nav>
     </div><!-- End Page Title -->
-    <!-- style="display: none;" aria-hidden="true" -->
+
     <div class="card">
         <div class="card-body">
-    <form action="/approval/gapprovalInsert" method="post" class="row g-3" th:object="${gapprovalBean}">
-        <br><br>
-        <div align="right">
-            <input type="submit" class="btn btn-success" value="서류 결재">
-        </div>
-        <br>
-<!--        <button type="button" id="general" class="btn btn-success">일반 결재</button>-->
+            <form action="/approval/gapprovalInsert" method="post" class="row g-3" th:object="${gapprovalBean}">
+                <div class="col-md-12"></div>
+                <div align="right">
+                    <input type="submit" class="btn btn-success" value="서류 결재">
+                </div>
+                <br>
 
-        <div class="col-md-2">
-            <select class="form-select" th:field="*{gsign1}">
-                <option value="">1차 승인자</option>
-                <option th:each="member : ${memberList}" th:value="${member.mbnum}" th:text="|${member.dept} ${member.mbname}|"></option>
-            </select>
-        </div>
+                <div class="col-md-2">
+                    <select class="form-select" th:field="*{gsign1}">
+                        <option value="">1차 승인자</option>
+                        <option th:each="member : ${memberList}" th:value="${member.mbnum}" th:text="|${member.dept} ${member.mbname}|"></option>
+                    </select>
+                </div>
 
-        <div class="col-md-2">
-            <select class="form-select" th:field="*{gsign2}">
-                <option value="">2차 승인자</option>
-                <option th:each="member : ${memberList}" th:value="${member.mbnum}" th:text="|${member.dept} ${member.mbname}|"></option>
-            </select>
-        </div>
-        <div class="col-md-2"></div>
-        <p th:if="${#fields.hasErrors('gsign1')}" th:errors="*{gsign1}" class="fieldError"></p>
-        <p th:if="${comparelevel != null}" th:text="${comparelevel}" class="fieldError"></p>
-        <p th:if="${comparesign != null}" th:text="${comparesign}" class="fieldError"></p>
-        <div class="col-md-8">
-            <input type="text" placeholder="제목" class="form-control" th:field="*{gsubject}">
-        </div>
+                <div class="col-md-2">
+                    <select class="form-select" th:field="*{gsign2}">
+                        <option value="">2차 승인자</option>
+                        <option th:each="member : ${memberList}" th:value="${member.mbnum}" th:text="|${member.dept} ${member.mbname}|"></option>
+                    </select>
+                </div>
+                <div class="col-md-2"></div>
+                <p th:if="${#fields.hasErrors('gsign1')}" th:errors="*{gsign1}" class="fieldError"></p>
+                <p th:if="${comparelevel != null}" th:text="${comparelevel}" class="fieldError"></p>
+                <p th:if="${comparesign != null}" th:text="${comparesign}" class="fieldError"></p>
+                <div class="col-md-8">
+                    <input type="text" placeholder="제목" class="form-control" th:field="*{gsubject}">
+                </div>
 
-        <div class="col-md-4">
-            <select class="form-select" th:field="*{gcategory}">
-                <option value="">유형</option>
-                <option value="일반">일반</option>
-                <option value="동아리">동아리</option>
-                <option value="기타">기타</option>
-            </select>
-        </div>
-        <div class="col-md-8 fieldError" th:if="${#fields.hasErrors('gsubject')}" th:errors="*{gsubject}"></div>
-        <div class="col-md-4 fieldError" th:if="${#fields.hasErrors('gcategory')}" th:errors="*{gcategory}"></div>
+                <div class="col-md-4">
+                    <select class="form-select" th:field="*{gcategory}">
+                        <option value="">유형</option>
+                        <option value="일반">일반</option>
+                        <option value="동아리">동아리</option>
+                        <option value="기타">기타</option>
+                    </select>
+                </div>
+                <div class="col-md-8 fieldError" th:if="${#fields.hasErrors('gsubject')}" th:errors="*{gsubject}"></div>
+                <div class="col-md-4 fieldError" th:if="${#fields.hasErrors('gcategory')}" th:errors="*{gcategory}"></div>
 
-        <div class="col-md-12">
-            <textarea class="tinymce-editor" th:field="*{gcontent}"></textarea>
-        </div>
-        <p th:if="${#fields.hasErrors('gcontent')}" th:errors="*{gcontent}" class="fieldError"></p>
+                <div class="col-md-12">
+                    <textarea class="tinymce-editor" th:field="*{gcontent}"></textarea>
+                </div>
+                <p th:if="${#fields.hasErrors('gcontent')}" th:errors="*{gcontent}" class="fieldError"></p>
 
-<!--        <div class="col-md-12">-->
-<!--            <input type="file" name="upload" class="form-control">-->
-<!--        </div>-->
-    </form>
+        <!--        <div class="col-md-12">-->
+        <!--            <input type="file" name="upload" class="form-control">-->
+        <!--        </div>-->
+            </form>
         </div>
     </div>
 </main><!-- End #main -->

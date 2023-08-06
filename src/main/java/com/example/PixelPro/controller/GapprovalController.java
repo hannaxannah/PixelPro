@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 
@@ -94,13 +96,17 @@ public class GapprovalController {
                     }
                 }
                 System.out.println(member.getMbsign());
-                String signcontent = "<td style=\"border-width: 1px; height: 66.3984px;\"><img src='이미지 경로 설정 추가해야 함" + member.getMbsign() + "'></td>";
+                String signcontent = "<td style=\"border-width: 1px; height: 66.3984px;\"><img width='100%' src='/sign/" + member.getMbsign() + "'></td>";
                 System.out.println(signcontent);
                 gapprovalBean.setGwmbnum(member.getMbnum());
                 gapprovalBean.setGstatus("승인 요청");
                 gapprovalBean.setSigncontent(signcontent);
                 gapprovalBean.setGhmbnum(gapprovalBean.getGsign1());
-                //gapprovalBean.setGdate("sysdate");
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar cal = Calendar.getInstance();
+                System.out.println("sdf.format(cal.getTime()) : " + sdf.format(cal.getTime()));
+                gapprovalBean.setGdate(sdf.format(cal.getTime()));
                 Gapproval gapproval = Gapproval.createGapproval(gapprovalBean);
                 gapprovalService.save(gapproval);
                 return "redirect:/approval/gapprovalList";
