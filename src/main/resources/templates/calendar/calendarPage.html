@@ -7,6 +7,12 @@
 
 <th:block layout:fragment="css">
   <style>
+  label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
     body {
       margin: 40px 10px;
       padding: 0;
@@ -54,13 +60,18 @@
   font-family: Roboto;
   font-size: 13px;
 }
+.popover-header{
+  background-color: #198754 !important;
+}
 .popoverTitleCalendar{
   width: 100%;
   height: 100%;
+  font-weight: 700;
   padding: 15px 15px;
   font-family: Roboto;
-  font-size: 13px;
+  font-size: 16px;
   border-radius: 5px 5px 0 0;
+  color: #FFFFFF
 }
 .popoverInfoCalendar i{
   font-size: 14px;
@@ -103,6 +114,28 @@
 #contextMenu .dropdown-menu{
   border: none;
 }
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px; !important
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
 .opacityWeekend{
   background-color: #f4f4fb !important;
 }
@@ -144,6 +177,11 @@
   font-weight: 500;
   color: #505363;
   line-height: 32px;
+}
+.fc .fc-toolbar {
+    align-items: center;
+    display: block;
+    justify-content: space-between;
 }
 .fc-toolbar.fc-header-toolbar {
     margin-bottom: 22px;
@@ -199,7 +237,7 @@
     background-color: #fafafa;
 }
 .fc-unthemed .fc-event .fc-content, .fc-unthemed .fc-event-dot .fc-content {
-    padding: 10px 20px 10px 22px;
+    padding: 10px 20px 10px 22px !important;
     font-family: 'Roboto', sans-serif;
     margin-left: -1px;
     height: 100%;
@@ -213,6 +251,21 @@
 }
 .fc-unthemed .fc-day-grid td:not(.fc-axis).fc-event-container {
     padding: 0.2rem 0.5rem;
+}
+.dropdown-menu>li>a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+}
+.dropdown-menu .divider {
+    height: 1px;
+    margin: 9px 0;
+    overflow: hidden;
+    background-color: #e5e5e5;
 }
 .fc-unthemed .fc-content, .fc-unthemed .fc-divider, .fc-unthemed .fc-list-heading td, .fc-unthemed .fc-list-view, .fc-unthemed .fc-popover, .fc-unthemed .fc-row, .fc-unthemed tbody, .fc-unthemed td, .fc-unthemed th, .fc-unthemed thead {
     border-color: #DADFEA;
@@ -333,8 +386,55 @@ select.filter{
 .popover.bottom .arrow:after {
   border-bottom-color: #fff;
 }
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
 
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
 
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+.fa-angle-double-left::before{
+  content: "<<";
+}
+.fa-angle-double-right::before{
+  content: ">>";
+}
+.fa-chevron-left::before{
+  content: "<";
+}
+.fa-chevron-right::before{
+  content: ">";
+}
+.fc-printButton-button{
+  padding: 0 3px !important;
+}
+.col-xs-4 {
+    width: 33.33333333%;
+}
+.col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+    float: left;
+}
+.allDayNewEvent:checked {
+    background-color: #198754;
+    border-color: #198754;
+}
   </style>
 </th:block>
 
@@ -344,176 +444,68 @@ select.filter{
 
 <!-- 일정 생성 모달창 -->
 <div class="modal fade" id="verticalycentered" tabindex="-1" style="display: none;" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <ul class="nav nav-tabs nav-tabs-bordered" id="borderedTab" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">개인메모</button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false" tabindex="-1">약속</button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false" tabindex="-1">프로젝트</button>
-          </li>
-        </ul>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="tab-content pt-2" id="myTabContent">
-          <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
-            <form>
-              <div class="row mb-3">
-                <label for="inputText" class="col-sm-3 col-form-label">제목</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control">
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">일정-시작</label>
-                <div class="col-sm-9">
-                  <input type="datetime-local" class="form-control">
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">일정-끝</label>
-                <div class="col-sm-9">
-                  <input type="datetime-local" class="form-control">
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label for="inputText" class="col-sm-3 col-form-label">참석자</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control">
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label for="inputText" class="col-sm-3 col-form-label">위치</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="address_kakao1" name="address" readonly />
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">카테고리</label>
-                <div class="col-sm-9">
-                  <select class="form-select" aria-label="Default select example">
-                    <option selected="">카테고리 선택</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                  </select>
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label for="inputColor" class="col-sm-3 col-form-label">색상</label>
-                <div class="col-sm-9">
-                  <input type="color" class="form-control form-control-color" id="exampleColorInput" value="#FFF" title="Choose your color">
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label for="inputPassword" class="col-sm-3 col-form-label">설명</label>
-                <div class="col-sm-9">
-                  <textarea class="form-control" style="height: 100px"></textarea>
-                </div>
-              </div>
-              <div style="float: right;">
-                <button type="button" class="btn btn-success">개인메모 만들기</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-              </div>
+        <div class="modal-header">
+          <h4 class="modal-title">일정 생성</h4>
+        </div>
+        <div class="modal-body">
 
-            </form>
+          <div class="row">
+            <div class="col-xs-12">
+              <label class="col-xs-4" for="title">프로젝트</label>
+              <input class='allDayNewEvent' type="checkbox"></label>
+            </div>
           </div>
-          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-            <form>
-              <div class="row mb-3">
-                <label for="inputText" class="col-sm-3 col-form-label">제목</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control">
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">일정-시작</label>
-                <div class="col-sm-9">
-                  <input type="datetime-local" class="form-control">
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">일정-끝</label>
-                <div class="col-sm-9">
-                  <input type="datetime-local" class="form-control">
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label for="inputText" class="col-sm-3 col-form-label">약속 참가자</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control">
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label for="inputText" class="col-sm-3 col-form-label">위치</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="address_kakao2" name="address" readonly />
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label for="inputColor" class="col-sm-3 col-form-label">색상</label>
-                <div class="col-sm-9">
-                  <input type="color" class="form-control form-control-color" id="exampleColorInput" value="#FFF" title="Choose your color">
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label for="inputPassword" class="col-sm-3 col-form-label">설명</label>
-                <div class="col-sm-9">
-                  <textarea class="form-control" style="height: 100px"></textarea>
-                </div>
-              </div>
-              <div style="float: right;">
-                <button type="button" class="btn btn-success">약속 만들기</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-              </div>
 
-            </form>
+          <div class="row">
+            <div class="col-xs-12">
+              <label class="col-xs-4" for="title">제목</label>
+              <input class="inputModal" type="text" name="title" id="title" />
+            </div>
           </div>
-          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-            <form>
-              <div class="row mb-3">
-                <label for="inputText" class="col-sm-3 col-form-label">제목</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control">
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">일정-시작</label>
-                <div class="col-sm-9">
-                  <input type="datetime-local" class="form-control">
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">일정-끝</label>
-                <div class="col-sm-9">
-                  <input type="datetime-local" class="form-control">
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label for="inputText" class="col-sm-3 col-form-label">참여자</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control">
-                </div>
-              </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <label class="col-xs-4" for="starts-at">시작 시간</label>
+              <input class="inputModal" type="text" name="starts_at" id="starts-at" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <label class="col-xs-4" for="ends-at">종료 시간</label>
+              <input class="inputModal" type="text" name="ends_at" id="ends-at" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <label class="col-xs-4" for="ends-at">위치</label>
+              <input class="inputModal" type="text" name="address_kakao1" id="address_kakao1" readonly />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <label class="col-xs-4" for="calendar-type">카테고리</label>
+              <select class="inputModal" type="text" name="calendar-type" id="calendar-type">
+                <option value="개인 메모">개인 메모</option>
+                <option value="회사일">회사일</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <label class="col-xs-4" for="add-event-desc">내용</label>
+              <textarea rows="4" cols="50" class="inputModal" name="add-event-desc" id="add-event-desc"></textarea>
+            </div>
+          </div>
+        </div>
 
-              <div class="row mb-3">
-                <label for="inputColor" class="col-sm-3 col-form-label">색상</label>
-                <div class="col-sm-9">
-                  <input type="color" class="form-control form-control-color" id="exampleColorInput" value="#FFF" title="Choose your color">
-                </div>
-              </div>
 
-              <div style="float: right;">
-                <button type="button" class="btn btn-success">프로젝트 일정 만들기</button>
+
+
+              <div class="modal-footer" style="float: right;">
+                <button type="button" class="btn btn-success" id="save-event">일정 만들기</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
               </div>
-
             </form>
           </div>
         </div>
@@ -537,7 +529,7 @@ select.filter{
     <div class="position-relative ps-container ps-theme-default">
       <div class="p-15">
         <div class="p-15">
-          <button type="button" class="btn btn-success" style="width:100%" data-bs-toggle="modal" data-bs-target="#verticalycentered"><i class="bi bi-calendar2-plus" style="float:left"></i>일정 생성</button>
+          <button type="button" class="btn btn-success" style="width:100%" data-bs-toggle="modal" data-bs-target="#verticalycentered" id="addCustomCalendar"><i class="bi bi-calendar2-plus" style="float:left"></i>일정 생성</button>
         </div>
         <div class="p-15">
           <h4>오늘의 일정</h4>
@@ -548,6 +540,7 @@ select.filter{
           <label class="checkbox-inline"><input class='filter' type="checkbox" value="Caio Vitorelli" checked>Caio Vitorelli</label>
           <label class="checkbox-inline"><input class='filter' type="checkbox" value="Peter Grant" checked>Peter Grant</label>
           <label class="checkbox-inline"><input class='filter' type="checkbox" value="Adam Rackham" checked>Adam Rackham</label>
+          <label class="checkbox-inline"><input class='filter' type="checkbox" value="김" checked>김</label>
         </div>
       </div>
 
@@ -569,144 +562,88 @@ select.filter{
 
     <section class="section">
       <div class="p-20">
-        <div class="card">
+        <div class="card" style="margin-bottom: 100px;">
           <div class="card-body" style="padding:20px;">
             <div id="wrapper">
               <div class="print-visible" id='MainCalendar'></div>
             </div>
+
+
+            <div class="modal fade" tabindex="-1" role="dialog" id="editEventModal">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Edit <span class="eventName"></span></h4>
+                  </div>
+                  <div class="modal-body">
+
+
+
+                    <div class="row">
+                      <div class="col-xs-12">
+                        <label class="col-xs-4" for="title">All Day Event ?</label>
+                        <input class='allDayEdit' type="checkbox"></label>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-xs-12">
+                        <label class="col-xs-4" for="title">Event title</label>
+                        <input class="inputModal" type="text" name="editTitle" id="editTitle" />
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-xs-12">
+                        <label class="col-xs-4" for="starts-at">Starts at</label>
+                        <input class="inputModal" type="text" name="editStartDate" id="editStartDate" />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-12">
+                        <label class="col-xs-4" for="ends-at">Ends at</label>
+                        <input class="inputModal" type="text" name="editEndDate" id="editEndDate" />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-12">
+                        <label class="col-xs-4" for="edit-calendar-type">Calendar</label>
+                        <select class="inputModal" type="text" name="edit-calendar-type" id="edit-calendar-type">
+                          <option value="Sales">Sales</option>
+                          <option value="Lettings">Lettings</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-12">
+                        <label class="col-xs-4" for="edit-event-desc">Description</label>
+                        <textarea rows="4" cols="50" class="inputModal" name="edit-event-desc" id="edit-event-desc"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" id="deleteEvent">Delete Event</button>
+                    <button type="button" class="btn btn-primary" id="updateEvent">Save changes</button>
+                  </div>
+                </div><!-- /.modal-content -->
+              </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+
+
           </div>
         </div>
       </div>
     </div>
 
-  <!-- ADD EVENT MODAL -->
 
-  <div class="modal fade" tabindex="-1" role="dialog" id="newEventModal">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Create new <span class="eventType"></span></h4>
-        </div>
-        <div class="modal-body">
-
-          <div class="row">
-            <div class="col-xs-12">
-              <label class="col-xs-4" for="title">All Day Event ?</label>
-              <input class='allDayNewEvent' type="checkbox"></label>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <label class="col-xs-4" for="title">Event title</label>
-              <input class="inputModal" type="text" name="title" id="title" />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12">
-              <label class="col-xs-4" for="starts-at">Starts at</label>
-              <input class="inputModal" type="text" name="starts_at" id="starts-at" />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12">
-              <label class="col-xs-4" for="ends-at">Ends at</label>
-              <input class="inputModal" type="text" name="ends_at" id="ends-at" />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12">
-              <label class="col-xs-4" for="calendar-type">Calendar</label>
-              <select class="inputModal" type="text" name="calendar-type" id="calendar-type">
-                <option value="Sales">Sales</option>
-                <option value="Lettings">Lettings</option>
-              </select>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12">
-              <label class="col-xs-4" for="add-event-desc">Description</label>
-              <textarea rows="4" cols="50" class="inputModal" name="add-event-desc" id="add-event-desc"></textarea>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="save-event">Save changes</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
-
-
-  <!-- EDIT EVENT MODAL -->
-
-  <div class="modal fade" tabindex="-1" role="dialog" id="editEventModal">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Edit <span class="eventName"></span></h4>
-        </div>
-        <div class="modal-body">
-
-
-
-          <div class="row">
-            <div class="col-xs-12">
-              <label class="col-xs-4" for="title">All Day Event ?</label>
-              <input class='allDayEdit' type="checkbox"></label>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <label class="col-xs-4" for="title">Event title</label>
-              <input class="inputModal" type="text" name="editTitle" id="editTitle" />
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <label class="col-xs-4" for="starts-at">Starts at</label>
-              <input class="inputModal" type="text" name="editStartDate" id="editStartDate" />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12">
-              <label class="col-xs-4" for="ends-at">Ends at</label>
-              <input class="inputModal" type="text" name="editEndDate" id="editEndDate" />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12">
-              <label class="col-xs-4" for="edit-calendar-type">Calendar</label>
-              <select class="inputModal" type="text" name="edit-calendar-type" id="edit-calendar-type">
-                <option value="Sales">Sales</option>
-                <option value="Lettings">Lettings</option>
-              </select>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12">
-              <label class="col-xs-4" for="edit-event-desc">Description</label>
-              <textarea rows="4" cols="50" class="inputModal" name="edit-event-desc" id="edit-event-desc"></textarea>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-danger" id="deleteEvent">Delete Event</button>
-          <button type="button" class="btn btn-primary" id="updateEvent">Save changes</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
 
 
   </section>
 </main><!-- End #main -->
 </body>
+
 
 
