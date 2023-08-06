@@ -23,13 +23,16 @@ public class GapprovalBean { //일반 결재
 
     private Integer gwmbnum; //서류 작성자
 
-    @NotNull(message = "1차 승인자는 필수입니다.")
+    @NotNull(message = "1차 승인자를 선택해 주세요.")
     private Integer gsign1; //ex)작성자(사원) - 상사- 팀장
     private Integer gsign2;
 
     private int ghmbnum; //현재 서류 처리자
 
     private String gfile;
+
+    @NotBlank(message = "유형을 선택해 주세요.")
+    private String gcategory;
 
     private String gstatus;
 
