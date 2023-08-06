@@ -76,7 +76,9 @@ public class MemberController {
     public String login(@RequestParam("id") String id, @RequestParam("pw") String pw, HttpSession session, Model model,
                         HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Member member = memberService.findByEmail(id);
-
+        
+        // 로그인 페이지 이동 세션 설정
+        /*String destination = (String)session.getAttribute("destination");*/
 
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
@@ -84,7 +86,6 @@ public class MemberController {
 
 
         if(member == null){
-
             out.println("<script>alert('등록된 이메일이 아닙니다.');location.href='/login';</script>");
             out.close(); // 오류 메시지 전달
             return "member/login";
@@ -95,6 +96,12 @@ public class MemberController {
             return "member/login";
         } else{
             session.setAttribute("loginInfo",member);
+
+            // 로그인 페이지 이동 세션 설정
+            /*if(destination != null){
+                return destination;
+            }*/
+
             return "redirect:/";
         }
     }
