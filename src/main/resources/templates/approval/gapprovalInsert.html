@@ -48,14 +48,14 @@
                 <div class="col-md-2">
                     <select class="form-select" th:field="*{gsign1}">
                         <option value="">1차 승인자</option>
-                        <option th:each="member : ${memberList}" th:value="${member.mbnum}" th:text="|${member.dept} ${member.mbname}|"></option>
+                        <option th:each="member : ${memberList}" th:if="${loginInfo.mbnum != member.mbnum}" th:value="${member.mbnum}" th:text="|${member.dept} ${member.mblevel} ${member.mbname}|"></option>
                     </select>
                 </div>
 
                 <div class="col-md-2">
                     <select class="form-select" th:field="*{gsign2}">
                         <option value="">2차 승인자</option>
-                        <option th:each="member : ${memberList}" th:value="${member.mbnum}" th:text="|${member.dept} ${member.mbname}|"></option>
+                        <option th:each="member : ${memberList}" th:if="${loginInfo.mbnum != member.mbnum}" th:value="${member.mbnum}" th:text="|${member.dept} ${member.mblevel} ${member.mbname}|"></option>
                     </select>
                 </div>
                 <div class="col-md-2"></div>
