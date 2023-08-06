@@ -6,6 +6,123 @@
 
 
 <head><title>PixelPro</title></head>
+<th:block layout:fragment="css">
+    <style>
+        .w3{
+            width: 30px;
+        }
+        .w10{
+            width: 10%;
+        }
+        .w15{
+            width: 15%;
+        }
+        .read *{
+            color: gray;
+            font-weight: lighter;
+        }
+    </style>
+</th:block>
+<th:block layout:fragment="script">
+    <script th:inline = "javascript">
+    $(document).ready(function(){
+
+        $('.rdCheck').click(function(){
+            // alert('읽음>안읽음');
+
+            var t = $(this);
+            var inum = $(this).attr("id");
+
+            t.attr("class","w3 unrdCheck reload");
+            t.html('<i class="bx bx-envelope g"></i>');
+
+            $.ajax({
+                url : '/mail/unread',
+                type : 'POST',
+                data : {"inum" : inum},
+                success : function (data) {
+
+                }
+            });
+
+        });
+
+
+        $('.unrdCheck').click(function(){
+            // alert('안읽음>읽음');
+            var t = $(this);
+            var inum = $(this).attr("id");
+
+            t.attr("class","w3 read rdCheck reload");
+            t.html('<i class="bx bx-envelope-open g"></i>');
+
+            $.ajax({
+                url : '/mail/read',
+                type : 'POST',
+                data : {"inum" : inum},
+                success : function (data) {
+
+                }
+            });
+
+        });
+
+
+        $('.impoCheck').click(function(){
+            // alert('중요메일');
+
+            var t = $(this);
+            var inum = $(this).attr("id");
+
+            $.ajax({
+                url : '/mail/impo',
+                type : 'POST',
+                data : {"inum" : inum},
+                success : function (data) {
+                    if(data == "O"){
+                        t.html('<i class="bx bxs-star"></i>'); // O
+                    }else{
+                        t.html('<i class="bx bx-star"></i>'); // X
+                    }
+                }
+            }); // ajax
+
+        });
+    });
+
+    function allChk(){
+
+        if($('#all').is(':checked')){
+            $('input[name=row]').attr('checked', true);
+        }else{
+            $('input[name=row]').attr('checked', false);
+        }
+    } // allChk
+
+    function checkDel(){
+        var rowchk = document.getElementsByName('row');
+        var flag = false;
+
+        for(i=0; i<rowchk.length; i++){
+            if(rowchk[i].checked){
+                flag = true;
+            }
+        }
+
+        if(!flag){
+            alert('삭제할 메일을 한개이상 선택하세요.');
+        }else{
+            var con = confirm("정말 삭제하시겠습니까?");
+            if(con){
+                document.myform.submit();
+            }
+        }
+
+    } // checkDel
+
+
+    </script>
+</th:block>
 
 <body class="content toggle-sidebar" layout:fragment="content">
 <main id="main" class="main">
@@ -30,6 +147,77 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title"></h5>
+
+                    <div>
+                        <table class="table datatable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <input type="checkbox" id="all" onclick="allChk()">
+                                    </th>
+                                    <th scope="col" colspan="6">
+                                        <button type="button" class="btn btn-outline-light" onclick="" style="color:#000000">안읽음</button>
+                                        <button type="button" class="btn btn-outline-light" onclick="checkDel()" style="color:#000000">삭제</button>
+                                        <button type="button" class="btn btn-outline-light" th:onclick="|location.href='@{/mail/inbox}'|" style="color:#000000">최신순</button>
+                                        <button type="button" class="btn btn-outline-light" th:onclick="|location.href='@{/mail/inbox(orderb=0)}'|" style="color:#000000">오래된순</button>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="list:${inboxList}">
+                                    <td class="w3">
+                                        <input type="checkbox" name="row" th:value="${list.inum}">
+                                    </td>
+
+
+                                    <td class="w3 impoCheck" th:id="${list.inum}">
+                                        <i th:if="${list.impo == 0}" class="bx bx-star"></i>
+                                        <i th:if="${list.impo != 0}" class="bx bxs-star"></i>
+                                    </td>
+
+
+                                    <td th:if="${list.status != 'unread'}" class="w3 read rdCheck reload" th:id="${list.inum}">
+                                        <i class="bx bx-envelope-open g"></i>
+                                    </td>
+                                    <td th:if="${list.status != 'read'}" class="w3 unrdCheck reload" th:id="${list.inum}">
+                                        <i class="bx bx-envelope g"></i>
+                                    </td>
+
+
+                                    <td class="w3 read">
+                                        <a th:if="${list.attach != null}" href="@{/mail/detailMail(inum=${list.inum})}">
+                                            <i class="bx bx-paperclip"></i>
+                                        </a>
+                                    </td>
+
+
+                                    <td th:if="${list.status == 'read'}" class="w15 read">
+                                        <a href="" th:text="${list.email}" class="g"></a>
+                                    </td>
+                                    <td th:if="${list.status != 'read'}" class="w15">
+                                        <a href="" th:text="${list.email}" class="g"></a>
+                                    </td>
+
+
+                                    <td th:if="${list.status == 'read'}" class="read">
+                                        <a th:href="@{/mail/detailMail(inum=${list.inum})}" th:text="${list.ititle}" class="g"></a>
+                                    </td>
+                                    <td th:if="${list.status != 'read'}" class="">
+                                        <a th:href="@{/mail/detailMail(inum=${list.inum})}" th:text="${list.ititle}" class="g"></a>
+                                    </td>
+
+
+                                    <td th:if="${list.status == 'read'}" class="w10 read">
+                                        <span th:text="${#dates.format(list.senddate, 'yyyy-MM-dd HH:mm')}" class="g"></span>
+                                    </td>
+                                    <td th:if="${list.status != 'read'}" class="w10">
+                                        <span th:text="${#dates.format(list.senddate, 'yyyy-MM-dd HH:mm')}" class="g"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
             </div>
         </div><!-- END 오른쪽 컬럼 -->
