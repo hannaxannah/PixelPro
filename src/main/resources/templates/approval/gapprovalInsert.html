@@ -61,7 +61,6 @@
                 <div class="col-md-2"></div>
                 <p th:if="${#fields.hasErrors('gsign1')}" th:errors="*{gsign1}" class="fieldError"></p>
                 <p th:if="${comparelevel != null}" th:text="${comparelevel}" class="fieldError"></p>
-                <p th:if="${comparesign != null}" th:text="${comparesign}" class="fieldError"></p>
                 <div class="col-md-8">
                     <input type="text" placeholder="제목" class="form-control" th:field="*{gsubject}">
                 </div>
