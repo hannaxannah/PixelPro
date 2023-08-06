@@ -75,7 +75,7 @@
                                     <p class="text-center small">인적사항을 등록해 주세요</p>
                                 </div>
 
-                                <form  class="row g-3 needs-validation" name="myform" action="/member/regist" method="post" novalidate >
+                                <form  class="row g-3 needs-validation" name="myform" action="/member/regist" method="post" novalidate enctype = "multipart/form-data">
                                     <div class="col-12">
                                         <label for="mbname" class="form-label">이름</label>
                                         <input type="text" name="mbname" class="form-control" id="mbname" required>
@@ -110,40 +110,27 @@
                                         <div class="input-group has-validation">
                                             <select class="form-select" id="dept" name="dept" required>
                                                 <option value="">부서를 선택하세요</option>
-                                                <option value="인사부">인사부</option>
-                                                <option value="사업부">사업부</option>
+                                                <option value="인사팀">인사팀</option>
+                                                <option value="개발팀">개발팀</option>
+                                                <option value="기획팀">기획팀</option>
+                                                <option value="영업팀">영업팀</option>
+                                                <option value="재무팀">재무팀</option>
                                             </select>
                                             <div class="invalid-feedback">부서를 선택하세요.</div>
                                         </div>
                                     </div>
 
                                     <div class="col-12">
-                                        <label class="form-label" for="r1">직급</label>
-
+                                        <label for="mblevel" class="form-label">직급</label>
                                         <div class="input-group has-validation">
-                                            <fieldset aria-required="true">
-                                                <div class="col">
-                                                    <input class="form-check-input" type="radio" name="mblevel" id="r1" value="팀장" required>
-                                                    <label class="form-check-label" for="r1">
-                                                        팀장
-                                                    </label>
-                                                </div>
-                                                <div class="col">
-                                                    <input class="form-check-input" type="radio" name="mblevel" id="r2" value="대리" required>
-                                                    <label class="form-check-label" for="r2">
-                                                        대리
-                                                    </label>
-                                                </div>
-                                                <div class="col">
-                                                    <input class="form-check-input" type="radio" name="mblevel" id="r3" value="사원" required>
-                                                    <label class="form-check-label" for="r3">
-                                                        사원
-                                                    </label>
-                                                </div>
-                                            </fieldset>
+                                            <select name="mblevel" id="mblevel" class="form-select" th:field="${member.mblevel}" required>
+                                                <option value="">직급을 선택하세요</option>
+                                                <option th:each="mblevel : ${mblevel}" th:value="${mblevel}" th:text="${mblevel}"></option>
+                                            </select>
                                             <div class="invalid-feedback">직급을 선택하세요.</div>
                                         </div>
                                     </div>
+
 
                                     <div class="col-12">
                                         <label for="msalary" class="form-label">연봉</label>
@@ -152,6 +139,16 @@
                                             <input type="number" name="msalary" class="form-control" id="msalary"
                                                    required>
                                             <div class="invalid-feedback">연봉을 입력해주세요.</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="mbsignfile" class="form-label">사인</label>
+                                        <div class="input-group has-validation">
+
+                                            <input type="file" name="mbsignfile" class="form-control" id="mbsignfile"
+                                                   required>
+                                            <div class="invalid-feedback">사인을 등록해 주세요.</div>
                                         </div>
                                     </div>
 

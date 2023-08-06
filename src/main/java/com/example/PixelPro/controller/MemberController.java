@@ -14,8 +14,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,17 +31,24 @@ public class MemberController {
 
     @GetMapping("/member/regist")
     public String registGet(Model model){
-
+        String[] mblevel = {"사장", "부사장", "부장",  "차장", "과장", "팀장", "대리", "주임", "사원"};
+        model.addAttribute("mblevel", mblevel);
+        model.addAttribute("member", new MemberBean());
         return "member/regist";
     }
 
     @PostMapping("/member/regist")
-    public String registPost(MemberBean memberBean, Model model){
-        if (memberBean.getMblevel().equals("팀장")){
-            memberBean.setMbaccess("admin");
-        }else{
-            memberBean.setMbaccess("normal");
+    public String registPost(MemberBean memberBean, Model model, @RequestParam MultipartFile mbsignfile) throws IOException {
+        String[] mblevel = {"사장", "부사장", "부장",  "차장", "과장", "팀장", "대리", "주임", "사원"};
+        for (int i=0; i<mblevel.length; i++){
+            if (mblevel[i].equals(memberBean.getMblevel())){
+                memberBean.setMbaccess(String.valueOf(i));
+            }
         }
+        memberBean.setMstate("재직");
+        System.out.println("파일:" + mbsignfile.getOriginalFilename());
+        memberBean.setMbsign(mbsignfile.getOriginalFilename());
+        mbsignfile.transferTo(new File(mbsignfile.getOriginalFilename()));
         Member member = Member.insertMember(memberBean);
         memberService.save(member);
         return "redirect:/";
@@ -59,25 +72,32 @@ public class MemberController {
         return "member/login";
     }
 
-  /*  @PostMapping("/login")
-    public String login(@RequestParam("id") String id, @RequestParam("pw") String pw, HttpSession session){
+    @PostMapping("/login")
+    public String login(@RequestParam("id") String id, @RequestParam("pw") String pw, HttpSession session, Model model,
+                        HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Member member = memberService.findByEmail(id);
-        String destination = (String)session.getAttribute("destination");
+
+
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html; charset=UTF-8");
+        PrintWriter out = resp.getWriter();
+
 
         if(member == null){
-            System.out.println("로그인실패");
-            return "redirect:/login";
-        }
-        else{
+
+            out.println("<script>alert('등록된 이메일이 아닙니다.');location.href='/login';</script>");
+            out.close(); // 오류 메시지 전달
+            return "member/login";
+        } else if (!member.getPassword().equals(pw)) {
+            out.println("<script>alert('비밀번호가 틀렸습니다..');location.href='/login';</script>");
+            out.close(); // 오류 메시지 전달
+
+            return "member/login";
+        } else{
             session.setAttribute("loginInfo",member);
-
-            if(destination != null){
-                return destination;
-            }
-
             return "redirect:/";
         }
-    }*/
+    }
 
     @GetMapping("/logout")
     public String logout(HttpSession session){
