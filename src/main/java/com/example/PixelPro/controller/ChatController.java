@@ -1,20 +1,21 @@
 package com.example.PixelPro.controller;
 
 import com.example.PixelPro.Bean.ChatListBean;
+import com.example.PixelPro.Bean.ConversationInfoBean;
 import com.example.PixelPro.Bean.MessageBean;
 import com.example.PixelPro.entity.*;
 import com.example.PixelPro.service.*;
+import org.hibernate.exception.GenericJDBCException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,7 +58,11 @@ public class ChatController {
             singlechat.setRecentSenderName(message.getSender()); //제일 최근 메시지 이름
             singlechat.setUnreadCount(unreadCount); //안 읽은 메시지 수.
             singlechat.setCnum(conversation.getCnum());
-            chatList.add(singlechat);
+            if(unreadCount > 0){
+                chatList.add(0, singlechat); //안읽은 메시지 있으면 처음부터 나오게 하기.
+            } else {
+                chatList.add(singlechat);
+            }
         }
         messagingTemplate.convertAndSend("/topic/conversation/" + mbnum, chatList);
     }
@@ -145,7 +150,7 @@ public class ChatController {
         messagingTemplate.convertAndSend("/topic/allUsers", memberList);
     }
 
-    @GetMapping("/chat/createConversation")
+    @PostMapping("/chat/createConversation")
     public String addConversation(String[] mbnum, String cname, String mcontent){
         //대화 생성
         Conversation conversation = new Conversation();
@@ -162,15 +167,142 @@ public class ChatController {
             Participant participant = new Participant();
             System.out.println("mbnum" + i + ": " + mbnum[i]);
             participant.setCnum(cnum);
-            if(!mbnum[i].equals("")){
+            if(!mbnum[i].equals("") && !mbnum[i].equals("0") || mbnum[i] == null){
                 participant.setMbnum(Integer.parseInt(mbnum[i]));
+                participantService.save(participant);
             }
-            participantService.save(participant);
         }
         //메시지 보내기
         String sendData = mbnum[0] + "/" +  cnum + "/" + mcontent;
         sendMessage(sendData);
+        //새로고침 하면 다시 요청 안하게 redirect한다.
+        return "redirect:/chat";
+    }
+
+    @GetMapping("/chat")
+    public String goToChat(){
 
         return "/chat/chat";
+    }
+    @MessageMapping("/chat/conversationInfo")
+    public void sendConversationInfo(String sendData){
+        String[] data = sendData.split("/");
+        int mbnum = Integer.parseInt(data[0]);
+        int cnum = Integer.parseInt(data[1]);
+        Conversation conversation = conversationService.getConversationByCnum(cnum);
+        List<Participant> participantList = participantService.getParticipantsByCnum(cnum);
+        List<ConversationInfoBean> cList = new ArrayList<ConversationInfoBean>();
+        for(Participant p : participantList){
+            int mbnum2 = p.getMbnum();
+            Member member = userAndGroupService.getMemberByMbnum(mbnum2);
+            String pName = member.getMbname() + " " + member.getMblevel() + "(" + member.getDept() + ")";
+            ConversationInfoBean cInfo = new ConversationInfoBean();
+            cInfo.setCname(conversation.getCname());
+            cInfo.setPname(pName);
+            cList.add(cInfo);
+        }
+        messagingTemplate.convertAndSend("/topic/conversationInfo/" + mbnum, cList);
+    }
+
+    @MessageMapping("/chat/deleteMessage")
+    public void deleteMessage(String sendData) { //실제 삭제는 아니고 "메시지가 삭제 되었습니다" 라고 변경.
+        String[] data = sendData.split("/");
+        int mbnum = Integer.parseInt(data[0]);
+        int mnum = Integer.parseInt(data[1]);
+        messageService.deleteMessage(mnum);
+        Message message = messageService.getMessageByMnum(mnum);
+        String sendData2 = mbnum + "/" + message.getCnum() + "/" + message.getMcontent();
+        messagingTemplate.convertAndSend("/topic/receiveMessage/" + mbnum, message);
+    }
+
+    @MessageMapping("/chat/search")
+    public void searchConversation(String sendData){
+        String[] data = sendData.split("/");
+        String search = data[0];
+        List<Participant> partList = participantService.getParticipantByMbNum(Integer.parseInt(data[1]));
+        List<ChatListBean> chatList = new ArrayList<ChatListBean>();
+        for(Participant p : partList){
+            int cnum  = p.getCnum();
+            int cpnum = p.getCpnum();
+            Conversation conversation = conversationService.getConversationByCnum(cnum);
+            Message message = messageService.getRecentMessage(cnum);
+            int unreadCount = msgstatusService.getUnreadCount(cnum, cpnum);
+            ChatListBean singlechat = new ChatListBean();
+            singlechat.setCname(conversation.getCname()); //대화 이름
+            singlechat.setRecentMsg(message.getMcontent()); //제일 최근 메시지 내용
+            singlechat.setRecentSenderName(message.getSender()); //제일 최근 메시지 이름
+            singlechat.setUnreadCount(unreadCount); //안 읽은 메시지 수.
+            singlechat.setCnum(conversation.getCnum());
+            if(unreadCount > 0){
+                chatList.add(0, singlechat); //안읽은 메시지 있으면 처음부터 나오게 하기.
+            } else {
+                chatList.add(singlechat);
+            }
+        }
+        List<ChatListBean> cList = new ArrayList<ChatListBean>();
+        for(ChatListBean chatListBean : chatList){
+            String cname = chatListBean.getCname();
+            List<Participant> pList = participantService.getParticipantsByCnum(chatListBean.getCnum());
+            if(cname.indexOf(search) > -1){
+                cList.add(chatListBean);
+            }
+
+            for(Participant p : pList){
+                int mbnum = p.getMbnum();
+                int cnum = p.getCnum();
+                Member member = userAndGroupService.getMemberByMbnum(mbnum);
+                String name = member.getMbname();
+                if(name.contains(search)){
+                    boolean flag = true;
+                    for(ChatListBean clistBean : cList){
+                        if(clistBean.getCnum() == cnum){
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if(flag == true){
+                        cList.add(chatListBean);
+                    }
+                }
+            }
+        }
+        messagingTemplate.convertAndSend("/topic/conversation/" + data[1], cList);
+    }
+
+    @MessageMapping("/chat/convUsers")
+    public void getConvUsers(String num){
+        int cnum = Integer.parseInt(num);
+        List<Participant> participantList = participantService.getParticipantsByCnum(cnum);
+        List<Integer> mbnums = new ArrayList<Integer>();
+        for(Participant p : participantList){
+            mbnums.add(p.getMbnum());
+        }
+        List<Member> memberList = userAndGroupService.getAllMembersExcludingConvUsers(mbnums);
+        messagingTemplate.convertAndSend("/topic/convUsers", memberList);
+    }
+    @PostMapping("/chat/addUsers")
+    public String addUsers(String[] mbnum, String convNum){
+        int cnum = Integer.parseInt(convNum);
+        for(String s : mbnum){
+            Participant participant = new Participant();
+            if(!s.equals("") && !s.equals("0") || s == null){
+                int memberNum = Integer.parseInt(s);
+                participant.setMbnum(memberNum);
+                participant.setCnum(cnum);
+                participantService.save(participant);
+            }
+        }
+        return "redirect:/chat";
+    }
+
+    @MessageMapping("/chat/leaveConvo")
+    public void leaveConvo(String sendData){
+        String[] data = sendData.split("/");
+        int cnum = Integer.parseInt(data[0]);
+        int mbnum = Integer.parseInt(data[1]);
+        Participant participant = participantService.getParticipantByMbnumAndCnum(mbnum, cnum);
+        int cpnum = participant.getCpnum();
+        participantService.deleteParticipant(participant);
+        index((String.valueOf(mbnum)));
     }
 }

@@ -30,4 +30,8 @@ public class ParticipantService {
     public void save(Participant participant) {
         participantRepository.save(participant);
     }
+
+    public void deleteParticipant(Participant participant) {
+        participantRepository.delete(participant);
+    }
 }
