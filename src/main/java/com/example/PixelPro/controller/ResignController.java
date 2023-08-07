@@ -4,6 +4,7 @@ import com.example.PixelPro.Bean.PayStubBean;
 import com.example.PixelPro.Bean.ResignBean;
 import com.example.PixelPro.Bean.SalaryBean;
 import com.example.PixelPro.entity.Member;
+import com.example.PixelPro.entity.PayStubEntity;
 import com.example.PixelPro.entity.ResignEntity;
 import com.example.PixelPro.entity.SalaryEntity;
 import com.example.PixelPro.service.MemberService;
@@ -13,15 +14,20 @@ import com.opencsv.CSVWriter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -31,35 +37,79 @@ public class ResignController {
     private final ResignService resignService;
     private final MemberService memberService;
 
-   /* 퇴직금(개인) 추가 폼*/
-    @GetMapping(value = "resignInsert")
-    public String insertGet(Model model){
+    /* 퇴직금(개인) 추가 폼*/
+    @GetMapping(value = "resignInsert/{mbnum}")
+    public String insertGet(@PathVariable("mbnum") int mbnum,Model model){
         model.addAttribute("resignBean",new ResignBean());
+        model.addAttribute("mbnum", mbnum);
         return "/resign/servpayInsert";
     }
 
-    /*개인 퇴직금 목록*/
-    @GetMapping(value = "resignOneList")
-    public String selectOne(Model model){
+    /*개인퇴직금 목록 -> insert -> 전체 퇴직 목록*/
+    @PostMapping(value = "resignInsert/{mbnum}")
+    public String insertPost(@Valid ResignBean resignBean, @PathVariable("mbnum") int mbnum, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("resignBean", resignBean);
+            model.addAttribute("mbnum", mbnum);
+            System.out.println("에러발생함(insert실패)");
+            return "/resign/servpayInsert";
+        }
 
-        return "/resign/servpayList";
+        ResignEntity resign = ResignEntity.insertResign(resignBean);
+        resignService.saveResign(resign);
+        System.out.println("insert 성공");
+        return "/resign/servpayAllList";
+    }
+
+    /*개인 퇴직금 목록*/
+    @GetMapping(value = "resign/oneList")
+    public String selectOne(Model model){/*@PathVariable("mbnum") int mbnum,*/
+        //System.out.println("mbnum: " + mbnum);
+        List<Member> member = memberService.findByOrderByMbnumDesc();
+        //ResignEntity resign = resignService.getResignByMbnum(mbnum);
+
+//        if (resign.getSevpay()== null) {
+//            return "/resign/servpayList/" + mbnum;
+//        }
+
+        model.addAttribute("member", member);
+        return "resign/servpayList";
+
     }
 
     /*전체 퇴직금 목록*/
-    @GetMapping(value = "resignList")
+    @GetMapping(value = "resign/resignList")
     public String selectAll(Model model){
+        List<Member> member = memberService.findByOrderByMbnumDesc();
+        List<ResignEntity> resign = resignService.findByOrderBySevpayDesc();
 
+        model.addAttribute("memberBean", member);
+        model.addAttribute("resign", resign);
         return "/resign/servpayAllList";
     }
 
     /*퇴직명세서*/
-    @GetMapping(value = "retirement")
-    public String insertGetRetire(Model model){
+    @GetMapping(value = "resign/retireState/{sevpay}")
+    public String retireStatement(@PathVariable("sevpay") int sevpay, Model model) {
+        System.out.println("sevpay:" + sevpay);
+        ResignEntity resign = resignService.getResignByServpay(sevpay);
+        Member member = (Member) memberService.findByOrderByMbnumDesc();
+        if (resign.getSevpay()== null) {
+            return "/resign/paystubInsert/" + sevpay;
+        }
+
+        System.out.println("resign Sevpay: " + resign.getSevpay());
+        System.out.println("Payment: " + resign.getPayment());
+        System.out.println("Thrday: " + resign.getThrday());
+        System.out.println("Oneavgpay: " + resign.getOneavgpay());
+
+        model.addAttribute("resignBean", resign);
+        model.addAttribute("member", member);
         return "/resign/retirestatement";
     }
 
     /*csv*/
-    @GetMapping("oneservListCvs")
+    @GetMapping("resign/oneservListCvs")
     public void oneListCvs(HttpServletResponse response) throws IOException {
         // 파일 이름 설정
         String encodedFileName = URLEncoder.encode("개인퇴직금.csv", StandardCharsets.UTF_8);
@@ -91,18 +141,17 @@ public class ResignController {
         writer.close();
     }
 
-
-//    수정 폼
-//    @GetMapping(value = "resign/update/{snum}")
-//    public String updateGet(@PathVariable("snum") int snum, Model model){
-//        System.out.println("snum:"+snum);
-//        SalaryEntity salary = salaryService.getSalaryBySnum(snum);
-//        System.out.println(salary.getSnum());
-//        System.out.println(salary.getStitle());
-//
-//        model.addAttribute("salaryBean",salary);
-//        return "/servpayUpdate";
-//    }
+    /*선택 삭제*/
+    @PostMapping(value = "resign/checkDelete")
+    public String chkDelete(int[] rowcheck) {
+        List<Integer> delList = new ArrayList<Integer>();
+        for (int i = 0; i < rowcheck.length; i++) {
+            System.out.println("servpay : " + rowcheck[i]);
+            delList.add(rowcheck[i]);
+        }
+        resignService.deleteAllByMbnum(delList);
+        return "resign/servpayList";
+    }
 
 
 }

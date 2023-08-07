@@ -20,9 +20,11 @@ public class ResignBean {
     private Integer thrpay;
     @NotNull(message = "근무일수는 필수 입력 값입니다.")
     private Integer thrday;
-    @NotNull(message = "계산내역은 필수 입력 값입니다.")
-    private Integer details;
     @NotBlank(message = "지급확인은 필수 입력 값입니다.")
     private String Payment;
 
 }
+
+/*
+insert into member values(20210321,'개발팀','bo10820@naver.com','A등급','2023/08/06','팀장','신주영','010-3171-1401','사인0','2020/07/30','3000000','퇴사','1234');
+* */

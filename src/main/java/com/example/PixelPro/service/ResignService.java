@@ -15,6 +15,20 @@ public class ResignService {
 
     private final ResignRepository resignRepository;
 
+    public void saveResign(ResignEntity resign) {
+        resignRepository.save(resign);
+    }
+
+
+    public ResignEntity getResignByServpay(int sevpay) {
+        ResignEntity resign = resignRepository.findBySevpay(sevpay);
+        return resign;
+    }
+
+
+    public void deleteAllByMbnum(List<Integer> delList) {
+        resignRepository.deleteAllById(delList);
+    }
 
     public List<ResignEntity> findByOrderBySevpayDesc() {
         List<ResignEntity> resign = resignRepository.findByOrderBySevpayDesc();

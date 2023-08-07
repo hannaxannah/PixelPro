@@ -6,12 +6,7 @@
 
 <th:block layout:fragment="css">
     <style>
-        .card-body{
-          width: 80%;
-        }
-         .card{
-          width: 80%;
-        }
+
     </style>
 </th:block>
 
@@ -20,7 +15,7 @@
     <div class="pagetitle">
         <h1>퇴직금 계산/대장</h1>
     </div><!-- End Page Title -->
-    <form name="myform" action="/salary/checkDelete" method="post">
+    <form name="myform" action="" method="post">
         <section class="section">
             <div class="row">
                 <div class="col-lg-12">
@@ -28,7 +23,7 @@
                         <div class="card-body">
                             <h5 class="card-title">전체 퇴직금 추계액</h5>
                             <!-- Table with stripped rows -->
-                            <table class="table datatable">
+                            <table class="table datatable" th:object="${memberBean}">
                                 <thead>
                                 <tr>
                                     <th scope="col">번호</th>
@@ -44,20 +39,20 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>M20201842</td>
-                                    <td>신주영</td>
-                                    <td>110,000</td>
-                                    <td>97,985</td>
-                                    <td>8,975,410</td>
-                                    <td>97</td>
-                                    <td>미지급</td>
+                                <tr th:each="bean : ${resign}">
+                                    <th scope="row" th:text="${bean.sevpay}"></th><!--1-->
+                                    <td th:text="${mbnum}"></td><!--M20201842-->
+                                    <td th:text="${mbname}"></td><!--신주영-->
+                                    <td th:text="${bean.oneavgpay}"></td><!--110,000-->
+                                    <td th:text="${bean.onedaypay}"></td><!--97,985-->
+                                    <td th:text="${bean.thrpay}"></td><!--8,975,410-->
+                                    <td th:text="${bean.thrday}"></td><!--97-->
+                                    <td th:text="${bean.Payment}"></td><!--미지급-->
                                     <td>
                                         <a type="button" class="btn btn-primary">수정</a>
                                         <a type="button" class="btn btn-danger"> 삭제 </a>
                                     </td>
-                                    <td><button type="button" class="btn btn-success" onClick="location.href=''">확정</button></td>
+                                    <td><a type="button" class="btn btn-success" th:href="@{'/resign/retireState/' + ${bean.sevpay}}">출력</a></td>
                                 </tr>
                                 </tbody>
                             </table>

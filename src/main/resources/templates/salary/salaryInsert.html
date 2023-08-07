@@ -56,7 +56,7 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">지급총액(세전)</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" th:field="${salaryBean.allpayment}" placeholder="월급여를 입력하세요">
+                                    <input type="text" class="form-control" value="" th:field="${salaryBean.allpayment}" placeholder="월급여를 입력하세요">
                                     <p th:if="${#fields.hasErrors('allpayment')}" th:errors="*{allpayment}" class="fieldError"></p>
                                 </div>
                             </div>
@@ -69,7 +69,7 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">소득세</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" value="" th:field="${salaryBean.cometax}">
+                                    <input type="text" class="form-control" value="" th:field="${salaryBean.cometax}" readonly>
                                     <p th:if="${#fields.hasErrors('cometax')}" th:errors="*{cometax}" class="fieldError"></p>
                                 </div>
                             </div>
@@ -81,7 +81,7 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">지방세</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" value="" th:field="${salaryBean.taxes}">
+                                    <input type="text" class="form-control" value="" th:field="${salaryBean.taxes}" readonly>
                                     <p th:if="${#fields.hasErrors('taxes')}" th:errors="*{taxes}" class="fieldError"></p>
                                 </div>
                             </div>
@@ -93,7 +93,7 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">국민연금</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" value="" th:field="${salaryBean.pension}">
+                                    <input type="text" class="form-control" value="" th:field="${salaryBean.pension}" readonly>
                                     <p th:if="${#fields.hasErrors('pension')}" th:errors="*{pension}" class="fieldError"></p>
                                 </div>
                             </div>
@@ -105,7 +105,7 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">건강보험</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" value="" th:field="${salaryBean.health}">
+                                    <input type="text" class="form-control" value="" th:field="${salaryBean.health}" readonly>
                                     <p th:if="${#fields.hasErrors('health')}" th:errors="*{health}" class="fieldError"></p>
                                 </div>
                             </div>
@@ -117,7 +117,7 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">고용보험</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" value="" th:field="${salaryBean.employment}">
+                                    <input type="text" class="form-control" value="" th:field="${salaryBean.employment}" readonly>
                                     <p th:if="${#fields.hasErrors('employment')}" th:errors="*{employment}" class="fieldError"></p>
                                 </div>
                             </div>
@@ -126,7 +126,7 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">실급여</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" value="" th:field="${salaryBean.actsalary}">
+                                    <input type="text" class="form-control" value="" th:field="${salaryBean.actsalary}" readonly>
                                     <p th:if="${#fields.hasErrors('actsalary')}" th:errors="*{actsalary}" class="fieldError"></p>
                                 </div>
                             </div>
@@ -139,6 +139,76 @@
                             </div>
 
                         </form><!-- End General Form Elements -->
+
+                        <script>
+        $("#allpayment").keyup(function (event) {
+            const allpayment = $("#allpayment").val() ? parseInt($("#allpayment").val()) : null;
+            const cometax = $("#cometax").val() ? parseInt($("#cometax").val()) : null;
+            const taxes = $("#taxes").val() ? parseInt($("#taxes").val()) : null;
+            const pension = $("#pension").val() ? parseInt($("#pension").val()) : null;
+            const health = $("#health").val() ? parseInt($("#health").val()) : null;
+            const employment = $("#employment").val() ? parseInt($("#employment").val()) : null;
+            const actsalary = $("#actsalary").val() ? parseInt($("#actsalary").val()) : null;
+
+            $("#cometax").val(allpayment * 0.03);
+            $("#taxes").val(cometax * 0.1);
+            $("#pension").val(allpayment * 0.045);
+            $("#health").val(allpayment * 0.03545);
+            $("#employment").val(allpayment * 0.01);
+            $("#actsalary").val(allpayment - (cometax+taxes+pension+health+employment));
+        });
+
+        $("#cometax").keyup(function (event) {
+            const allpayment = $("#allpayment").val() ? parseInt($("#allpayment").val()) : null;
+            const cometax = $("#cometax").val() ? parseInt($("#cometax").val()) : null;
+
+            $("#cometax").val(allpayment * 0.03);
+        });
+
+        $("#taxes").keyup(function (event) {
+            const cometax = $("#cometax").val() ? parseInt($("#cometax").val()) : null;
+            const taxes = $("#taxes").val() ? parseInt($("#taxes").val()) : null;
+
+            $("#taxes").val(cometax * 0.1);
+        });
+
+        $("#pension").keyup(function (event) {
+            const allpayment = $("#allpayment").val() ? parseInt($("#allpayment").val()) : null;
+            const pension = $("#pension").val() ? parseInt($("#pension").val()) : null;
+
+            $("#pension").val(allpayment * 0.045);
+        });
+
+        $("#health").keyup(function (event) {
+            const allpayment = $("#allpayment").val() ? parseInt($("#allpayment").val()) : null;
+            const health = $("#health").val() ? parseInt($("#health").val()) : null;
+
+            $("#health").val(allpayment * 0.03545);
+        });
+
+        $("#employment").keyup(function (event) {
+            const allpayment = $("#allpayment").val() ? parseInt($("#allpayment").val()) : null;
+            const employment = $("#employment").val() ? parseInt($("#employment").val()) : null;
+
+            $("#employment").val(allpayment * 0.01);
+        });
+
+        $("#actsalary").keyup(function (event) {
+            const allpayment = $("#allpayment").val() ? parseInt($("#allpayment").val()) : null;
+            const cometax = $("#cometax").val() ? parseInt($("#cometax").val()) : null;
+            const taxes = $("#taxes").val() ? parseInt($("#taxes").val()) : null;
+            const pension = $("#pension").val() ? parseInt($("#pension").val()) : null;
+            const health = $("#health").val() ? parseInt($("#health").val()) : null;
+            const employment = $("#employment").val() ? parseInt($("#employment").val()) : null;
+            const actsalary = $("#actsalary").val() ? parseInt($("#actsalary").val()) : null;
+
+            $("#actsalary").val(allpayment - (cometax+taxes+pension+health+employment));
+        });
+
+        function numberWithCommas(number) {
+            return number.toLocaleString();
+        }
+    </script>
 
                         </div>
                     </div>

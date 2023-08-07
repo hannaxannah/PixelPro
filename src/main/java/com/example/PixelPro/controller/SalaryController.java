@@ -98,7 +98,7 @@ public class SalaryController {
             delList.add(rowcheck[i]);
         }
         salaryService.deleteAllBySnum(delList);
-        return "redirect:/oneList";
+        return "salary/salaryOneList";
     }
 
     /*삭제하기*/
@@ -106,7 +106,7 @@ public class SalaryController {
     public String salaryDelete(int snum) {
         System.out.println("snum: " + snum);
         salaryService.salaryDelete(snum);
-        return "redirect:/oneList"; //삭제하면 다시 list 화면으로 감
+        return "salary/salaryOneList"; //삭제하면 다시 list 화면으로 감
     }
 
     /*급여추가 폼*/
@@ -128,7 +128,7 @@ public class SalaryController {
         SalaryEntity salary = SalaryEntity.insertSalary(salaryBean);
         salaryService.saveSalary(salary);
         System.out.println("insert 성공");
-        return "redirect:/oneList";
+        return "/salary/salaryOneList";
     }
 
     /*수정폼*/
@@ -140,7 +140,7 @@ public class SalaryController {
         System.out.println(salary.getStitle());
 
         model.addAttribute("salaryBean", salary);
-        return "/salaryUpdate";
+        return "salary/salaryUpdate";
     }
 
     /*수정하기*/
@@ -150,13 +150,13 @@ public class SalaryController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("salaryBean", salaryBean);
             System.out.println("update 실패");
-            return "/salaryUpdate";
+            return "/salary/salaryUpdate";
         }
 
         SalaryEntity salary = SalaryEntity.insertSalary(salaryBean);
         salaryService.saveSalary(salary);
         System.out.println("update 성공");
-        return "redirect:/";
+        return "salary/salaryOneList";
     }
 
 
