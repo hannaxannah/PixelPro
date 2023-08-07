@@ -2,6 +2,8 @@ package com.example.PixelPro.Bean;
 
 import lombok.*;
 
+import java.sql.Timestamp;
+
 @Setter
 @Getter
 @AllArgsConstructor
@@ -9,6 +11,6 @@ import lombok.*;
 @ToString
 public class CommuteBean { //출퇴근
     private Integer mbnum;
-    private String gotowork;
-    private String getoff;
+    private Timestamp gotowork;
+    private Timestamp getoff;
 }

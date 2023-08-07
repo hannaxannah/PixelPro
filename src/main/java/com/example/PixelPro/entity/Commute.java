@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity(name = "commute")
 @Setter
@@ -18,16 +19,15 @@ import java.sql.Date;
 @ToString
 public class Commute {
     @Id
-    //@GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "commuteseq", allocationSize=1)
     private Integer mbnum;
 
-    @ColumnDefault("sysdate")
-    private Date gotowork;
-    private Date getoff;
+    @Column(columnDefinition = "TIMESTAMP")
+    private Timestamp gotowork;
+    @Column(columnDefinition = "TIMESTAMP",nullable = true)
+    private Timestamp  getoff;
 
     private static ModelMapper modelMapper = new ModelMapper();
-    public static Commute createAttendance(CommuteBean commuteBean) {
+    public static Commute createCommute(CommuteBean commuteBean) {
         Commute commute = modelMapper.map(commuteBean, Commute.class);
         return commute;
     }

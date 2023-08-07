@@ -12,4 +12,6 @@ public interface AtapprovalRepository extends JpaRepository<Atapproval, Integer>
     List<Atapproval> findByAtwmbnumOrderByAtnumDesc(int mbnum);
 
     List<Atapproval> findByAthmbnumOrderByAtnumDesc(int mbnum);
+
+    Atapproval findByAtnum(Integer atnum);
 }

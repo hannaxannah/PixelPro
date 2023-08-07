@@ -1,6 +1,9 @@
 package com.example.PixelPro.Bean;
 
+import com.example.PixelPro.entity.Atapproval;
+import com.example.PixelPro.entity.Gapproval;
 import lombok.*;
+import org.modelmapper.ModelMapper;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -36,4 +39,9 @@ public class AtapprovalBean { //근태 결재
     @NotBlank(message = "신청 날짜를 선택해 주세요.")
     private String reqdate;
 
+    private static ModelMapper modelMapper = new ModelMapper();
+    public static AtapprovalBean createAtapprovalBean(Atapproval atapproval) {
+        AtapprovalBean atapprovalBean = modelMapper.map(atapproval, AtapprovalBean.class);
+        return atapprovalBean;
+    }
 }
