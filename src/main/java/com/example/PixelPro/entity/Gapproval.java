@@ -18,7 +18,7 @@ import java.sql.Date;
 public class Gapproval {
     @Id
     //@GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "gapprovalseq", allocationSize=1)
+    @SequenceGenerator(name = "gapprovalseq", initialValue=1, allocationSize=1)
     private Integer ganum;
     private String gsubject;
 

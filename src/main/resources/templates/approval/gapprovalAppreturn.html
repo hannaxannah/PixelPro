@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}">
+<head><title>PixelPro</title></head>
+
+<th:block layout:fragment="css">
+  <style>
+        .fieldError{
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+</th:block>
+
+<body class="content" layout:fragment="content">
+<main id="main" class="main">
+
+  <div class="card">
+    <div class="card-body">
+      <div class="pt-4 pb-2">
+        <h5 class="card-title text-center pb-0 fs-4" style="color : #5D5D5D;">반려 사유</h5>
+      </div>
+
+      <form id="myform" action="/approval/gapprovalAppreturn" method="post" th:object="${appreturnBean}" class="row g-3 needs-validation" novalidate>
+        <input type="hidden" th:field="*{ganum}">
+        <div class="col-12">
+          <div class="input-group has-validation">
+            <textarea rows="5" cols="50" class="form-control" th:field="*{rcontent}"></textarea>
+          </div>
+        </div>
+        <p th:if="${#fields.hasErrors('rcontent')}" th:errors="*{rcontent}" class="fieldError"></p>
+
+        <div class="col-12">
+          <button type="submit" id="sub" class="btn btn-success w-100">반려</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main><!-- End #main -->
+</body>

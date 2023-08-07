@@ -23,4 +23,8 @@ public class AtapprovalService {
     public List<Atapproval> findByAthmbnumOrderByAtnumDesc(int mbnum) {
         return atapprovalRepository.findByAthmbnumOrderByAtnumDesc(mbnum);
     }
+
+    public Atapproval findByAtnum(Integer atnum) {
+        return atapprovalRepository.findByAtnum(atnum);
+    }
 }
