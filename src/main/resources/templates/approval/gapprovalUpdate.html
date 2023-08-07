@@ -18,22 +18,24 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>일반 결재 작성</h1>
+        <h1>일반 결재 수정</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Home</a></li>
                 <li class="breadcrumb-item"><a href="/approval/gapprovalList">결재</a></li>
-                <li class="breadcrumb-item active">일반 결재 작성</li>
+                <li class="breadcrumb-item active">일반 결재 수정</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
 
     <div class="card">
         <div class="card-body">
-            <form action="/approval/gapprovalInsert" method="post" class="row g-3" th:object="${gapprovalBean}">
-                <div class="col-md-12"></div>
+            <form action="/approval/gapprovalUpdate" method="post" class="row g-3" th:object="${gapprovalBean}">
+                <div class="col-md-12">
+                    <input type="hidden" th:field="*{ganum}">
+                </div>
                 <div align="right">
-                    <input type="submit" class="btn btn-success" value="서류 결재">
+                    <input type="submit" class="btn btn-success" value="서류 수정">
                 </div>
                 <br>
 

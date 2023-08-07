@@ -98,7 +98,6 @@ public class GapprovalController {
         List<Member> memberList = memberService.findByOrderByDeptAscMblevelAsc();
         model.addAttribute("gapprovalBean", gapprovalBean);
         model.addAttribute("memberList", memberList);
-        model.addAttribute("loginInfo",member);
         return "/approval/gapprovalInsert";
     }
 
@@ -211,6 +210,106 @@ public class GapprovalController {
 
         }
         return "redirect:/approval/gapprovalDetail?ganum=" + gapproval.getGanum();
+    }
+
+    @GetMapping(value = "/approval/gapprovalUpdate")
+    public String gapprovalUpdate(@RequestParam("ganum") Integer ganum, Model model, HttpSession session, HttpServletResponse response) throws IOException{
+        response.setContentType("text/html; charset=UTF-8");
+        Member member = (Member) session.getAttribute("loginInfo");
+        if(member == null){
+            session.setAttribute("destination", "redirect:/approval/gapprovalUpdate?ganum=" + ganum);
+            response.getWriter().print("<script>alert('로그인이 필요합니다.');location.href='/login'</script>");
+            response.getWriter().flush();
+        }
+
+        Gapproval gapproval =  gapprovalService.findByGanum(ganum);
+        GapprovalBean gapprovalBean = GapprovalBean.createGapprovalBean(gapproval);
+
+        if(!gapprovalBean.getGstatus().equals("반려")){
+            response.getWriter().print("<script>alert('반려된 결재만 수정 가능합니다.');location.href='/approval/gapprovalList'</script>");
+            response.getWriter().flush();
+        }
+
+        if(member.getMbnum() != gapprovalBean.getGwmbnum()){
+            response.getWriter().print("<script>alert('작성자만 수정 가능합니다.');location.href='/approval/gapprovalList'</script>");
+            response.getWriter().flush();
+        }
+
+        List<Member> memberList = memberService.findByOrderByDeptAscMblevelAsc();
+        model.addAttribute("gapprovalBean", gapprovalBean);
+        model.addAttribute("memberList", memberList);
+        return "/approval/gapprovalUpdate";
+    }
+
+    @PostMapping(value = "/approval/gapprovalUpdate")
+    public String gapprovalUpdate(@Valid GapprovalBean gapprovalBean, BindingResult result, Model model, HttpSession session, HttpServletResponse response) throws IOException{
+        response.setContentType("text/html; charset=UTF-8");
+        Member member = (Member) session.getAttribute("loginInfo");
+        List<Member> memberList = memberService.findByOrderByDeptAscMblevelAsc();
+        model.addAttribute("memberList", memberList);
+        if(member == null){
+            session.setAttribute("destination", "redirect:/approval/gapprovalUpdate?ganum=" + gapprovalBean.getGanum());
+            response.getWriter().print("<script>alert('로그인이 필요합니다.');location.href='/login'</script>");
+            response.getWriter().flush();
+            return "/approval/gapprovalUpdate";
+        }
+        else {
+            if(!gapprovalBean.getGstatus().equals("반려")){
+                response.getWriter().print("<script>alert('반려된 결재만 수정 가능합니다.');location.href='/approval/gapprovalList'</script>");
+                response.getWriter().flush();
+            }
+
+            if(member.getMbnum() != gapprovalBean.getGwmbnum()){
+                response.getWriter().print("<script>alert('작성자만 수정 가능합니다.');location.href='/approval/gapprovalList'</script>");
+                response.getWriter().flush();
+            }
+
+            if (result.hasErrors()) {
+                System.out.println("에러 발생");
+                model.addAttribute("gapprovalBean", gapprovalBean);
+                return "/approval/gapprovalUpdate";
+            } else {
+                if (gapprovalBean.getGsign2() != null) {
+                    Member member1 = memberService.findByMbnum(gapprovalBean.getGsign1());
+                    Member member2 = memberService.findByMbnum(gapprovalBean.getGsign2());
+
+                    if (Integer.parseInt(member1.getMbaccess()) < Integer.parseInt(member2.getMbaccess())) {
+                        model.addAttribute("gapprovalBean", gapprovalBean);
+                        model.addAttribute("memberList", memberList);
+                        model.addAttribute("comparelevel", "2차 승인자가 1차 승인자보다 직급이 높아야 합니다.");
+                        return "/approval/gapprovalUpdate";
+                    }
+                }
+                String signcontent = "<td style=\"border-width: 1px; height: 66.3984px;\"><img width='100%' src='/sign/" + member.getMbsign() + "'></td>";
+                gapprovalBean.setGwmbnum(member.getMbnum());
+                gapprovalBean.setGstatus("1차 승인 요청");
+                gapprovalBean.setSigncontent(signcontent);
+                gapprovalBean.setGhmbnum(gapprovalBean.getGsign1());
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar cal = Calendar.getInstance();
+                gapprovalBean.setGdate(sdf.format(cal.getTime()));
+                Gapproval gapproval = Gapproval.createGapproval(gapprovalBean);
+                gapprovalService.save(gapproval);
+                return "redirect:/approval/gapprovalList";
+            }
+        }
+    }
+
+    @RequestMapping(value = "/approval/gapprovalDelete")
+    public String gapprovalDelete(@RequestParam("ganum") Integer ganum, HttpSession session, HttpServletResponse response) throws IOException{
+        response.setContentType("text/html; charset=UTF-8");
+        Member member = (Member) session.getAttribute("loginInfo");
+        if(member == null){
+            session.setAttribute("destination", "redirect:/approval/gapprovalUpdate?ganum=" + ganum);
+            response.getWriter().print("<script>alert('로그인이 필요합니다.');location.href='/login'</script>");
+            response.getWriter().flush();
+        }
+        else{
+            gapprovalService.deleteByGanum(ganum);
+        }
+
+        return "redirect:/approval/gapprovalList";
     }
 
 }
