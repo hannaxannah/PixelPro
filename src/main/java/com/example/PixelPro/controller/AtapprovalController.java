@@ -2,6 +2,7 @@ package com.example.PixelPro.controller;
 
 import com.example.PixelPro.Bean.AtapprovalBean;
 import com.example.PixelPro.entity.Atapproval;
+import com.example.PixelPro.entity.Gapproval;
 import com.example.PixelPro.entity.Member;
 import com.example.PixelPro.service.AtapprovalService;
 import com.example.PixelPro.service.MemberService;
@@ -25,6 +26,26 @@ public class AtapprovalController {
     private final AtapprovalService atapprovalService;
     private final MemberService memberService;
 
+    @GetMapping(value = "/approval/atapprovalList")
+    public String select(Model model,HttpSession session) {
+        Member member = (Member) session.getAttribute("loginInfo");
+        if(member == null){
+            return "redirect:/login";
+        }
+        List<Atapproval> atapprovalList = atapprovalService.findByAtwmbnumOrderByAtnumDesc(member.getMbnum());
+        model.addAttribute("atapprovalList",atapprovalList);
+        return "/approval/atapprovalList";
+    }
+    @GetMapping(value = "/approval/atapprovalToMeList")
+    public String selectToMe(Model model,HttpSession session) {
+        Member member = (Member) session.getAttribute("loginInfo");
+        if(member == null){
+            return "redirect:/login";
+        }
+        List<Atapproval> atapprovalList = atapprovalService.findByAthmbnumOrderByAtnumDesc(member.getMbnum());
+        model.addAttribute("atapprovalList",atapprovalList);
+        return "/approval/atapprovalToMeList";
+    }
     @GetMapping(value = "/approval/atapprovalInsert")
     public String atapprovalInsert(Model model, HttpSession session) {
         Member member = (Member) session.getAttribute("loginInfo");
