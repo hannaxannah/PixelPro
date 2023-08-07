@@ -52,7 +52,9 @@
             </tr>
             <tr th:each="gapproval, gapprovalStat : ${gapprovalList}" th:if="${gapproval.gstatus.contains('2차 승인 완료')}">
               <td th:text="${gapprovalList.size() - gapprovalStat.index}"></td>
-              <td th:text="${gapproval.gsubject}"></td>
+              <td>
+                <a th:href="@{/approval/gapprovalDetail(ganum=${gapproval.ganum})}" th:text="${gapproval.gsubject}"></a>
+              </td>
               <td th:text="${gapproval.gstatus}"></td>
               <td th:text="${gapproval.gdate}"></td>
             </tr>
@@ -75,7 +77,9 @@
             </tr>
             <tr th:each="gapproval, gapprovalStat : ${gapprovalList}" th:if="${gapproval.gstatus.contains('승인 요청')}">
               <td th:text="${gapprovalList.size() - gapprovalStat.index}"></td>
-              <td th:text="${gapproval.gsubject}"></td>
+              <td>
+                <a th:href="@{/approval/gapprovalDetail(ganum=${gapproval.ganum})}" th:text="${gapproval.gsubject}"></a>
+              </td>
               <td th:text="${gapproval.gstatus}"></td>
               <td th:text="${gapproval.gdate}"></td>
             </tr>
@@ -98,7 +102,9 @@
             </tr>
             <tr th:each="gapproval, gapprovalStat : ${gapprovalList}" th:if="${gapproval.gstatus == '반려'}">
               <td th:text="${gapprovalList.size() - gapprovalStat.index}"></td>
-              <td th:text="${gapproval.gsubject}"></td>
+              <td>
+                <a th:href="@{/approval/gapprovalDetail(ganum=${gapproval.ganum})}" th:text="${gapproval.gsubject}"></a>
+              </td>
               <td th:text="${gapproval.gstatus}"></td>
               <td th:text="${gapproval.gdate}"></td>
             </tr>

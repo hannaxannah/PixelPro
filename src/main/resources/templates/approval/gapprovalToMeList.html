@@ -35,7 +35,9 @@
             </tr>
             <tr th:each="gapproval, gapprovalStat : ${gapprovalList}">
               <td th:text="${gapprovalList.size() - gapprovalStat.index}"></td>
-              <td th:text="${gapproval.gsubject}"></td>
+              <td>
+                <a th:href="@{/approval/gapprovalDetail(ganum=${gapproval.ganum})}" th:text="${gapproval.gsubject}"></a>
+              </td>
               <td th:text="${gapproval.gstatus}"></td>
               <td th:text="${gapproval.gdate}"></td>
             </tr>
