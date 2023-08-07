@@ -304,7 +304,10 @@ public class MailController {
         System.out.println("senddate : " + inboxBean.getSenddate());
 
         inboxBean.setInum(inum);
-        inboxBean.setIref(inum);
+        System.out.println("iref : " + inboxBean.getIref());
+        if(inboxBean.getIref() == 0){
+            inboxBean.setIref(inum);
+        }
         Inbox inboxEntity = Inbox.changEntity(inboxBean);
         mailservice.save(inboxEntity);
 
@@ -505,4 +508,18 @@ public class MailController {
         return "mail/relay";
     }
 
+    /* 답장하기 */
+    @GetMapping("/mail/reply")
+    public String reply(@RequestParam("inum") int inum, Model model){
+        Inbox inbox = mailservice.findByInum(inum);
+
+        // 받는사람, iref동일, istep ++1
+        inbox.setRecipient(inbox.getEmail());
+        inbox.setIstep(inbox.getIstep()+1);
+        inbox.setIref(inbox.getIref());
+
+        model.addAttribute("inbox", inbox);
+
+        return "mail/reply";
+    }
 }
