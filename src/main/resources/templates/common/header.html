@@ -141,6 +141,23 @@
             </li>
             <!-- End 결재 -->
 
+            <!-- 근태 -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#attendance-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-clipboard"></i><span>근태</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="attendance-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li th:with="loginInfo=${session.loginInfo}">
+                        <a href="/attendance/attendanceCheck">
+                            <i class="bi bi-circle"></i><span>출/퇴근 & 근태 통계</span>
+                        </a>
+                        <span th:if="${loginInfo != null and loginInfo.dept == '인사팀'}"><a href="/attendance/attendanceIList"><i class="bi bi-circle"></i>근태 목록</a></span>
+                        <span th:unless="${loginInfo != null and loginInfo.dept == '인사팀'}"><a href="/attendance/attendanceGList"><i class="bi bi-circle"></i>근태 목록</a></span>
+                    </li>
+                </ul>
+            </li>
+            <!-- End 근태 -->
+
             <!-- 일정 -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/calendar/main">

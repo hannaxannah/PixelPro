@@ -1,6 +1,7 @@
 package com.example.PixelPro.controller;
 
 import com.example.PixelPro.Bean.GapprovalBean;
+import com.example.PixelPro.entity.Atapproval;
 import com.example.PixelPro.entity.Gapproval;
 import com.example.PixelPro.entity.Member;
 import com.example.PixelPro.service.CommuteService;
@@ -53,6 +54,14 @@ public class GapprovalController {
             response.getWriter().flush();
         }
         List<Gapproval> gapprovalList = gapprovalService.findByGhmbnumOrderByGanumDesc(member.getMbnum());
+
+        for(Gapproval g : gapprovalList){
+            Member mb = memberService.findByMbnum(g.getGwmbnum());
+            if (mb != null) {
+                g.setGcontent(mb.getMbname());
+            }
+        }
+
         model.addAttribute("gapprovalList",gapprovalList);
         return "/approval/gapprovalToMeList";
     }

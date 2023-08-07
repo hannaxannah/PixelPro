@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -43,6 +44,12 @@ public class AtapprovalController {
             return "redirect:/login";
         }
         List<Atapproval> atapprovalList = atapprovalService.findByAthmbnumOrderByAtnumDesc(member.getMbnum());
+        for(Atapproval a : atapprovalList){
+            Member mb = memberService.findByMbnum(a.getAtwmbnum());
+            if (mb != null) {
+                a.setAtstatus(mb.getMbname());
+            }
+        }
         model.addAttribute("atapprovalList",atapprovalList);
         return "/approval/atapprovalToMeList";
     }
