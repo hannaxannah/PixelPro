@@ -81,4 +81,58 @@ public class MailService {
         List<Inbox> list = mailrepository.findByRecipientAndTrashOrderBySenddate(email, trash);
         return list;
     }
+
+    public List<Inbox> getToMeList(String email) {
+        List<Inbox> list = mailrepository.getToMeList(email);
+        return list;
+    }
+
+    public List<Inbox> getToMeListAsc(String email) {
+        List<Inbox> list = mailrepository.getToMeListAsc(email);
+        return list;
+    }
+
+    public List<Inbox> findByEmailOrderBySenddateDesc(String email) {
+        List<Inbox> list = mailrepository.findByEmailOrderBySenddateDesc(email);
+        return list;
+    }
+
+    public List<Inbox> findByEmailOrderBySenddate(String email) {
+        List<Inbox> list = mailrepository.findByEmailOrderBySenddate(email);
+        return list;
+    }
+
+    public List<Inbox> findByRecipientAndAttachIsNotNullOrderBySenddateDesc(String recipient) {
+        List<Inbox> list = mailrepository.findByRecipientAndAttachIsNotNullOrderBySenddateDesc(recipient);
+        return list;
+    }
+
+    public List<Inbox> findByRecipientAndAttachIsNotNullOrderBySenddate(String recipient) {
+        List<Inbox> list = mailrepository.findByRecipientAndAttachIsNotNullOrderBySenddate(recipient);
+        return list;
+    }
+
+    public List<Inbox> findByRecipientAndImpoOrderBySenddateDesc(String recipient, int i) {
+        List<Inbox> list = mailrepository.findByRecipientAndImpoOrderBySenddateDesc(recipient, 1);
+        return list;
+    }
+
+    public List<Inbox> findByRecipientAndImpoOrderBySenddate(String recipient, int i) {
+        List<Inbox> list = mailrepository.findByRecipientAndImpoOrderBySenddate(recipient, 1);
+        return list;
+    }
+
+    public List<Inbox> findByRecipientAndStatusOrderBySenddateDesc(String recipient, String unread) {
+        List<Inbox> list = mailrepository.findByRecipientAndStatusOrderBySenddateDesc(recipient, unread);
+        return list;
+    }
+
+    public List<Inbox> findByRecipientAndStatusOrderBySenddate(String recipient, String unread) {
+        List<Inbox> list = mailrepository.findByRecipientAndStatusOrderBySenddate(recipient, unread);
+        return list;
+    }
+
+    public int countByRecipientAndStatus(String email, String unread) {
+        return mailrepository.countByRecipientAndStatus(email, unread);
+    }
 }

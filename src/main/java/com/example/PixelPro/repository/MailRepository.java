@@ -38,4 +38,28 @@ public interface MailRepository extends JpaRepository<Inbox, Integer> {
     List<Inbox> getSendBoxListO(@Param("recipient") String recipient);
 
     List<Inbox> findByRecipientAndTrashOrderBySenddate(String recipient, String trash);
+
+    @Query(value = "select * from inbox i where trash = 'N' and recipient = :recipient and i.email = recipient order by senddate desc", nativeQuery = true)
+    List<Inbox> getToMeList(String recipient);
+
+    @Query(value = "select * from inbox i where trash = 'N' and recipient = :recipient and i.email = recipient order by senddate", nativeQuery = true)
+    List<Inbox> getToMeListAsc(String recipient);
+
+    List<Inbox> findByEmailOrderBySenddateDesc(String email);
+
+    List<Inbox> findByEmailOrderBySenddate(String email);
+
+    List<Inbox> findByRecipientAndAttachIsNotNullOrderBySenddateDesc(String recipient);
+
+    List<Inbox> findByRecipientAndAttachIsNotNullOrderBySenddate(String recipient);
+
+    List<Inbox> findByRecipientAndImpoOrderBySenddateDesc(String recipient, int impo);
+
+    List<Inbox> findByRecipientAndImpoOrderBySenddate(String recipient, int impo);
+
+    List<Inbox> findByRecipientAndStatusOrderBySenddateDesc(String recipient, String status);
+
+    List<Inbox> findByRecipientAndStatusOrderBySenddate(String recipient, String status);
+
+    int countByRecipientAndStatus(String recipient, String status);
 }
