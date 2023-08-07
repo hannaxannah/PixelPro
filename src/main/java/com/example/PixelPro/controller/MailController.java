@@ -87,7 +87,6 @@ public class MailController {
         }
         model.addAttribute("inboxList",inboxList);
 
-
         int unreadCount = mailservice.countByRecipientAndStatus(member.getEmail(), "unread");
         session.setAttribute("unreadCount",unreadCount);
 
@@ -287,6 +286,17 @@ public class MailController {
         if(inboxBean.getItitle().equals("")){
             inboxBean.setItitle("(제목 없음)");
         }
+
+        System.out.println("orgi : " + inboxBean.getOriginal());
+        System.out.println("upl : " + inboxBean.getUpload());
+        System.out.println("att : " + inboxBean.getAttach());
+        if(inboxBean.getOriginal() == null){
+            inboxBean.setOriginal("");
+        }
+        if(!inboxBean.getOriginal().equals("") && inboxBean.getAttach().equals("")){
+            inboxBean.setAttach(inboxBean.getOriginal());
+        }
+
         mailservice.save(Inbox.changEntity(inboxBean));
 
         int inum = mailservice.maxInum();
@@ -298,7 +308,8 @@ public class MailController {
         Inbox inboxEntity = Inbox.changEntity(inboxBean);
         mailservice.save(inboxEntity);
 
-        if(inboxBean.getAttach() != ""){
+
+        if(inboxBean.getAttach().equals("") && inboxBean.getOriginal().equals("")){
             String uploadPath = "C:\\PixelPro\\src\\main\\resources\\mailAttachFile";
             File destination = new File(uploadPath + File.separator + inboxBean.getUpload().getOriginalFilename());
             MultipartFile multi =  inboxBean.getUpload();
@@ -476,6 +487,22 @@ public class MailController {
         }
         String gotoPage = (String)session.getAttribute("MailBar");
         return "redirect:/mail/" + gotoPage;
+    }
+
+    /* 주소록 */
+    @GetMapping("/mail/openAddBook")
+    public String openAddBook(Model model){
+        List<Member> memberList = memberService.findByOrderByDeptAscMblevelAsc();
+        model.addAttribute("memberList",memberList);
+        return "mail/openAddBook";
+    }
+
+    /* 전달 */
+    @GetMapping("/mail/relay")
+    public String relay(@RequestParam("inum") int inum, Model model){
+        Inbox inbox = mailservice.findByInum(inum);
+        model.addAttribute("inbox", inbox);
+        return "mail/relay";
     }
 
 }
