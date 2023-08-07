@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}">
+<head><title>PixelPro</title></head>
+
+<body class="content" layout:fragment="content">
+<main id="main" class="main">
+  <!--test-->
+  <div class="pagetitle">
+    <h1>근태 결재 - 요청 목록</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/approval/atapprovalList">결재</a></li>
+        <li class="breadcrumb-item active">근태 결재 - 요청 목록</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+  <div class="card">
+    <div class="card-body">
+      <table class="table datatable">
+            <thead>
+            <tr>
+                <th scope="col">번호</th>
+                <th scope="col">유형</th>
+                <th scope="col">사유</th>
+                <th scope="col">진행 상태</th>
+                <th scope="col">신청일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="atapproval, atapprovalStat : ${atapprovalList}">
+              <td th:text="${atapprovalList.size() - atapprovalStat.index}"></td>
+              <td>
+                <a th:href="@{/approval/atapprovalDetail(atnum=${atapproval.atnum})}" th:text="${atapproval.atcategory}"></a>
+              </td>
+                <td th:text="${atapproval.atcontent}"></td>
+                <td th:text="${atapproval.atstatus}"></td>
+                <td th:text="${atapproval.reqdate}"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+  </div>
+</main><!-- End #main -->
+</body>
