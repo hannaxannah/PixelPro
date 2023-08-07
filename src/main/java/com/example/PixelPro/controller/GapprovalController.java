@@ -116,7 +116,6 @@ public class GapprovalController {
         }
         else {
             System.out.println("gcontent\n" + gapprovalBean.getGcontent());
-            model.addAttribute("loginInfo",member);
 
             if (result.hasErrors()) {
                 System.out.println("에러 발생");
