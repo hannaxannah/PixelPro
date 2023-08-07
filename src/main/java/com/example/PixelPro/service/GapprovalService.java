@@ -23,4 +23,8 @@ public class GapprovalService {
     public List<Gapproval> findByGwmbnumOrderByGanumDesc(int mbnum) {
         return gapprovalRepository.findByGwmbnumOrderByGanumDesc(mbnum);
     }
+
+    public List<Gapproval> findByGhmbnumOrderByGanumDesc(int mbnum) {
+        return gapprovalRepository.findByGhmbnumOrderByGanumDesc(mbnum);
+    }
 }

@@ -37,6 +37,17 @@ public class GapprovalController {
         return "/approval/gapprovalList";
     }
 
+    @GetMapping(value = "/approval/gapprovalToMeList")
+    public String selectToMe(Model model,HttpSession session) {
+        Member member = (Member) session.getAttribute("loginInfo");
+        if(member == null){
+            return "redirect:/login";
+        }
+        List<Gapproval> gapprovalList = gapprovalService.findByGhmbnumOrderByGanumDesc(member.getMbnum());
+        model.addAttribute("gapprovalList",gapprovalList);
+        return "/approval/gapprovalToMeList";
+    }
+
     @GetMapping(value = "/approval/gapprovalInsert")
     public String gapprovalInsert(Model model, HttpSession session) {
         Member member = (Member) session.getAttribute("loginInfo");
