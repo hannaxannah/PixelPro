@@ -57,6 +57,10 @@
           window.location.href = "./oneservListCvs";
       }
 
+       function goToSelect(num) {
+          window.location.href = "./resignInsert" + "/" + num;
+      }
+
       </script>
 </th:block>
 
@@ -65,7 +69,7 @@
     <div class="pagetitle">
         <h1>퇴직금 계산/대장</h1>
     </div><!-- End Page Title -->
-    <form name="myform" action="/salary/checkDelete" method="post">
+    <form name="myform" action="/resign/checkDelete" method="post">
         <section class="section">
             <div class="row">
                 <div class="col-lg-12">
@@ -77,32 +81,32 @@
                                 <thead>
                                 <tr>
                                     <th>
-                                        <input type="checkbox" name="allcheck" onClick="allselect(this)">번호
+                                        <input type="checkbox" name="allcheck" onClick="allselect(this)">
                                     </th>
                                     <th scope="col">사원번호</th>
                                     <th scope="col">성명</th>
                                     <th scope="col">부서</th>
                                     <th scope="col">직급</th>
                                     <th scope="col">입사일</th>
-                                    <th scope="col">수정|삭제</th>
-                                    <th scope="col">계산내역</th>
+                                    <th scope="col">퇴사일</th>
+                                    <th scope="col">근무상태</th>
+                                    <th scope="col">계산내역</th><!--개인 내역으로 이동-->
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
+                                <tr th:each="bean : ${member}">
                                     <th scope="row">
-                                        <input type="checkbox" name="rowcheck">1
+                                        <input type="checkbox" name="rowcheck" th:value="${bean.mbnum}">
                                     </th>
-                                    <td>M20201502</td>
-                                    <td>신주영</td>
-                                    <td>개발팀</td>
-                                    <td>사원</td>
-                                    <td>2020/11/10</td>
-                                    <td>
-                                        <a type="button" class="btn btn-primary">수정</a>
-                                        <a type="button" class="btn btn-danger">삭제</a>
-                                    </td>
-                                    <td><button type="button" class="btn btn-success" onClick="location.href=''">조회</button></td>
+                                    <td th:text="${bean.mbnum}"></td>
+                                    <td th:text="${bean.mbname}"></td>
+                                    <td th:text="${bean.dept}"></td>
+                                    <td th:text="${bean.mblevel}"></td>
+                                    <td th:text="${bean.mbstartdate}"></td>
+                                    <td th:text="${bean.mbenddate}"></td>
+                                    <td th:text="${bean.mstate}"></td>
+                                    <!--th:href="@{'/resign/oneList/' + ${bean.mbnum}}"-->
+                                    <td><a type="button" class="btn btn-success" th:href="@{'/resignInsert/' + ${bean.mbnum}}">조회</a></td>
                                 </tr>
                                 </tbody>
                             </table>

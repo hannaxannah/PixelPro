@@ -1,10 +1,151 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    개인 퇴직금 목록 추가
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}">
+
+<th:block layout:fragment="css">
+    <style>
+        .fieldError{
+            color : red;
+            font-size:11pt;
+        }
+    </style>
+</th:block>
+
+<body class="content" layout:fragment="content">
+<main id="main" class="main">
+    <!-- General Form Elements -->
+
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-6">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">퇴직금 내용 추가(임직원)</h5>
+
+                            <!-- General Form Elements -->
+                            <form name="myform" id="myform" method="post" th:object="${resignBean}">
+                                <input type="hidden" name="mbnum" id="mbnum" th:value="${mbnum}"/>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">평균임금(1일)</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" value=""
+                                           th:field="${resignBean.oneavgpay}">
+                                    <p th:if="${#fields.hasErrors('oneavgpay')}" th:errors="*{oneavgpay}"
+                                       class="fieldError"></p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">통상임금(1일)</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" value=""
+                                           th:field="${resignBean.onedaypay}">
+                                    <p th:if="${#fields.hasErrors('onedaypay')}" th:errors="*{onedaypay}"
+                                       class="fieldError"></p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">급여(3개월)</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" value=""
+                                           th:field="${resignBean.thrpay}">
+                                    <p th:if="${#fields.hasErrors('thrpay')}" th:errors="*{thrpay}"
+                                       class="fieldError"></p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">근무일수</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" th:field="${resignBean.thrday}">
+                                    <p th:if="${#fields.hasErrors('thrday')}" th:errors="*{thrday}"
+                                       class="fieldError"></p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">지급확인</label>
+                                <div class="col-sm-10">
+                                    <select class="form-select" aria-label="Default select example"
+                                            th:field="${resignBean.Payment}">
+                                        <option selected value="">선택해주세요.</option>
+                                        <option th:field="${resignBean.Payment}" value="지급">지급</option>
+                                        <option th:field="${resignBean.Payment}" value="미지급">미지급</option>
+                                    </select>
+                                </div>
+                                <p th:if="${#fields.hasErrors('Payment')}" th:errors="*{Payment}" class="fieldError"></p>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-success" data-toggle="modal"
+                                            data-target="#myModal" th:href="@{'/resignInsert/' + ${mbnum}}">추가
+                                    </button>
+                                    <button type="reset" class="btn btn-primary">초기화</button>
+                                </div>
+                            </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    <script>
+        alert('퇴직금 작업 내용이 없습니다 ');
+
+        document.querySelector(".btn btn-success").addEventListener("click", function () {
+            if ($("#oneavgpay").val() === '') {
+                alert("평균임금을 입력해주세요.");
+                $("#oneavgpay").focus();
+                return;
+            }
+            if ($("#onedaypay").val() === '') {
+                alert("통상임금을 입력해주세요.");
+                $("#onedaypay").focus();
+                return;
+            }
+            if ($("#thrpay").val() === '') {
+                alert("급여를 입력해주세요.");
+                $("#thrpay").focus();
+                return;
+            }
+            if ($("#thrday").val() === '') {
+                alert("근무일수를 입력해주세요.");
+                $("#thrday").focus();
+                return;
+            }
+            if ($("#Payment").val() === '') {
+                alert("지급확인을 선택해주세요.");
+                $("#Payment").focus();
+                return;
+            }
+
+            const sevpay = $("#sevpay").val();
+            $.ajax({
+                url: "/resignInsert/" + sevpay,
+                method: "POST",
+                data: $("#myform").serialize(),
+                success: function (response) {
+                    if (response.status === "success") {
+                        location.href = "resign/resignList/"+ sevpay;
+                    } else {
+                        alert("등록을 실패하였습니다.");
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("등록을 실패하였습니다.");
+                }
+            });
+        });
+
+    </script>
+</main>
 </body>
-</html>
+
