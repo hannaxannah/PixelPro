@@ -5,6 +5,17 @@
       layout:decorate="~{common/mylayout}">
 <head><title>PixelPro</title></head>
 
+<th:block layout:fragment="script">
+  <script th:inline = "javascript">
+    function deleteGapp(ganum){
+      alert(ganum);
+      if(confirm('반려된 결재를 삭제하시겠습니까?')){
+        location.href = '/approval/gapprovalDelete?ganum=' + ganum;
+      }
+    }
+</script>
+</th:block>
+
 <body class="content" layout:fragment="content">
 <main id="main" class="main">
 <!--test-->
@@ -88,6 +99,7 @@
               <th scope="col">제목</th>
               <th scope="col">진행 상태</th>
               <th scope="col">요청일</th>
+              <th scope="col">수정/삭제</th>
             </tr>
             </thead>
             <tbody>
@@ -98,6 +110,10 @@
               </td>
               <td th:text="${gapproval.gstatus}"></td>
               <td th:text="${gapproval.gdate}"></td>
+              <td>
+                <button type="button" class="btn btn-success btn-sm" th:onclick="|location.href='@{/approval/gapprovalUpdate(ganum=${gapproval.ganum})}'|">수정</button>
+                <button type="button" class="btn btn-danger btn-sm" th:onclick="|deleteGapp('${gapproval.ganum}')|">삭제</button>
+              </td>
             </tr>
             </tbody>
           </table>
