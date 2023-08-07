@@ -28,17 +28,19 @@
                 <th scope="col">사유</th>
                 <th scope="col">요청자</th>
                 <th scope="col">요청일</th>
+                <th scope="col">승인</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="atapproval, atapprovalStat : ${atapprovalList}">
               <td th:text="${atapprovalList.size() - atapprovalStat.index}"></td>
-              <td>
-                <a th:href="@{/approval/atapprovalDetail(atnum=${atapproval.atnum})}" th:text="${atapproval.atcategory}"></a>
-              </td>
+              <td th:text="${atapproval.atcategory}"></td>
                 <td th:text="${atapproval.atcontent}"></td>
                 <td th:text="${atapproval.atstatus}"></td>
                 <td th:text="${atapproval.reqdate}"></td>
+                <td>
+                    <button type="button" class="btn btn-success" th:onclick="|location.href='@{/approval/atapprovalSign(atnum=${atapproval.atnum})}'|">승인</button>
+                </td>
             </tr>
             </tbody>
           </table>
