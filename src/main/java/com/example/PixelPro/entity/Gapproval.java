@@ -32,7 +32,7 @@ public class Gapproval {
     @ColumnDefault("-1")
     private Integer gsign2;
     private Integer ghmbnum;
-    private String gfile;
+    //private String gfile;
     private String gstatus;
 
     @ColumnDefault("sysdate")

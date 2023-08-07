@@ -31,7 +31,7 @@ public class GapprovalBean { //일반 결재
 
     private int ghmbnum; //현재 서류 처리자
 
-    private String gfile;
+    //private String gfile;
 
     @NotBlank(message = "유형을 선택해 주세요.")
     private String gcategory;
