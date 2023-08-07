@@ -152,7 +152,10 @@
                     <h5 class="card-title"></h5>
 
                     <form name="myform" action="/mail/deleteAll" method="post">
-                    <div>
+                    <div th:if="${#lists.isEmpty(inboxList)}">
+                        <div style="text-align: center;">( 메일이 없습니다 )<br></div>
+                    </div>
+                    <div th:if="${!#lists.isEmpty(inboxList)}">
                         <table class="table datatable">
                             <thead>
                             <tr>
@@ -160,7 +163,6 @@
                                     <input type="checkbox" id="all" onclick="allChk()">
                                 </th>
                                 <th scope="col" colspan="6">
-                                    <button type="button" class="btn btn-outline-light" onclick="" style="color:#000000">안읽음</button>
                                     <button type="button" class="btn btn-outline-light" onclick="checkDel()" style="color:#000000">삭제</button>
                                     <button type="button" class="btn btn-outline-light" th:onclick="|location.href='@{/mail/fullMail}'|" style="color:#000000">최신순</button>
                                     <button type="button" class="btn btn-outline-light" th:onclick="|location.href='@{/mail/fullMail(orderb=0)}'|" style="color:#000000">오래된순</button>

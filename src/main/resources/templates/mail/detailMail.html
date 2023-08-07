@@ -7,6 +7,39 @@
 
 <head><title>PixelPro</title></head>
 
+<th:block layout:fragment="script">
+  <script th:inline = "javascript">
+    function previous(){
+      history.go(-1);
+    }
+
+    $(document).ready(function(){
+
+        $('.impoCheck').click(function(){
+            // alert('중요메일');
+
+            var t = $(this);
+            var inum = $(this).attr("id");
+
+            $.ajax({
+                url : '/mail/impo',
+                type : 'POST',
+                data : {"inum" : inum},
+                success : function (data) {
+                    if(data == "O"){
+                        t.html('<i class="bx bxs-star"></i>'); // O
+                    }else{
+                        t.html('<i class="bx bx-star"></i>'); // X
+                    }
+                }
+            }); // ajax
+
+        });
+    });
+
+    </script>
+</th:block>
+
 <body class="content toggle-sidebar" layout:fragment="content">
 <main id="main" class="main">
 
@@ -30,7 +63,7 @@
       <div class="card">
         <div class="card-body">
 
-          <button type="button" class="btn btn-outline-light" onclick="" style="color:#000000; margin-top: 20px;">
+          <button type="button" class="btn btn-outline-light" onclick="previous()" style="color:#000000; margin-top: 20px;">
             <i class="bi bi-chevron-left"></i> 이전으로
           </button>
 
@@ -43,21 +76,23 @@
 
           <div style="margin-left: 10px;">
 
-            <h5>
-              <i th:if="${inbox.impo == 0}" class="bx bx-star"></i>
-              <i th:if="${inbox.impo != 0}" class="bx bxs-star"></i>
+            <h5 >
+              <span class="impoCheck" th:id="${inbox.inum}">
+                <i th:if="${inbox.impo == 0}" class="bx bx-star " ></i>
+                <i th:if="${inbox.impo != 0}" class="bx bxs-star " ></i>
+              </span>
               <span class="card-title" th:text="${inbox.ititle}"></span>
             </h5>
 
 
             <div>
               <b>보낸사람</b>
-              <span th:text="${member.mbname + ' ( ' + member.mblevel + ' ) ' + ' <' + member.email + '>'}"></span>
+              <span th:text="${fromMember.mbname + ' ( ' + fromMember.mblevel + ' ) ' + ' <' + fromMember.email + '>'}"></span>
             </div>
 
             <div>
               <b>받는사람</b>
-              <span th:text="${session.loginInfo.mbname + ' ( ' + session.loginInfo.mblevel + ' ) ' + ' <' + session.loginInfo.email + '>'}"></span>
+              <span th:text="${toMember.mbname + ' ( ' + toMember.mblevel + ' ) ' + ' <' + toMember.email + '>'}"></span>
             </div>
 
             <div style="margin: 1% 0 1% 0; font-size: 13px; color: gray;">

@@ -58,6 +58,9 @@ public class MailController {
             inboxList = mailservice.findByRecipientAndTrashOrderBySenddate(email, trash);
         }
 
+        int unreadCount = mailservice.countByRecipientAndStatus(member.getEmail(), "unread");
+        session.setAttribute("unreadCount",unreadCount);
+
         model.addAttribute("inboxList",inboxList);
 
         return "mail/fullMail";
@@ -82,17 +85,19 @@ public class MailController {
         if(orderb != null){
             inboxList = mailservice.getSendBoxListO(member.getEmail());
         }
-
-
-
         model.addAttribute("inboxList",inboxList);
+
+
+        int unreadCount = mailservice.countByRecipientAndStatus(member.getEmail(), "unread");
+        session.setAttribute("unreadCount",unreadCount);
 
         return "mail/inbox";
     }
 
     /* 보낸 메일함 */
     @GetMapping("/mail/sentMail")
-    public String gotoSentMail(HttpSession session, HttpServletResponse response) throws IOException {
+    public String gotoSentMail(HttpSession session, HttpServletResponse response, Model model,
+                               @RequestParam(value = "orderb", required = false) Integer orderb) throws IOException {
         response.setContentType("text/html; charset=UTF-8");
         session.setAttribute("MailBar","sentMail");
 
@@ -102,6 +107,17 @@ public class MailController {
             response.getWriter().print("<script>alert('로그인이 필요합니다.');location.href='/login'</script>");
             response.getWriter().flush();
         }
+
+        List<Inbox> inboxList = mailservice.findByEmailOrderBySenddateDesc(member.getEmail());
+
+        if(orderb != null){
+            inboxList = mailservice.findByEmailOrderBySenddate(member.getEmail());
+        }
+        System.out.println("inboxList : " + inboxList);
+        model.addAttribute("inboxList",inboxList);
+
+        int unreadCount = mailservice.countByRecipientAndStatus(member.getEmail(), "unread");
+        session.setAttribute("unreadCount",unreadCount);
 
         return "mail/sentMail";
     }
@@ -119,12 +135,16 @@ public class MailController {
             response.getWriter().flush();
         }
 
+        int unreadCount = mailservice.countByRecipientAndStatus(member.getEmail(), "unread");
+        session.setAttribute("unreadCount",unreadCount);
+
         return "mail/draftBox";
     }
 
     /* 내게 쓴 메일함 */
     @GetMapping("/mail/mailToMe")
-    public String gotoMailToMel(HttpSession session, HttpServletResponse response) throws IOException {
+    public String gotoMailToMel(HttpSession session, HttpServletResponse response, Model model,
+                                @RequestParam(value = "orderb", required = false) Integer orderb) throws IOException {
         response.setContentType("text/html; charset=UTF-8");
         session.setAttribute("MailBar","mailToMe");
 
@@ -134,6 +154,16 @@ public class MailController {
             response.getWriter().print("<script>alert('로그인이 필요합니다.');location.href='/login'</script>");
             response.getWriter().flush();
         }
+        List<Inbox> inboxList = mailservice.getToMeList(member.getEmail());
+
+        if(orderb != null){
+            inboxList = mailservice.getToMeListAsc(member.getEmail());
+        }
+
+        int unreadCount = mailservice.countByRecipientAndStatus(member.getEmail(), "unread");
+        session.setAttribute("unreadCount",unreadCount);
+
+        model.addAttribute("inboxList",inboxList);
 
         return "mail/mailToMe";
     }
@@ -156,7 +186,8 @@ public class MailController {
     
     /* 안읽음 */
     @GetMapping("/mail/unreadMail")
-    public String gotoUnreadMail(HttpSession session, HttpServletResponse response) throws IOException {
+    public String gotoUnreadMail(HttpSession session, HttpServletResponse response, Model model,
+                                 @RequestParam(value = "orderb", required = false) Integer orderb) throws IOException {
         response.setContentType("text/html; charset=UTF-8");
         session.setAttribute("MailBar","unreadMail");
 
@@ -167,13 +198,25 @@ public class MailController {
             response.getWriter().flush();
         }
 
+        List<Inbox> inboxList = mailservice.findByRecipientAndStatusOrderBySenddateDesc(member.getEmail(), "unread");
+
+        if(orderb != null){
+            inboxList = mailservice.findByRecipientAndStatusOrderBySenddate(member.getEmail(), "unread");
+        }
+
+        model.addAttribute("inboxList",inboxList);
+
+        int unreadCount = mailservice.countByRecipientAndStatus(member.getEmail(), "unread");
+        session.setAttribute("unreadCount",unreadCount);
+        System.out.println("unreadCount : " + unreadCount);
 
         return "mail/unreadMail";
     }
 
     /* 중요 */
     @GetMapping("/mail/scrapMail")
-    public String gotoScrapMail(HttpSession session, HttpServletResponse response) throws IOException {
+    public String gotoScrapMail(HttpSession session, HttpServletResponse response, Model model,
+                                @RequestParam(value = "orderb", required = false) Integer orderb) throws IOException {
         response.setContentType("text/html; charset=UTF-8");
         session.setAttribute("MailBar","scrapMail");
 
@@ -184,12 +227,21 @@ public class MailController {
             response.getWriter().flush();
         }
 
+        List<Inbox> inboxList = mailservice.findByRecipientAndImpoOrderBySenddateDesc(member.getEmail(), 1);
+
+        if(orderb != null){
+            inboxList = mailservice.findByRecipientAndImpoOrderBySenddate(member.getEmail(), 1);
+        }
+
+        model.addAttribute("inboxList",inboxList);
+
         return "mail/scrapMail";
     }
 
     /* 첨부 */
     @GetMapping("/mail/clipMail")
-    public String gotoClipMail(HttpSession session, HttpServletResponse response) throws IOException {
+    public String gotoClipMail(HttpSession session, HttpServletResponse response, Model model,
+                               @RequestParam(value = "orderb", required = false) Integer orderb) throws IOException {
         response.setContentType("text/html; charset=UTF-8");
         session.setAttribute("MailBar","clipMail");
 
@@ -199,6 +251,14 @@ public class MailController {
             response.getWriter().print("<script>alert('로그인이 필요합니다.');location.href='/login'</script>");
             response.getWriter().flush();
         }
+
+        List<Inbox> inboxList = mailservice.findByRecipientAndAttachIsNotNullOrderBySenddateDesc(member.getEmail());
+
+        if(orderb != null){
+            inboxList = mailservice.findByRecipientAndAttachIsNotNullOrderBySenddate(member.getEmail());
+        }
+
+        model.addAttribute("inboxList",inboxList);
 
         return "mail/clipMail";
     }
@@ -223,7 +283,8 @@ public class MailController {
     @PostMapping("/mail/send")
     public String sendMail(InboxBean inboxBean, Model model) {
         // 메일번호,  첨부파일, 휴지통 N, 보낸날짜, 상태, 중요메일, 메일그룹, 메일순서
-        if(inboxBean.getItitle() == ""){
+        System.out.println("title" + inboxBean.getItitle());
+        if(inboxBean.getItitle().equals("")){
             inboxBean.setItitle("(제목 없음)");
         }
         mailservice.save(Inbox.changEntity(inboxBean));
@@ -252,6 +313,7 @@ public class MailController {
         model.addAttribute("inum",inum);
         return "/mail/success";
     }
+
     @PostMapping("/mail/upload")
     @ResponseBody
     public String update(int inum){
@@ -259,7 +321,7 @@ public class MailController {
         return "success";
     }
 
-    /* 내게 쓰기 */
+    /* 내게 쓰기 form */
     @GetMapping("/mail/sendToMe")
     public String gotoSendToMe(HttpSession session, HttpServletResponse response) throws IOException {
         response.setContentType("text/html; charset=UTF-8");
@@ -275,18 +337,65 @@ public class MailController {
         return "mail/sendToMe";
     }
 
+    // 내게쓰기
+    @PostMapping("/mail/sendToMe")
+    public String sendToMeMail(InboxBean inboxBean, Model model) {
+        // 메일번호,  첨부파일, 휴지통 N, 보낸날짜, 상태, 중요메일, 메일그룹, 메일순서
+        System.out.println("title" + inboxBean.getItitle());
+        if(inboxBean.getItitle().equals("")){
+            inboxBean.setItitle("(제목 없음)");
+        }
+        mailservice.save(Inbox.changEntity(inboxBean));
+
+        int inum = mailservice.maxInum();
+        System.out.println("inum : " + inum);
+        System.out.println("senddate : " + inboxBean.getSenddate());
+
+        inboxBean.setInum(inum);
+        inboxBean.setIref(inum);
+        Inbox inboxEntity = Inbox.changEntity(inboxBean);
+        mailservice.save(inboxEntity);
+
+        if(inboxBean.getAttach() != ""){
+            String uploadPath = "C:\\PixelPro\\src\\main\\resources\\mailAttachFile";
+            File destination = new File(uploadPath + File.separator + inboxBean.getUpload().getOriginalFilename());
+            MultipartFile multi =  inboxBean.getUpload();
+            try {
+                multi.transferTo(destination);
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (IOException e){
+
+            }
+        }
+        model.addAttribute("inum",inum);
+        return "/mail/success";
+    }
+
     /* 메일 상세보기 */
     @GetMapping("/mail/detailMail")
-    public String gotoDetail(@RequestParam("inum") int inum, Model model){
-
-        // 읽음처리하기
-        mailmapper.updateInbox(inum);
+    public String gotoDetail(@RequestParam("inum") int inum, Model model, HttpSession session){
 
         Inbox inbox = mailservice.findByInum(inum);
-        Member member = memberService.findByEmail(inbox.getEmail());
+        Member member = (Member)session.getAttribute("loginInfo");
+
+        // 받은 사람과 로그인자가 동일할때 읽음처리
+        // 이미 읽은 기록 있으면 업데이트 노노
+        if(inbox.getRecipient().equals(member.getEmail()) && inbox.getReaddate() == null){
+            mailmapper.updateInbox(inum);
+        }
+
+        // 보낸사람
+        Member fromMember = memberService.findByEmail(inbox.getEmail());
+        // 받은사람
+        Member toMember = memberService.findByEmail(inbox.getRecipient());
 
         model.addAttribute("inbox", inbox);
-        model.addAttribute("member", member);
+        model.addAttribute("fromMember", fromMember);
+        model.addAttribute("toMember", toMember);
+
+        int unreadCount = mailservice.countByRecipientAndStatus(member.getEmail(), "unread");
+        session.setAttribute("unreadCount",unreadCount);
 
         return "mail/detailMail";
 
@@ -312,16 +421,19 @@ public class MailController {
 
     /* 읽음 -> 안읽음 처리*/
     @PostMapping("/mail/unread")
-    public String doUnread(@RequestParam("inum") int inum){
-
+    public String doUnread(@RequestParam("inum") int inum, HttpSession session){
+        Member member = (Member)session.getAttribute("loginInfo");
         mailservice.updateUnread(inum);
+
+        int unreadCount = mailservice.countByRecipientAndStatus(member.getEmail(), "unread");
+        session.setAttribute("unreadCount",unreadCount);
 
         return "unread";
     }
 
     /* 읽음 -> 안읽음 처리*/
     @PostMapping("/mail/read")
-    public String doRead(@RequestParam("inum") int inum){
+    public String doRead(@RequestParam("inum") int inum, HttpSession session){
 
         mailmapper.updateInbox(inum);
 
@@ -349,18 +461,21 @@ public class MailController {
     
     // 메일삭제
     @GetMapping("/mail/deleteOne")
-    public String delOne(@RequestParam("inum") int inum){
+    public String delOne(@RequestParam("inum") int inum, HttpSession session){
         mailservice.delOne(inum);
-        return "redirect:/mail/inbox";
+
+        String gotoPage = (String)session.getAttribute("MailBar");
+        return "redirect:/mail/" + gotoPage;
     }
     
     // 메일 선택삭제
     @PostMapping("/mail/deleteAll")
-    public String delOne(@RequestParam("row") int[] row){
+    public String delOne(@RequestParam("row") int[] row, HttpSession session){
         for(int i=0; i<row.length; i++){
             mailservice.delOne(row[i]);
         }
-        return "redirect:/mail/inbox";
+        String gotoPage = (String)session.getAttribute("MailBar");
+        return "redirect:/mail/" + gotoPage;
     }
 
 }
