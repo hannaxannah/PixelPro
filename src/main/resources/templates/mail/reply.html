@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}">
+
+
+<head><title>PixelPro</title></head>
+
+<th:block layout:fragment="script">
+  <script th:inline = "javascript">
+
+    function innercontent(){
+        var icontent = document.getElementsByClassName('ql-editor');
+        var icontentHTML = icontent[0].innerHTML;
+        console.log(icontentHTML);
+        $('#icontent').attr('value',icontentHTML);
+    }
+    function sub(){
+        innercontent();
+    }
+    function save(){
+        innercontent();
+    }
+
+    function openAddBook(){
+        window.name = "parentForm";
+		windowObj = window.open("/mail/openAddBook", "childForm", "width=500, height=600, resizable");
+    }
+
+    </script>
+</th:block>
+
+<body class="content toggle-sidebar" layout:fragment="content">
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>메일쓰기</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/mail/inbox">메일</a></li>
+        <li class="breadcrumb-item active">메일쓰기</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <div class="row">
+
+    <div th:replace="mail/sideMenu::mail"></div>
+
+    <!-- 오른쪽 컬럼 -->
+    <div class="col-lg-10">
+      <div class="card" >
+        <div class="card-body">
+          <form name="myform" method="post" action="/mail/send" th:object="${inboxBean}" enctype="multipart/form-data">
+            <input type="hidden" name="email" th:value="${session.loginInfo.email}">
+            <input type="hidden" name="trash" value="N">
+            <!--<input type="hidden" name="senddate" th:value="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd HH:mm')}">-->
+            <input type="hidden" name="status" value="unread">
+            <input type="hidden" name="impo" value="0">
+            <input type="hidden" name="iref" th:value="${inbox.iref}">
+            <input type="hidden" name="istep" th:value="${inbox.istep}">
+
+            <h5 class="card-title"></h5>
+            <button type="submit" class="btn btn-success" onclick="sub()">보내기</button>
+            <!--<button type="button" class="btn btn-outline-light" onclick="save()" style="color:#000000">임시저장</button>-->
+            <hr>
+            <div class="row">
+              <div class="col-1 col-form-label">
+                <label for="recipient">받는 사람</label>
+              </div>
+              <div class="col-10">
+                <input type="text" class="form-control" name="recipient" id="recipient" th:value="${inbox.recipient}">
+              </div>
+              <div class="col-1 col-form-label">
+                <button type="button" class="btn btn-outline-light btn-sm" onclick="openAddBook()" style="color:#000000">주소록</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1 col-form-label">
+                <label for="ititle">제목</label>
+              </div>
+              <div class="col-11">
+                <input type="text" class="form-control" name="ititle" id="ititle">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1 col-form-label">
+                <label for="upload">파일첨부</label>
+              </div>
+              <div class="col-11">
+                <input type="file" class="form-control" name="upload" id="upload">
+              </div>
+            </div>
+            <hr>
+            <div class="quill-editor-default" style="height: 400px;"></div>
+            <input type="hidden" name="icontent" id="icontent">
+          </form>
+        </div>
+      </div>
+    </div><!-- END 오른쪽 컬럼 -->
+  </div>
+
+
+</main><!-- End #main -->
+</body>
