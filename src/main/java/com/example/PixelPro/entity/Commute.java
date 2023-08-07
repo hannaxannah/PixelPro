@@ -18,8 +18,6 @@ import java.sql.Date;
 @ToString
 public class Commute {
     @Id
-    //@GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "commuteseq", allocationSize=1)
     private Integer mbnum;
 
     @ColumnDefault("sysdate")
