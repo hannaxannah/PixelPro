@@ -47,10 +47,10 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:unless="${gapprovalList.?[gstatus == '승인 완료'].size() > 0}">
+            <tr th:unless="${gapprovalList.?[gstatus == '2차 승인 완료'].size() > 0}">
               <td colspan="4" align="center">결재 완료된 항목이 없습니다.</td>
             </tr>
-            <tr th:each="gapproval, gapprovalStat : ${gapprovalList}" th:if="${gapproval.gstatus == '승인 완료'}">
+            <tr th:each="gapproval, gapprovalStat : ${gapprovalList}" th:if="${gapproval.gstatus.contains('2차 승인 완료')}">
               <td th:text="${gapprovalList.size() - gapprovalStat.index}"></td>
               <td th:text="${gapproval.gsubject}"></td>
               <td th:text="${gapproval.gstatus}"></td>
@@ -73,7 +73,7 @@
             <tr th:unless="${gapprovalList.?[gstatus == '승인 요청'].size() > 0}">
               <td colspan="4" align="center">결재 요청된 항목이 없습니다.</td>
             </tr>
-            <tr th:each="gapproval, gapprovalStat : ${gapprovalList}" th:if="${gapproval.gstatus == '승인 요청'}">
+            <tr th:each="gapproval, gapprovalStat : ${gapprovalList}" th:if="${gapproval.gstatus.contains('승인 요청')}">
               <td th:text="${gapprovalList.size() - gapprovalStat.index}"></td>
               <td th:text="${gapproval.gsubject}"></td>
               <td th:text="${gapproval.gstatus}"></td>
