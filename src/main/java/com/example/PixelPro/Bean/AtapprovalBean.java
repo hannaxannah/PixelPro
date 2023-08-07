@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @ToString
 public class AtapprovalBean { //근태 결재
+
     private int atnum;
 
     @NotBlank(message = "사유는 필수 입력 사항입니다.")
@@ -34,4 +35,5 @@ public class AtapprovalBean { //근태 결재
 
     @NotBlank(message = "신청 날짜를 선택해 주세요.")
     private String reqdate;
+
 }

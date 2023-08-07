@@ -26,7 +26,8 @@
               <th scope="col">번호</th>
               <th scope="col">제목</th>
               <th scope="col">진행 상태</th>
-              <th scope="col">작성일</th>
+              <th scope="col">요청자</th>
+              <th scope="col">요청일</th>
             </tr>
             </thead>
             <tbody>
@@ -36,6 +37,7 @@
                 <a th:href="@{/approval/gapprovalDetail(ganum=${gapproval.ganum})}" th:text="${gapproval.gsubject}"></a>
               </td>
               <td th:text="${gapproval.gstatus}"></td>
+              <td th:text="${gapproval.gcontent}"></td>
               <td th:text="${gapproval.gdate}"></td>
             </tr>
             </tbody>
