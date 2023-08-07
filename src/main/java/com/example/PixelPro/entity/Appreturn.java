@@ -15,7 +15,8 @@ import javax.persistence.*;
 @ToString
 public class Appreturn {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    //@GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "appreturnseq", allocationSize=1)
     private Integer ganum;
     private String rcontent;
 
