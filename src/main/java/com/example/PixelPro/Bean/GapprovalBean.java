@@ -1,6 +1,8 @@
 package com.example.PixelPro.Bean;
 
+import com.example.PixelPro.entity.Gapproval;
 import lombok.*;
+import org.modelmapper.ModelMapper;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -37,4 +39,10 @@ public class GapprovalBean { //일반 결재
     private String gstatus;
 
     private String gdate;
+
+    private static ModelMapper modelMapper = new ModelMapper();
+    public static GapprovalBean createGapprovalBean(Gapproval gapproval) {
+        GapprovalBean gapprovalBean = modelMapper.map(gapproval, GapprovalBean.class);
+        return gapprovalBean;
+    }
 }
