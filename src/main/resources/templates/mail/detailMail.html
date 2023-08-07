@@ -70,6 +70,7 @@
           <hr>
           <div>
             <button type="button" class="btn btn-outline-light" onclick="" style="color:#000000">답장</button>
+            <button type="button" class="btn btn-outline-light" th:onclick="|location.href='@{/mail/relay(inum=${inbox.inum})}'|" style="color:#000000">전달</button>
             <button type="button" class="btn btn-outline-light" th:onclick="|location.href='@{/mail/deleteOne(inum=${inbox.inum})}'|" style="color:#000000">삭제</button>
           </div>
           <hr>

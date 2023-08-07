@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/popLayout}">
+
+
+<head><title>PixelPro</title></head>
+<th:block layout:fragment="css">
+  <style>
+	.listOne:hover{
+		background-color: #c6e0d4 ;
+	}
+	.listOne:active{
+		background-color: #007d43 ;
+	}
+    </style>
+</th:block>
+
+<body class="content toggle-sidebar" layout:fragment="content" style="background-color: #EDF7F2;">
+<main id="main" class="main">
+
+  <div class="col-10" style="margin: auto;margin-top: 5%;">
+    <div id="listScope">
+      <h2>주소록</h2>
+      <hr>
+      <div class="row">
+        <div th:each="list:${memberList}">
+          <div class="listOne" th:id="${list.email}">
+            <span th:text="${list.mbname + ' (' + list.mblevel + ') ' + list.dept}"></span><br>
+            <span th:text="${list.email}"></span>
+          </div>
+          <hr>
+      </div>
+    </div>
+  </div>
+</main><!-- End #main -->
+
+</body>
+
+<th:block layout:fragment="script">
+  <script th:inline = "javascript">
+    $(document).ready(function(){
+
+        $('.listOne').click(function(){
+            var email = $(this).attr("id");
+
+            $("#recipient",opener.document).val(email);
+            window.close();
+        });
+    });
+  </script>
+</th:block>

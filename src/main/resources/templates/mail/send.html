@@ -23,6 +23,11 @@
         innercontent();
     }
 
+    function openAddBook(){
+        window.name = "parentForm";
+		windowObj = window.open("/mail/openAddBook", "childForm", "width=500, height=600, resizable");
+    }
+
     </script>
 </th:block>
 
@@ -68,7 +73,7 @@
                                 <input type="text" class="form-control" name="recipient" id="recipient">
                             </div>
                             <div class="col-1 col-form-label">
-                                <button type="button" class="btn btn-outline-light btn-sm" onclick="" style="color:#000000">주소록</button>
+                                <button type="button" class="btn btn-outline-light btn-sm" onclick="openAddBook()" style="color:#000000">주소록</button>
                             </div>
                         </div>
                         <div class="row">

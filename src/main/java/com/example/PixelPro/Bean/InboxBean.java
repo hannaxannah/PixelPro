@@ -27,6 +27,8 @@ public class InboxBean {
     private int iref;
     private int istep;
 
+    private String original;
+
 
     private MultipartFile upload;
     public MultipartFile getUpload() {
