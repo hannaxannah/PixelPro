@@ -9,4 +9,5 @@ import java.util.List;
 public interface CommuteRepository extends JpaRepository<Commute, Integer> {
     List<Commute> findByMbnum(int mbnum);
 
+    Commute findTop1ByMbnumOrderByCmnumDesc(int mbnum);
 }

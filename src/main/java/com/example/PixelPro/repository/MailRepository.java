@@ -62,4 +62,6 @@ public interface MailRepository extends JpaRepository<Inbox, Integer> {
     List<Inbox> findByRecipientAndStatusOrderBySenddate(String recipient, String status);
 
     int countByRecipientAndStatus(String recipient, String status);
+
+    Inbox findTop1ByRecipientAndStatusOrderBySenddateDesc(String email, String unread);
 }

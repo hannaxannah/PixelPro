@@ -15,6 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class Club {
+
 @Id
 @GeneratedValue(strategy = GenerationType.AUTO)
 private Integer clnum;
