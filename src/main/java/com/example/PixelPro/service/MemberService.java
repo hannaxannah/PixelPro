@@ -48,4 +48,8 @@ public class MemberService {
     public Member findByMbname(String mbname) {
         return memberRepository.findByMbname(mbname);
     }
+
+    public List<Member> findAll(){
+        return memberRepository.findAll();
+    }
 }

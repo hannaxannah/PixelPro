@@ -33,4 +33,7 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     List<Member> findByMbnumTeam(@Param("dept") String dept);
 
     Member findByMbname(String mbname);
+
+    List<Member> findAll();
+
 }

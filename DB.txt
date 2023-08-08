@@ -241,6 +241,33 @@ values(3,'<table style="border-collapse: collapse; width: 100%; height: 364.68px
 
 select * from gapproval;
 
+-----알림테이블	--아직 메일만 됩니다! 김사장 >> 홍길동 메일 보내면 홍길동에 알림
+drop table alert cascade constraints;
+create table alert (
+    alnum number primary key, -- 알림번호
+    mbnum number not null, -- 받는사람
+    alurl varchar2(100) , -- url
+    alcontent varchar2(4000), -- 내용
+    altime date default sysdate, -- 알림시간
+    alread number default 0 --읽음표시
+);
+insert into alert(alnum, mbnum, alurl ,alcontent, altime, alread)
+values(1, 1,'/mail/inbox', '김사원님의 메일이 도착했습니다.', '2023-08-08', 0);
+
+insert into alert(alnum, mbnum, alurl ,alcontent, altime, alread)
+values(2, 1,'/mail/inbox', '이팀장님의 메일이 도착했습니다.', '2023-08-08', 0);
+
+insert into alert(alnum, mbnum, alurl ,alcontent, altime, alread)
+values(3, 1,'/mail/inbox', '김부장님의 메일이 도착했습니다.', '2023-08-08', 0);
+
+insert into alert(alnum, mbnum, alurl ,alcontent, altime, alread)
+values(4, 1,'/mail/inbox', '박대리님의 메일이 도착했습니다.', '2023-08-08', 0);
+
+insert into alert(alnum, mbnum, alurl ,alcontent, altime, alread)
+values(5, 1,'/mail/inbox', '홍길동님의 메일이 도착했습니다.', '2023-08-08', 0);
+
+
+
 commit;
 
 
