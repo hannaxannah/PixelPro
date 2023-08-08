@@ -13,15 +13,15 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class Club {
-@Id
-@GeneratedValue(strategy = GenerationType.AUTO)
-private Integer clnum;
-private int mbnum;
-private String clcategory;
-private String cltitle;
-private String cldetail;
-private String clwriter;
-private String cldate;
-private int clview;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer clnum;
+    private int mbnum;
+    private String clcategory;
+    private String cltitle;
+    private String cldetail;
+    private String clwriter;
+    private String cldate;
+    private int clview;
 
 }

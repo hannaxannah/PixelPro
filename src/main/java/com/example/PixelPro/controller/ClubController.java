@@ -24,8 +24,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ClubController {
 
-  private final ClubService clubService;
-  private final ClubCommentService clubCommentService;
+    private final ClubService clubService;
+    private final ClubCommentService clubCommentService;
     /*목록*/
     @GetMapping({"/club/list"})
     public String selectAll(HttpSession session, HttpServletResponse response,
