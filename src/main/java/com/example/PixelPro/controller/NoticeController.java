@@ -156,11 +156,10 @@ public class NoticeController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("noticeBean", notice);
-            return "/notice/insert";
+            return "/notice/update";
         }
 
-       Notice notice1 = noticeService.findByNnum(nnum);
-        model.addAttribute("noticeBean", notice1);
+        noticeService.saveNotice(Notice.insertNotice(notice));
         return "redirect:/notice/list";
     }
 
