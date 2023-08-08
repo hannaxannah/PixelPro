@@ -5,6 +5,8 @@ import com.example.PixelPro.repository.CommuteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CommuteService {
@@ -13,4 +15,10 @@ public class CommuteService {
     public void save(Commute commute) {
         commuteRepository.save(commute);
     }
+
+    public List<Commute> findByMbnum(int mbnum) {
+        return commuteRepository.findByMbnum(mbnum);
+    }
+
+
 }
