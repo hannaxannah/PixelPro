@@ -22,6 +22,7 @@ var newEvent;
 var editEvent;
 // 캘린더 초기설정
 $(document).ready(function() {
+
     var loadInitialCalendar = $.ajax({ //일정 불러오기
           url: "/calendar/event",
           method: "GET",
@@ -36,7 +37,7 @@ $(document).ready(function() {
               center: '', //중간
               right: '' //오른쪽
            },
-            height : 300,
+            height : 200,
             initialDate: new Date(), //오늘 날짜 기준으로 초기설정
             defaultView: 'listDay', //오늘 일정
             selectable: false,
@@ -91,6 +92,8 @@ $(document).ready(function() {
             container: 'body'
           });
 
+           $('#logType').val()
+           $('#logId').val()
 
            var show_username, show_type = true, show_calendar = true;
 
@@ -420,6 +423,7 @@ $(document).ready(function() {
 
     $('.filter').on('change', function() {
         $('#MainCalendar').fullCalendar('rerenderEvents');
+
          });
 
          $("#calendar_filter").select2({

@@ -457,6 +457,8 @@ select.filter{
 <head><title>PixelPro</title></head>
 
 <body class="content toggle-sidebar" layout:fragment="content">
+<input type="hidden" id="logType" name="logType" th:value="${session.loginInfo.dept}">
+<input type="hidden" id="logId" name="logId" th:value="${session.loginInfo.mbnum}">
 
 <!-- 일정 생성 모달창 -->
 <div class="modal fade" id="verticalycentered" tabindex="-1" aria-hidden="true">
