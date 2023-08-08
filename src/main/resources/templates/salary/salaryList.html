@@ -9,7 +9,12 @@
 
       function selectResult() {
       alert("확정되었습니다");
+      var con = document.getElementById("selectEnd");
 
+        if (con.style.display != "none") {
+       con.style.display = "none";
+        con.style.background = "gray";
+          }
       }
 
     </script>
@@ -41,7 +46,7 @@
                                     <th scope="col">인원 수</th>
                                     <th scope="col">진행상태</th>
                                     <th scope="col">지급총액</th>
-                                    <th scope="col">수정|삭제</th>
+                                    <th scope="col">수정</th>
                                     <th scope="col">급여대장</th>
                                 </tr>
                                 </thead>
@@ -54,8 +59,7 @@
                                     <td>확정</td>
                                     <td th:text="${#numbers.formatInteger(bean.actsalary, 0, 'COMMA')}"></td>
                                     <td>
-                                        <a type="button" class="btn btn-primary">수정</a>
-                                        <a type="button" class="btn btn-danger"> 삭제 </a>
+                                        <a type="button" id="selectEnd" class="btn btn-primary">수정</a>
                                     </td>
                                     <td><button type="button" id="successBtn" class="btn btn-success" onClick="return selectResult(this)">확정</button></td>
                                 </tr>
