@@ -32,5 +32,5 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     @Query(value = "select * from member where dept = :dept", nativeQuery = true)
     List<Member> findByMbnumTeam(@Param("dept") String dept);
 
-
+    Member findByMbname(String mbname);
 }

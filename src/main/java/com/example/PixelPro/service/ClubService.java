@@ -2,6 +2,7 @@ package com.example.PixelPro.service;
 
 import com.example.PixelPro.entity.Club;
 import com.example.PixelPro.entity.FreeEntity;
+import com.example.PixelPro.entity.Inbox;
 import com.example.PixelPro.repository.ClubRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,13 +18,21 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ClubService {
 
-    private final ClubRepository clubRepository;
+    private final ClubRepository clubrepository;
 
     public Page<Club> findByOrderByClnumDesc(Pageable pageable) {
 
-        List<Club> clubs = clubRepository.findByOrderByClnumDesc();
-        return clubRepository.findAll(pageable);
+        List<Club> clubs = clubrepository.findByOrderByClnumDesc();
+        return clubrepository.findAll(pageable);
     }
 
 
+    public void saveClub(Club club) {
+        clubrepository.save(club);
+    }
+
+    public Club findByCltitle(String cltitle) {
+        Club club = clubrepository.findByCltitle(cltitle);
+        return club;
+    }
 }

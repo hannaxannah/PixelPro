@@ -11,16 +11,14 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>공지</h1>
+        <h1>동아리</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item"><a href="/notice/list">공지</a></li>
+                <li class="breadcrumb-item"><a href="/club/list">동아리</a></li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
-
-    <button type="button" style="float:right; margin-bottom:10px;" class="btn btn-success" onClick="location.href='/notice/insert'">글쓰기</button>
 
     <form name="mylist" action="" method="post">
 
@@ -28,34 +26,40 @@
             <thead>
             <tr>
                 <th>번호</th>
+                <th>카테고리</th>
                 <th>제목</th>
                 <th>작성자</th>
                 <th>날짜</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="bean: ${}">
+            <tr th:each="bean: ${club}">
                 <td>
-
-                    <input type="checkbox" name="rowcheck" th:value="">
-                    <label th:text="${bean.nnum}"></label>
+                    <label th:text="${bean.clnum}"></label>
                 </td>
                 <td>
-                    <a th:text="" th:href=""></a>
+                    <label th:text="${bean.clcategory}"></label>
                 </td>
-                <td>인사팀</td>
-                <td th:text=""></td>
+                <td>
+                    <a th:text="${bean.cltitle}" th:href="@{'/club/detail/'+ ${bean.clnum}}"></a>
+                </td>
+               <!-- <td th:text="${bean.clwriter}"></td>-->
+                <td>
+                   <!-- <span th:text="${clwriterMember.mbname + ' ( ' + clwriterMember.mblevel + ' ) '}"></span>-->
+                </td>
+                <td th:text="${bean.cldate}"></td>
 
             </tr>
             </tbody>
         </table>
+        <button type="button" style="float:right; margin-bottom:10px;" class="btn btn-success" onClick="location.href='/club/insert'">글쓰기</button>
     </form>
-    <!--<div style="text-align:center">
+   <div style="text-align:center">
         <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
             <a th:if="${page != nowPage}" th:href="@{/notice/list(page = ${page - 1})}" th:text="${page}"></a>
             <strong th:if="${page == nowPage}" th:text="${page}" style="color : #198754;"></strong>
         </th:block>
-    </div>-->
+    </div>
 
 
 
