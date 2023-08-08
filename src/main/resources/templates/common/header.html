@@ -36,6 +36,61 @@
         * Author: BootstrapMade.com
         * License: https://bootstrapmade.com/license/
         ======================================================== -->
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script
+                src="https://code.jquery.com/jquery-3.3.1.min.js"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+                crossorigin="anonymous"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+        <script>
+        $(document).ready(  function() {
+            //connectWS();
+            //connectSockJS();
+            console.log('Connected!');
+            connectStomp2(); //페이지 로딩 될때 stomp연결하는 함수 호출.
+        });
+        function connectStomp2() { //연결해주는 함수
+            var sock = new SockJS("/stompTest"); // endpoint 맞아야된다! config파일에 지정된거
+            var client = Stomp.over(sock);
+            isStomp2 = true;
+            socket2 = client;
+
+            client.connect({}, function () { //연결!
+                console.log("CONNECTED");
+                var mbnum = $('input[name=mbnumber]').val();
+                client.send("/chat/getTotalUnreadCount", {}, mbnum);
+                client.subscribe("/topic/getTotalUnread/" + mbnum, function(event){
+                    var data = JSON.parse(event.body);
+                    console.log("UNREADCOUNT", data);
+                    if(data != null || data == "0" || data == 0){
+                        $('#unreadBox').html('안읽은 메시지 ' + data+ '개 있습니다.');
+                        $('#unreadCount').html(data);
+                    } else {
+                        $('#unreadBox').html('안읽은 메시지 없습니다.');
+                        $('#unreadCount').html('0');
+                    }
+                });
+                client.send("/chat/getRecentConversations", {}, mbnum);
+                client.subscribe("/topic/recentConversations/" + mbnum, function(event){
+                    var data = JSON.parse(event.body);
+                    var conversationHTML = "";
+                    $.each(data, function(){
+                        conversationHTML += '<li class="message-item"><a href="/chat?cnum=' + this.cnum + '"><i style = "margin: 0px 8px; font-size:20px;" class="bi bi-chat-dots-fill"></i><div>'
+                                         + '<h4>대화명 : ' + this.cname +'</h4>'
+                                         + '<p>' + this.recentSenderName + ' : "' + this.recentMsg + '"</p>'
+                                         + '</div></a></li><li><hr class="dropdown-divider"></li>';
+                    });
+                    $('#conversationList').html(conversationHTML);
+                });
+            });
+        }
+
+        var socket2 = null;
+        var isStomp2 = false;
+    </script>
     </head>
     <!-- ======= Header ======= -->
     <header id="header" class="header fixed-top d-flex align-items-center">
@@ -59,15 +114,31 @@
                     </ul><!-- End Notification Dropdown Items -->
                 </li><!-- End 알림 -->
                 <!-- 메세지 아이콘-->
-                <li class="nav-item dropdown">
+                <div th:if = "${session.loginInfo != null}">
+                <li class="nav-item dropdown" style = "margin-top:22px;">
+
                     <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                         <i class="bi bi-chat-left-text"></i>
-                        <span class="badge bg-success badge-number">0</span>
-                    </a><!-- End Messages Icon -->
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-                        <!-- 메세지 내역 작성-->
+                        <span class="badge bg-success badge-number" id = "unreadCount"></span>
+                    </a><!-- End Messages Icon -->.
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages" style = "280px;">
+                        <li class="dropdown-header" id = "unreadBox">
+
+                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <div id = "conversationList">
+
+                        </div>
+                        <li class="dropdown-footer">
+                            <a href="/chat" style = "color:#198754; text-decoration:none">메시지 보기</a>
+                        </li>
                     </ul><!-- End Messages Dropdown Items -->
+                    <input type = "hidden" name = "mbnumber" th:value = "${session.loginInfo?.mbnum}">
                 </li><!-- End 메세지 -->
+                </div>
                 <!-- 프로필 아이콘 -->
                 <span th:if="${session.loginInfo == null}"><a href="/login"><button type="button" class="btn btn-success">로그인</button></a></span>
                 <li class="nav-item dropdown pe-3">
@@ -115,6 +186,12 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/mail/inbox">
                     <i class="bi bi-envelope"></i><span>메일</span></i>
+                </a>
+            </li><!-- End 메일 -->
+            <!-- 채팅 -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/chat">
+                    <i class="bi bi-envelope"></i><span>채팅</span></i>
                 </a>
             </li><!-- End 메일 -->
             <!-- 결재 -->

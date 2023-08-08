@@ -10,6 +10,7 @@
 
 <div class="content" layout:fragment="content" style = "height: 800px; padding: 60px 0px; margin-left: 340px; margin-top:50px;">
     <input type = "hidden" name = "cnum" value = "">
+    <input type = "hidden" name = "initCnum" th:value = "${cnum}">
     <div class="container">
         <div class="messaging">
             <div class="inbox_msg">
@@ -25,7 +26,8 @@
                                 <div class="modal-content">
                                     <span class="close" onclick = "spanNone()">&times;</span>
                                     <form autocomplete="off" method="post" action="/chat/createConversation" onsubmit = "return startConversation()">
-                                        <input type = "hidden" name = "mbnum" th:value = "${session.member.mbnum}">
+                                        <input type = "hidden" name = "mbnum" th:value = "${session.loginInfo.mbnum}">
+
                                         <div class="autocomplete" style="width:300px;">
                                             <span style = "font-weight:bold; font-size: 20px; color: #198754">대화 시작하기 </span>
 
@@ -35,7 +37,7 @@
                                                 <span style = "font-weight:bold; font-size: 18px;">대화 참여자 : </span>
                                             <!--선택된 참여자 표시 -->
                                             </div>
-                                        </div>
+                                            </div>
                                         <span style = "font-weight:bold; font-size: 18px;">대화명 : </span>
                                         <input class = "form-control" type = "text" name = "cname" style = "height: 35px; width: 580px; margin-bottom: 12px;">
                                         <span style = "font-weight:bold; font-size: 18px;">메시지 작성 : </span>
@@ -86,7 +88,7 @@
                         <p id = "conversationParticipants" style = "border-bottom:1px solid #198754; font-size:14px; font-weight:bold;">
                         </p>
                     </div>
-                    <div class="msg_history" id = "msg_history" style = "height: 400px;">
+                    <div class="msg_history" id = "msg_history" style = "height: 430px;">
                         <!--메시지를 들어가는 부분-->
                     </div>
                     <div id = "inputBox">
@@ -206,7 +208,17 @@ $(document).ready(  function() {
             $('#autoMaker2').children().remove();
         }
     });
-
+    var cnum = $('input[name=initCnum]').val();
+    if(cnum != null || cnum != ""){
+        var timesRun = 0;
+        var interval = setInterval(function(){
+        timesRun += 1;
+        if(timesRun === 2){
+            clearInterval(interval);
+        }
+        highlight(cnum);
+        }, 110);
+    }
 });
 
 var allUsers = [];
@@ -243,6 +255,8 @@ function connectStomp() { //연결해주는 함수
                 highlight(cnum);
             }
             getConversation();
+            socket2.send("/chat/getTotalUnreadCount", {}, mbnum);
+            socket2.send("/chat/getRecentConversations", {}, mbnum);
             //socket.send('/chat/conversation/', {}, mbnum);
 
         }); //subscribe
@@ -262,6 +276,9 @@ function connectStomp() { //연결해주는 함수
              });
         }); //subscribe
     });
+
+
+
 }
 
 function getConversation(){
@@ -369,6 +386,7 @@ function highlight(num){ //대화 선택시 실행되는 함수,
         clearInterval(interval);
     }
     updateScroll();
+    updateNav();
     }, 110);
 
     //선택한 대화 표시 - 색갈 변경해준다.
@@ -468,6 +486,13 @@ function enterCheck(e){
     if (e.key === 'Enter' || e.keyCode === 13) {
         sendMessage();
     }
+}
+
+
+function updateNav(){
+    var mbnum = $('input[name="mbnum"]').val();
+    socket2.send("/chat/getTotalUnreadCount", {}, mbnum);
+    socket2.send("/chat/getRecentConversations", {}, mbnum);
 }
 
 // 모달 가져오기

@@ -96,7 +96,7 @@ public class MemberController {
             return "member/login";
         } else{
             session.setAttribute("loginInfo",member);
-
+            session.setAttribute("mbnum", member.getMbnum());
             // 로그인 페이지 이동 세션 설정
             /*if(destination != null){
                 return destination;
