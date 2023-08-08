@@ -137,17 +137,17 @@ CREATE TABLE member (
 	mstate varchar2(100) DEFAULT '재직' NOT NULL -- 근무상태
 );
 
-insert into member(mbnum, email, mbname, mblevel, mbaccess, password, mbphone, mbStartDate, dept)
-values(1, 'admin123@pixelpro.com', '김사장', '사장', 0, '1234', '010-7777-7777', '2000-08-01', '관리팀');
+insert into member(mbnum, email, mbname, mblevel, mbaccess, password, mbphone, mbStartDate, dept, mbsign)
+values(1, 'admin123@pixelpro.com', '김사장', '사장', 0, '1234', '010-7777-7777', '2000-08-01', '관리팀', '김사장인.png');
 
-insert into member(mbnum, email, mbname, mblevel, mbaccess, password, mbphone, mbStartDate, dept)
-values(2, 'lee123@pixelpro.com', '이사원', '사원', 8, '1234', '010-8888-8888', '2023-01-01', '인사팀');
+insert into member(mbnum, email, mbname, mblevel, mbaccess, password, mbphone, mbStartDate, dept, mbsign)
+values(2, 'lee123@pixelpro.com', '이사원', '사원', 8, '1234', '010-8888-8888', '2023-01-01', '인사팀', '이사원인.png');
 
-insert into member(mbnum, email, mbname, mblevel, mbaccess, password, mbphone, mbStartDate, dept)
-values(3, 'kim123@pixelpro.com', '김과장', '과장', 4, '1234', '010-3333-3333', '2019-07-01', '인사팀');
+insert into member(mbnum, email, mbname, mblevel, mbaccess, password, mbphone, mbStartDate, dept, mbsign)
+values(3, 'kim123@pixelpro.com', '김과장', '과장', 4, '1234', '010-3333-3333', '2019-07-01', '인사팀', '김과장인.png');
 
-insert into member(mbnum, email, mbname, mblevel, mbaccess, password, mbphone, mbStartDate, dept)
-values(4, 'em@pixelpro.com', '홍길동', '사원', 4, '1234', '010-3333-3333', '2020-07-01', '영업팀');
+insert into member(mbnum, email, mbname, mblevel, mbaccess, password, mbphone, mbStartDate, dept, mbsign)
+values(4, 'em@pixelpro.com', '홍길동', '사원', 8, '1234', '010-3333-3333', '2020-07-01', '영업팀', '홍길동인.png');
 
 --공지사항
 insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
@@ -213,4 +213,20 @@ insert into msgstatus values(12, 2, 4, 'read', 4);
 
 commit;
 select * from notice;
+
+
+--일반 결재(더 필요한 부분은 직접 작성하는게 더 편합니다!)
+insert into gapproval(ganum,gcontent,gdate,gcategory,ghmbnum,gsign1,gsign2,gstatus,gsubject,gwmbnum,signcontent)
+values(1,'<table style="border-collapse: collapse; width: 100%; height: 364.68px;" border="1"><colgroup><col style="width: 50.0429%;"><col style="width: 49.9571%;"></colgroup><tbody><tr style="height: 0.5px;"><td style="height: 342.281px; text-align: center;" colspan="2" rowspan="2"><p><span style="font-size: 36pt;">일반 결재</span></p><hr><p style="text-align: right;"><span style="font-size: 36pt;"><span style="font-size: 18pt;">홍길동 사원 </span></span></p><p style="text-align: center;"><span style="font-size: 12pt;">일반 결재 올립니다.</span></p><p style="text-align: center;"><span style="font-size: 12pt;">승인부탁드립니다.</span></p><p style="text-align: right;"></p></td></tr><tr style="height: 341.781px;"></tr><tr style="height: 22.3984px;"><td style="height: 22.3984px; text-align: right;" colspan="2"><span style="font-size: 12pt;">2023년 8월 8일 (화)</span></td></tr></tbody></table>','23/08/08','일반',3,3,1,'1차 승인 요청','일반 결재',4,'<td style="border-width: 1px; height: 66.3984px;"><img width="100%" src="/sign/홍길동인.png"></td>');
+
+insert into gapproval(ganum,gcontent,gdate,gcategory,ghmbnum,gsign1,gsign2,gstatus,gsubject,gwmbnum,signcontent)
+values(2,'<table style="border-collapse: collapse; width: 100%; height: 364.68px;" border="1"><colgroup><col style="width: 50.0429%;"><col style="width: 49.9571%;"></colgroup><tbody><tr style="height: 0.5px;"><td style="height: 342.281px; text-align: center;" colspan="2" rowspan="2"><p><span style="font-size: 36pt;">동아리 결재</span></p><hr><p style="text-align: right;"><span style="font-size: 36pt;"><span style="font-size: 18pt;">홍길동 사원 </span></span></p><p style="text-align: center;"><span style="font-size: 12pt;">등산 동아리 결재 올립니다.</span></p><p style="text-align: center;"><span style="font-size: 12pt;">승인부탁드립니다.</span></p><p style="text-align: right;"></p></td></tr><tr style="height: 341.781px;"></tr><tr style="height: 22.3984px;"><td style="height: 22.3984px; text-align: right;" colspan="2"><span style="font-size: 12pt;">2023년 8월 8일 (화)</span></td></tr></tbody></table>','23/08/08','동아리',3,3,1,'1차 승인 요청','동아리 결재',4,'<td style="border-width: 1px; height: 66.3984px;"><img width="100%" src="/sign/홍길동인.png"></td>');
+
+insert into gapproval(ganum,gcontent,gdate,gcategory,ghmbnum,gsign1,gsign2,gstatus,gsubject,gwmbnum,signcontent)
+values(3,'<table style="border-collapse: collapse; width: 100%; height: 364.68px;" border="1"><colgroup><col style="width: 50.0429%;"><col style="width: 49.9571%;"></colgroup><tbody><tr style="height: 0.5px;"><td style="height: 342.281px; text-align: center;" colspan="2" rowspan="2"><p><span style="font-size: 36pt;">기타 결재</span></p><hr><p style="text-align: right;"><span style="font-size: 36pt;"><span style="font-size: 18pt;">홍길동 사원 </span></span></p><p style="text-align: center;"><span style="font-size: 12pt;">기타 결재 올립니다.</span></p><p style="text-align: center;"><span style="font-size: 12pt;">승인부탁드립니다.</span></p><p style="text-align: right;"></p></td></tr><tr style="height: 341.781px;"></tr><tr style="height: 22.3984px;"><td style="height: 22.3984px; text-align: right;" colspan="2"><span style="font-size: 12pt;">2023년 8월 8일 (화)</span></td></tr></tbody></table>','23/08/08','기타',3,3,1,'1차 승인 요청','동아리 결재',4,'<td style="border-width: 1px; height: 66.3984px;"><img width="100%" src="/sign/홍길동인.png"></td>');
+
+select * from gapproval;
+
+commit;
+
 
