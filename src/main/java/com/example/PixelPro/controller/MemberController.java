@@ -106,14 +106,14 @@ public class MemberController {
 
             List<Commute> existDateList = commuteService.findByMbnum(member.getMbnum());
             if (existDateList.isEmpty()) {
-                out.println("<script>if (confirm('출근 등록 하시겠습니까?')) { location.href='/commute/attendanceGotoWork'; }</script>");
+                out.println("<script>if (confirm('출근 등록 하시겠습니까?')) { location.href='/commute/attendanceGotoWork'; } else{location.href='/'}</script>");
                 out.close();
             } else {
                 LocalDate today = LocalDate.now();
                 for (Commute existDate : existDateList) {
                     LocalDate gotoworkDate = existDate.getGotowork().toLocalDateTime().toLocalDate();
                     if (today.equals(gotoworkDate) == false) {
-                        out.println("<script>if (confirm('출근 등록 하시겠습니까?')) { location.href='/commute/attendanceGotoWork'; }</script>");
+                        out.println("<script>if (confirm('출근 등록 하시겠습니까?')) { location.href='/commute/attendanceGotoWork'; }else{location.href='/'}</script>");
                         out.close();
                     }
                 }
