@@ -12,6 +12,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -142,6 +143,8 @@ public class ChatController {
             msgstatusService.save(msgstatus);
             messagingTemplate.convertAndSend("/topic/receiveMessage/" + pmbnum, message);
         }
+        getAllUnread(String.valueOf(mbnum));
+        getRecentConversations(String.valueOf(mbnum));
     }
 
     @MessageMapping("/chat/allUsers")
@@ -180,8 +183,10 @@ public class ChatController {
     }
 
     @GetMapping("/chat")
-    public String goToChat(){
-
+    public String goToChat(@RequestParam(value = "cnum", required = false) Integer cnum, Model model){
+        if(cnum != null){
+            model.addAttribute("cnum", cnum);
+        }
         return "/chat/chat";
     }
     @MessageMapping("/chat/conversationInfo")
@@ -304,5 +309,43 @@ public class ChatController {
         int cpnum = participant.getCpnum();
         participantService.deleteParticipant(participant);
         index((String.valueOf(mbnum)));
+    }
+
+    @MessageMapping("/chat/getTotalUnreadCount")
+    public void getAllUnread(String mbnum){
+        int mbnumber = Integer.parseInt(mbnum);
+        List<Participant> participantList = participantService.getParticipantByMbNum(mbnumber);
+        int unreadCount = msgstatusService.getTotalUnread(participantList);
+        messagingTemplate.convertAndSend("/topic/getTotalUnread/" + mbnumber, unreadCount);
+    }
+    @MessageMapping("/chat/getRecentConversations")
+    public void getRecentConversations(String mbnum){
+        int mbnumber = Integer.parseInt(mbnum);
+        int i = 0;
+        List<Participant> partList = participantService.getParticipantByMbNum(Integer.parseInt(mbnum));
+        List<ChatListBean> chatList = new ArrayList<ChatListBean>();
+        for(Participant p : partList){
+            int cnum  = p.getCnum();
+            int cpnum = p.getCpnum();
+            Conversation conversation = conversationService.getConversationByCnum(cnum);
+            Message message = messageService.getRecentMessage(cnum);
+            int unreadCount = msgstatusService.getUnreadCount(cnum, cpnum);
+            ChatListBean singlechat = new ChatListBean();
+            singlechat.setCname(conversation.getCname()); //대화 이름
+            singlechat.setRecentMsg(message.getMcontent()); //제일 최근 메시지 내용
+            singlechat.setRecentSenderName(message.getSender()); //제일 최근 메시지 이름
+            singlechat.setUnreadCount(unreadCount); //안 읽은 메시지 수.
+            singlechat.setCnum(conversation.getCnum());
+            if(unreadCount > 0){
+                chatList.add(0, singlechat); //안읽은 메시지 있으면 처음부터 나오게 하기.
+            } else {
+                chatList.add(singlechat);
+            }
+            i++;
+            if(i == 5){
+                break;
+            }
+        }
+        messagingTemplate.convertAndSend("/topic/recentConversations/"+mbnumber, chatList);
     }
 }

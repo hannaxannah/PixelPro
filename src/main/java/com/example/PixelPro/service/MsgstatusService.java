@@ -1,9 +1,12 @@
 package com.example.PixelPro.service;
 
 import com.example.PixelPro.entity.Msgstatus;
+import com.example.PixelPro.entity.Participant;
 import com.example.PixelPro.repository.MsgstatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MsgstatusService {
@@ -21,5 +24,10 @@ public class MsgstatusService {
 
     public void save(Msgstatus msgstatus) {
         msgstatusrepository.save(msgstatus);
+    }
+
+    public int getTotalUnread(List<Participant> participantList) {
+        int totalUnread = msgstatusrepository.countAllUnread(participantList);
+        return totalUnread;
     }
 }
