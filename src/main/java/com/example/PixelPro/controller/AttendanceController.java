@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,6 +29,42 @@ public class AttendanceController {
         if(member == null){
             return "redirect:/login";
         }
+        /*
+        int offNum = 0;
+        int useNum = 0;
+        if(member.getMblevel().equals('8')){
+            offNum = 15;
+        }
+        List<Attendance> myattendanceList = attendanceService.findByMbnum(member.getMbnum());
+
+        String atcategory = null;
+        int yeon = attendanceService.countByAtcategory('연차');
+        for(Attendance a : myattendanceList){
+           use
+            useNum +=
+        }
+        model.addAttribute("offNum",offNum);
+        model.addAttribute("useNum",useNum);*/
+        String atcategory = "";
+        BigDecimal count = BigDecimal.valueOf(0);
+
+        List<Object[]> myattendanceList = attendanceService.countsByMbnumAndAtcategory(member.getMbnum());
+        for (Object[] row : myattendanceList) {
+            atcategory = (String) row[0];
+            count = (BigDecimal) row[1];
+
+            System.out.println("ATCATEGORY: " + atcategory + ", COUNT: " + count);
+        }
+        model.addAttribute("atcategory",atcategory);
+        model.addAttribute("count",count);
+        model.addAttribute("myattendanceList",myattendanceList);
+
+        BigDecimal offNum = BigDecimal.valueOf(0);
+
+        if(member.getMblevel().equals("대리")){
+            offNum = BigDecimal.valueOf(15);
+        }
+        model.addAttribute("offNum",offNum);
         return "/attendance/attendanceCheck";
     }
     @GetMapping(value = "/attendance/attendanceGList")
