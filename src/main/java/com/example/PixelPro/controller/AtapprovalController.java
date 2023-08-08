@@ -139,6 +139,8 @@ public class AtapprovalController {
         response.setContentType("text/html; charset=UTF-8");
 
         Atapproval atapproval = atapprovalService.findByAtnum(atnum);
+        Member memberName = memberService.findByMbnum(atapproval.getAtwmbnum());
+
         AtapprovalBean atapprovalBean = AtapprovalBean.createAtapprovalBean(atapproval);
         Member member = (Member) session.getAttribute("loginInfo");
         if(member == null){
@@ -156,7 +158,7 @@ public class AtapprovalController {
                     atapprovalBean.setAtstatus("승인 완료");
                     atapprovalBean.setAthmbnum(-1);
 
-                    AttendanceBean attendanceBean = new AttendanceBean(member.getMbnum(), atapproval.getAtcategory(), atapproval.getReqdate().toString());
+                    AttendanceBean attendanceBean = new AttendanceBean(atapproval.getAtwmbnum(), atapproval.getAtcategory(), atapproval.getReqdate().toString(), atapproval.getAtcontent(), memberName.getMbname());
                     Attendance attendance = Attendance.createAttendance(attendanceBean);
                     attendanceService.save(attendance);
                 }
@@ -164,7 +166,7 @@ public class AtapprovalController {
                 atapprovalBean.setAtstatus("승인 완료");
                 atapprovalBean.setAthmbnum(-1);
 
-                AttendanceBean attendanceBean = new AttendanceBean(member.getMbnum(), atapproval.getAtcategory(), atapproval.getReqdate().toString());
+                AttendanceBean attendanceBean = new AttendanceBean(atapproval.getAtwmbnum(), atapproval.getAtcategory(), atapproval.getReqdate().toString(), atapproval.getAtcontent(), memberName.getMbname());
                 Attendance attendance = Attendance.createAttendance(attendanceBean);
                 attendanceService.save(attendance);
             }

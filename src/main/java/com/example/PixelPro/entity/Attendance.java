@@ -21,6 +21,8 @@ public class Attendance {
     private Integer mbnum;
     private String atcategory;
     private Date atdate;
+    private String atcontent;
+    private String atname;
 
     private static ModelMapper modelMapper = new ModelMapper();
     public static Attendance createAttendance(AttendanceBean attendanceBean) {

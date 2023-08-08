@@ -13,14 +13,21 @@ import java.sql.Timestamp;
 @Entity(name = "commute")
 @Setter
 @Getter
+@SequenceGenerator(
+        name = "commutegenerator",
+        sequenceName = "commutegenerator", // 매핑할 데이터베이스 시퀀스 이름
+        initialValue = 1,
+        allocationSize = 1)
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "commute")
 @ToString
 public class Commute {
     @Id
-    private Integer mbnum;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "commutegenerator")
+    private Integer cmnum;
 
+    private Integer mbnum;
     @Column(columnDefinition = "TIMESTAMP")
     private Timestamp gotowork;
     @Column(columnDefinition = "TIMESTAMP",nullable = true)

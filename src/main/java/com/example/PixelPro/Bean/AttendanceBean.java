@@ -11,4 +11,7 @@ public class AttendanceBean { //근태 상태
     private Integer mbnum;
     private String atcategory;
     private String atdate;
+    private String atcontent;
+    private String atname;
+
 }
