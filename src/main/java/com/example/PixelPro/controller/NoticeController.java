@@ -1,7 +1,9 @@
 package com.example.PixelPro.controller;
 
 import com.example.PixelPro.Bean.NoticeBean;
+import com.example.PixelPro.entity.Member;
 import com.example.PixelPro.entity.Notice;
+import com.example.PixelPro.service.MemberService;
 import com.example.PixelPro.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,7 +19,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,13 +31,20 @@ import java.util.List;
 public class NoticeController {
 
     private final NoticeService noticeService;
-
-
-
+    private final MemberService memberService;
 
     /*목록*/
     @GetMapping({"/notice/list"})
-    public String selectAll(Model model,@PageableDefault(page=0, size = 8, sort = {"nimportant","nnum"}, direction = Sort.Direction.DESC) Pageable pageable){
+    public String selectAll(HttpSession session, HttpServletResponse response,
+                            Model model, @PageableDefault(page=0, size = 5, sort = {"nimportant","nnum"}, direction = Sort.Direction.DESC) Pageable pageable) throws IOException {
+
+        response.setContentType("text/html; charset=UTF-8");
+        Member member = (Member)session.getAttribute("loginInfo");
+        if(member == null){
+            session.setAttribute("destination", "redirect:/notice/list");
+            response.getWriter().print("<script>alert('로그인이 필요합니다.');location.href='/login'</script>");
+            response.getWriter().flush();
+        }
 
         Page<Notice> list = noticeService.findByOrderByNnumDescNimportantDesc(pageable);
 
@@ -59,12 +71,16 @@ public class NoticeController {
 
     /*공지사항 등록시*/
     @PostMapping(value="/notice/insert")
-    public String insertPost(@Valid NoticeBean noticeBean,MultipartFile file,
-                             BindingResult bindingResult, Model model) throws Exception {
+    public String insertPost(@Valid NoticeBean noticeBean,
+                             BindingResult bindingResult, Model model) {
 
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("noticeBean", noticeBean);
+            return "/notice/insert";
+        }
 
         Notice notice = Notice.insertNotice(noticeBean);
-        noticeService.saveNotice(notice,file);
+        noticeService.saveNotice(notice);
 
         return "redirect:/notice/list";
     }
@@ -135,10 +151,16 @@ public class NoticeController {
     }
 
     @PostMapping(value = "/notice/update")
-    public String updatePost(@Valid NoticeBean notice, MultipartFile file,
-                             BindingResult bindingResult, Model model)throws Exception{
+    public String updatePost(@Valid NoticeBean notice, BindingResult bindingResult,
+                             @RequestParam("nnum") int nnum, Model model){
 
-        noticeService.saveNotice(notice.toEntity(),file);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("noticeBean", notice);
+            return "/notice/insert";
+        }
+
+       Notice notice1 = noticeService.findByNnum(nnum);
+        model.addAttribute("noticeBean", notice1);
         return "redirect:/notice/list";
     }
 

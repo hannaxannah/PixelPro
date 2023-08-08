@@ -2,7 +2,8 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/mylayout}" xmlns:text-align="http://www.w3.org/1999/xhtml">
+      layout:decorate="~{common/mylayout}" xmlns="http://www.w3.org/1999/html"
+      xmlns:c="http://www.w3.org/1999/XSL/Transform">
 
 <th:block layout:fragment="script">
     <script th:inline = "javascript">
@@ -65,16 +66,13 @@
         </nav>
     </div><!-- End Page Title -->
 
-        <button type="button" style="float:right; margin-bottom:10px;" class="btn btn-success" onClick="location.href='/notice/insert'">글쓰기</button>
+
 
             <form name="mylist" action="/notice/checkDelete" method="post">
-
-            <table class="table">
+            <table class="table datatable">
                 <thead>
                     <tr>
-                        <th>
-                            <input type="checkbox" name="allcheck" onClick="allselect(this)">No
-                        </th>
+                        <th><input type="checkbox" name="allcheck" onClick="allselect(this)">번호</th>
                         <th>제목</th>
                         <th>작성자</th>
                         <th>날짜</th>
@@ -91,12 +89,13 @@
                         </td>
                         <td>인사팀</td>
                         <td th:text="${bean.ndate}"></td>
-
                     </tr>
                 </tbody>
             </table>
 
             <button type="button" style="float:left;" class="btn btn-secondary" onClick="return selectDelete()">삭제</button>
+            <button type="button" style="float:right;" class="btn btn-success" onClick="location.href='/notice/insert'">글쓰기</button>
+
             </form>
         <div style="text-align:center">
         <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">

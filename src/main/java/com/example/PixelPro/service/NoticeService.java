@@ -41,20 +41,20 @@ public class NoticeService {
     }
 
     /*글작성*/
-    @Transactional
+/*    @Transactional
     public void saveNotice(Notice notice, MultipartFile file) throws Exception {
 
-        /*우리의 프로젝트경로를 담아주게 된다 - 저장할 경로를 지정*/
-        String projectPath = System.getProperty("user.dir") + "\\demo1\\src\\main\\resources\\static\\sign\\";
+        *//*우리의 프로젝트경로를 담아주게 된다 - 저장할 경로를 지정*//*
+        String projectPath = System.getProperty("user.dir") + "\\PixelPro\\src\\main\\resources\\static\\sign\\";
 
-        /*식별자 . 랜덤으로 이름 만들어줌*/
+        *//*식별자 . 랜덤으로 이름 만들어줌*//*
         UUID uuid = UUID.randomUUID();
 
-        /*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*/
+        *//*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*//*
         String fileName = file.getOriginalFilename();
         String filePath = uuid + "_" + file.getOriginalFilename();
-        /*빈 껍데기 생성*/
-        /*File을 생성할건데, 이름은 "name" 으로 할거고, projectPath 라는 경로에 담긴다는 뜻*/
+        *//*빈 껍데기 생성*//*
+        *//*File을 생성할건데, 이름은 "name" 으로 할거고, projectPath 라는 경로에 담긴다는 뜻*//*
         File saveFile = new File(projectPath, filePath);
 
         file.transferTo(saveFile);
@@ -66,7 +66,7 @@ public class NoticeService {
         notice.setFilepath("/sign/"+filePath); //저장된파일의이름,저장된파일의경로
 
 
-        /*파일 저장*/
+        *//*파일 저장*//*
         noticeRepository.save(notice);
 
         NoticeBean noticeBean = NoticeBean.builder()
@@ -78,7 +78,7 @@ public class NoticeService {
                 .filepath(notice.getFilepath())
                 .build();
 
-    }
+    }*/
 
     /*상세보기*/
     public Notice getNoticeByNnum(int nnum) {
@@ -102,4 +102,7 @@ public class NoticeService {
     }
 
 
+    public void saveNotice(Notice notice) {
+        noticeRepository.save(notice);
+    }
 }
