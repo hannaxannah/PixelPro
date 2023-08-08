@@ -15,7 +15,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -183,9 +185,16 @@ public class ChatController {
     }
 
     @GetMapping("/chat")
-    public String goToChat(@RequestParam(value = "cnum", required = false) Integer cnum, Model model){
+    public String goToChat(@RequestParam(value = "cnum", required = false) Integer cnum, Model model, HttpServletResponse response, HttpSession session) throws IOException {
         if(cnum != null){
             model.addAttribute("cnum", cnum);
+        }
+        response.setContentType("text/html; charset=UTF-8");
+        Member member = (Member)session.getAttribute("loginInfo");
+        if(member == null){
+            session.setAttribute("destination", "redirect:/chat");
+            response.getWriter().print("<script>alert('로그인이 필요합니다.');location.href='/login'</script>");
+            response.getWriter().flush();
         }
         return "/chat/chat";
     }

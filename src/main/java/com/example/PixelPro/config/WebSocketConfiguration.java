@@ -8,7 +8,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
 @Configuration
-@EnableWebSocketMessageBroker //웹소켓 사용가능하는 아노테이션
+@EnableWebSocketMessageBroker //웹소켓 사용가능하게 하는 아노테이션
 public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
 
     @Override
