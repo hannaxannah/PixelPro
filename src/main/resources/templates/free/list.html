@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/common/mylayout}">
+<head>
+    <title>PixelPro</title>
+</head>
+
+<div class="content" layout:fragment="content">
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Community</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active"><a href="/community/free/list">익명게시판</a></li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <div class="card">
+        <div class="card-body" style="display:flex; flex-direction:column;">
+            <div>
+                <h5 class="card-title float-left">익명게시판</h5>
+                <button type="button" class="btn btn-success float-right" style="margin:15px 0 0 0" onclick="location.href='/community/free/write'">글 쓰기</button>
+            </div>
+            <!-- 검색 -->
+            <div class="search-bar" style="display:flex; justify-content:center; padding:10px 0 30px 0;">
+                <form class="search-form d-flex align-items-center" method="GET" action="/community/free/list" style="width:50%;">
+                    <select class="datatable-selector" name="fcategory" style="margin-right:5px;">
+                        <option value="">카테고리</option>
+                        <option value="자유">자유</option>
+                        <option value="운동">운동</option>
+                        <option value="연애">연애</option>
+                    </select>
+                    <input type="text" name="keyword" placeholder="검색" title="Enter search keyword"
+                        style="font-size:16px; color:#012970; border:1px solid rgba(1, 41, 112, 0.2); padding:7px 38px 7px 8px; border-radius:3px; transition:0.3s; width:100%;">
+                    <button type="submit" title="Search" style="border:0; padding:0; margin-left:-30px; background:none;">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </form>
+            </div>
+            <!-- End 검색 -->
+            <!-- 익명게시판 목록 -->
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col" style="width:5%; text-align:center">번호</th>
+                    <th scope="col">제목</th>
+                    <th scope="col" style="width:10%; text-align:center">조회수</th>
+                    <th scope="col" style="width:15%; text-align:center">날짜</th>
+                </tr>
+                </thead>
+                <tbody th:each="lists : ${lists}">
+                <!--th:each="num : ${#numbers.sequence(1, pageInfo.totalCount)}"-->
+                <tr th:if="${#lists.isEmpty(lists)}">
+                    <td colspan="4" style="text-align:center">게시물이 없습니다.</td>
+                </tr>
+                <tr>
+                    <th scope="row" style="text-align:center" th:text="${lists.fnum}"></th>
+                    <td>
+                        <!--<b th:text="|[${lists.fcategory}]|"></b>-->
+                        <a th:href="@{/community/free/detail(fnum=${lists.fnum})}" th:text="|[${lists.fcategory}] ${lists.ftitle}|"></a>
+                        <!--
+                        <i class="bi bi-chat-dots" style="padding-left:20px; color:rgba(33, 37, 41, 0.6);"></i>
+                        <a style="padding-left:5px; color:rgba(33, 37, 41, 0.6);" th:text="|${comments.get('${lists.fnum}')}개|"></a>
+                        -->
+                    </td>
+                    <td style="text-align:center" th:text="${lists.fcount}"></td>
+                    <td style="text-align:center" th:text="${lists.fdate}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <!-- End 익명 게시판 목록 -->
+        </div>
+        <!-- 페이지 표시 -->
+        <div class="card-footer clearfix" style="border-top:0">
+            <ul class="pagination pagination-sm m-0" style="justify-content:center">
+                <li class="page-item"><a class="page-link" th:href="@{/community/free/list(pageNumber=1)}">«</a></li>
+                <li th:each="pageNumber : ${#numbers.sequence(1, totalPages)}" class="page-item">
+                    <a class="page-link" th:href="@{/community/free/list(pageNumber=${pageNumber})}" th:text="${pageNumber}"></a>
+                </li>
+                <li class="page-item"><a class="page-link" th:href="@{/community/free/list(pageNumber=${totalPages})}">»</a></li>
+            </ul>
+        </div>
+        <!-- End 페이지 표시 -->
+
+    </div>
+
+</main><!-- End #main -->
+</div>

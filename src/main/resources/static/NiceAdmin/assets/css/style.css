@@ -1231,3 +1231,37 @@ h6 {
   font-size: 13px;
   color: #000000;
 }
+
+/*--------------------------------------------------------------
+# FreeBoard
+--------------------------------------------------------------*/
+.d-flex {
+    display: flex!important;
+}
+
+.comment, .reply-form {
+    margin-top: 30px;
+    position: relative;
+}
+
+.comment-reply {
+    padding-left: 40px;
+}
+
+/*--------------------------------------------------------------
+# SecondHandBoard
+--------------------------------------------------------------*/
+.posts-list article {
+  box-shadow: 0 4px 16px rgba(1, 41, 112, 0.1);
+  /*box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);*/
+  padding: 30px;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.posts-list .post-img {
+  max-height: 240px;
+  margin: -30px -30px 15px -30px;
+  overflow: hidden;
+}
