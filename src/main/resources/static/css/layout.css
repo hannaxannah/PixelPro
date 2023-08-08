@@ -49,5 +49,8 @@ body {
     padding: 10px;
     padding-top: 30px;
 }
+.impoCheck, .rdCheck, .unrdCheck:hover{
+    cursor: pointer;
+}
 
 /* =========== END mail css =========== */
