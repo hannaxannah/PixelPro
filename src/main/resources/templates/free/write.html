@@ -41,6 +41,7 @@
                 <h5 class="card-title float-left">글 쓰기</h5>
                 <!-- 글 쓰기 form -->
                 <form name="myform" action="/community/free/write" method="post" th:object="${freeBean}" style="margin:5px 0;">
+                    <input type="hidden" name="mbnum" th:field="${freeBean.mbnum}" th:value="${session.mbnum}">
                     <div class="row mb-3">
                         <label class="col-sm-2 col-form-label">카테고리</label>
                         <div class="col-sm-10">
