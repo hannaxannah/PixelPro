@@ -1,5 +1,6 @@
 package com.example.PixelPro.service;
 
+import com.example.PixelPro.entity.Calendar;
 import com.example.PixelPro.mapper.CalendarMapper;
 import com.example.PixelPro.repository.CalendarRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +15,16 @@ import java.util.Map;
 public class CalendarService {
 
     @Autowired
-    CalendarRepository calendarRepository;
+    private final CalendarRepository calendarRepository;
 
     @Autowired
     private CalendarMapper calendarMapper;
 
     public List<Map<String, Object>> getCalendarAll() {
-        System.out.println("서비스 "+calendarMapper.getCalendarAll());
         return calendarMapper.getCalendarAll();
+    }
+
+    public void saveCalendar(Calendar calendar) {
+        calendarRepository.save(calendar);
     }
 }

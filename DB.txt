@@ -40,6 +40,85 @@ values(10, 'admin123@pixelpro.com', 'lee123@pixelpro.com', '메일10', '<h1>메�
 
 commit;
 
+drop sequence calendarseq;
+create sequence calendarseq
+  increment by 1
+  start with 1
+  minvalue 1
+  maxvalue 100000
+  nocache;
+
+drop table calendar cascade constraints;
+CREATE TABLE calendar (
+	clid number NOT NULL,
+	clusername number NOT NULL,
+	clcalendar	 varchar2(4000) NOT NULL,
+	cltitle varchar2(4000) NOT NULL,
+	cldescription varchar2(4000) NOT NULL,
+	clstart varchar2(4000) NOT NULL,
+	clend varchar2(4000) NULL,
+	cllocation	varchar2(4000) NULL,
+	cltype varchar2(4000) NOT NULL,
+	clbackgroundcolor varchar2(4000) NULL,
+	clallday varchar2(5) NOT NULL
+);
+
+insert into calendar(clid,clusername,clcalendar,cltitle,cldescription,clstart,cltype,clbackgroundcolor,clallday)
+values(0,0,'휴일','신정','신정','2023-01-01','all','#f4516c','true');
+
+insert into calendar(clid,clusername,clcalendar,cltitle,cldescription,clstart,cltype,clbackgroundcolor,clallday)
+values(0,0,'휴일','설날 전날','설날 전날','2023-01-21','all','#f4516c','true');
+
+insert into calendar(clid,clusername,clcalendar,cltitle,cldescription,clstart,cltype,clbackgroundcolor,clallday)
+values(0,0,'휴일','설날','설날','2023-01-22','all','#f4516c','true');
+
+insert into calendar(clid,clusername,clcalendar,cltitle,cldescription,clstart,cltype,clbackgroundcolor,clallday)
+values(0,0,'휴일','설날 다음 날','설날 다음 날','2023-01-23','all','#f4516c','true');
+
+insert into calendar(clid,clusername,clcalendar,cltitle,cldescription,clstart,cltype,clbackgroundcolor,clallday)
+values(0,0,'휴일','대체공휴일(설날)','대체공휴일(설날)','2023-01-24','all','#f4516c','true');
+
+insert into calendar(clid,clusername,clcalendar,cltitle,cldescription,clstart,cltype,clbackgroundcolor,clallday)
+values(0,0,'휴일','3ㆍ1절','3ㆍ1절','2023-03-01','all','#f4516c','true');
+
+insert into calendar(clid,clusername,clcalendar,cltitle,cldescription,clstart,cltype,clbackgroundcolor,clallday)
+values(0,0,'휴일','어린이날','어린이날','2023-05-05','all','#f4516c','true');
+
+insert into calendar(clid,clusername,clcalendar,cltitle,cldescription,clstart,cltype,clbackgroundcolor,clallday)
+values(0,0,'휴일','부처님 오신 날','부처님 오신 날','2023-05-27','all','#f4516c','true');
+
+insert into calendar(clid,clusername,clcalendar,cltitle,cldescription,clstart,cltype,clbackgroundcolor,clallday)
+values(0,0,'휴일','대체공휴일(부처님 오신 날)','대체공휴일(부처님 오신 날)','2023-05-29','all','#f4516c','true');
+
+insert into calendar(clid,clusername,clcalendar,cltitle,cldescription,clstart,cltype,clbackgroundcolor,clallday)
+values(0,0,'휴일','현충일','현충일','2023-06-06','all','#f4516c','true');
+
+insert into calendar(clid,clusername,clcalendar,cltitle,cldescription,clstart,cltype,clbackgroundcolor,clallday)
+values(0,0,'휴일','광복절','광복절','2023-08-15','all','#f4516c','true');
+
+insert into calendar(clid,clusername,clcalendar,cltitle,cldescription,clstart,cltype,clbackgroundcolor,clallday)
+values(0,0,'휴일','추석 전날','추석 전날','2023-09-28','all','#f4516c','true');
+
+insert into calendar(clid,clusername,clcalendar,cltitle,cldescription,clstart,cltype,clbackgroundcolor,clallday)
+values(0,0,'휴일','추석','추석','2023-09-29','all','#f4516c','true');
+
+insert into calendar(clid,clusername,clcalendar,cltitle,cldescription,clstart,cltype,clbackgroundcolor,clallday)
+values(0,0,'휴일','추석 다음 날','추석 다음 날','2023-09-30','all','#f4516c','true');
+
+insert into calendar(clid,clusername,clcalendar,cltitle,cldescription,clstart,cltype,clbackgroundcolor,clallday)
+values(0,0,'휴일','개천절','개천절','2023-10-03','all','#f4516c','true');
+
+insert into calendar(clid,clusername,clcalendar,cltitle,cldescription,clstart,cltype,clbackgroundcolor,clallday)
+values(0,0,'휴일','한글날','한글날','2023-10-09','all','#f4516c','true');
+
+insert into calendar(clid,clusername,clcalendar,cltitle,cldescription,clstart,cltype,clbackgroundcolor,clallday)
+values(0,0,'휴일','크리스마스','크리스마스','2023-12-25','all','#f4516c','true');
+
+insert into calendar(clid,clusername,clcalendar,cltitle,cldescription,clstart,cltype,clbackgroundcolor,clallday)
+values(calendar_seq.nextval,1,'개인메모','테스트1','테스트1','2023-08-09','개발','#000000','false');
+
+commit;
+
 -- 임시 사원 테이블입니다. 담당자분께서는 추후 수정 부탁드립니다.
 drop table member cascade constraints;
 CREATE TABLE member (
