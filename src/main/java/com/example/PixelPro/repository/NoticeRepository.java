@@ -15,4 +15,6 @@ public interface NoticeRepository extends JpaRepository<Notice, Integer> {
     Notice findByNnum(int nnum);
     @Modifying
     List<Notice> findByOrderByNnumDescNimportantDesc();
+
+    List<Notice> findTop10ByOrderByNimportantDescNdateDesc();
 }

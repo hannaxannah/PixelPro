@@ -55,7 +55,7 @@
             <div class="card-body">
               <h5 class="card-title">오늘의 일정</h5>
 
-              <div id="HomeCalendar"></div>
+              <div id="HomeCalendar" style="height: 100px;"></div>
 
             </div>
           </div>
@@ -109,10 +109,10 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                  <tr th:each="notices:${notices}">
+                    <td><a th:href="@{'/notice/detail/'+ ${notices.nnum}}" th:text="${notices.ntitle}"></a></td>
+                    <td th:text="${notices.mbname}"></td>
+                    <td th:text="${notices.ndate}"></td>
                   </tr>
                 </tbody>
               </table>
