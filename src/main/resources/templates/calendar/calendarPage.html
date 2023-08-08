@@ -560,32 +560,18 @@ select.filter{
         <div class="p-15">
           <h3 style="text-align: center;">오늘의 일정</h3>
           <div id="MiniCalendar"></div>
-          <div data-select2-id="13">
-            <label>종류 선택</label>
+          <div data-select2-id="13" style="margin-top: 25px;">
+            <label>카테고리 선택</label>
             <div class="input-group">
               <select class="filter select2-hidden-accessible" id="calendar_filter" multiple="" data-select2-id="calendar_filter" tabindex="-1" aria-hidden="true">
                 <option value="개인 메모" data-select2-id="14">개인 메모</option>
                 <option value="업무" data-select2-id="15">업무</option>
                 <option value="프로젝트" data-select2-id="16">프로젝트</option>
                 <option value="휴일" data-select2-id="17">휴일</option>
-                <option value="공지" data-select2-id="18">공지</option>
+                <option value="공지사항" data-select2-id="18">공지사항</option>
                 <option value="" data-select2-id="19"></option>
               </select>
               <span class="select2 select2-container select2-container--default select2-container--below" dir="ltr" data-select2-id="2" style="width: 500px;">
-            </div>
-          </div>
-          <div style="padding:10px;">
-            <div>
-              <label><input class='filter' type="checkbox" value="-1" checked>공지사항</label>
-            </div>
-            <div>
-              <label><input class='filter' type="checkbox" value="0" checked>휴일</label>
-            </div>
-            <div>
-              <label><input class='filter' type="checkbox" value="1" checked>1</label>
-            </div>
-            <div>
-              <label><input class='filter' type="checkbox" th:value="${session.loginInfo.mbnum}" checked><span th:text="${session.loginInfo.mbname}"></span></label>
             </div>
           </div>
         </div>
