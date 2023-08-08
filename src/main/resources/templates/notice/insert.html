@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}" xmlns:text-align="http://www.w3.org/1999/xhtml">
+
+<th:block layout:fragment="script">
+
+  <script th:inline = "javascript">
+   $(document).ready(function(){
+
+    document.getElementById('date').valueAsDate = new Date();
+
+
+    var nimportantString = [[${noticeBean.nimportant}]];
+    console.log('nimportantString:' + nimportantString);
+
+    var nimportantList = $('input[name=nimportant]');
+    nimportantList.each(function(){
+      var curr = $(this).val();
+      var result = nimportantString.indexOf(curr);
+      console.log(curr + ":" + result);
+      if(result != 0){
+          $(this).attr('checked',true);
+        }
+    });
+
+   });
+  </script>
+</th:block>
+
+<head><title>PixelPro</title></head>
+
+<body class="content" layout:fragment="content">
+<main id="main" class="main">
+  <th:block layout:fragment="css">
+  <style>
+
+  input[id="cb1"] + label {
+	display: inline-block;
+	width: 15px;
+	height: 15px;
+	margin: 5px;
+	border: 2px solid #bcbcbc;
+	cursor: pointer;
+	position: relative;
+    top: 6px;
+}
+  input[id="cb1"]:checked + label {
+	background-color: #198754;
+}
+ input[id="cb1"] {
+	display: none;
+}
+
+  .fieldError{
+      color : red;
+      font-size:9pt;
+}
+</style>
+  </th:block>
+
+  <div class="pagetitle">
+    <h1>공지작성</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/notice/list">공지</a></li>
+        <li class="breadcrumb-item active">공지작성</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+    <form name="myform" method="post" action="/notice/insert" enctype="multipart/form-data" th:object="${noticeBean}">
+      <input id="nnum"  type="hidden" th:value="${notice?.nnum}" />
+
+
+      <button type="button" class="btn btn-secondary" style="float:right; margin-bottom:10px;" onclick="location.href='/notice/list'">취소</button>
+      <input type="submit" id="submit" style="float:right; margin-bottom:10px; margin-right:7px;" value="등록" class="btn btn-success" >
+      <input class="form-check-input" type="checkbox"  name="nimportant" value=1 id="cb1">
+
+      <label for="cb1"></label>상단에 배치
+      <div class="form-group">
+          <input type="text" class="form-control" id="ntitle" th:field="*{ntitle}" placeholder="제목을 입력하세요."/>
+            <p th:if="${#fields.hasErrors('ntitle')}" th:errors="*{ntitle}" class="fieldError"></p>
+
+      </div>
+
+      <div class="form-group">
+        <div class="custom-file" id="inputFile">
+          <input type="file" name="file" id="file" class="custom-file-input">
+          <label class="custom-file-label" for="file">파일을 선택하세요.</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+          <textarea type="text" class="form-control" id="ndetail" th:field="*{ndetail}" placeholder="내용을 입력하세요." rows="13px;"></textarea>
+        <p th:if="${#fields.hasErrors('ndetail')}" th:errors="*{ndetail}" class="fieldError"></p>
+      </div>
+      <div class="form-group">
+      <input type="date" class="form-control" id="date" name="date" value="${sysdate}" th:field="*{ndate}" readonly>
+      </div>
+
+
+
+    </form>
+
+
+
+
+</main><!-- End #main -->
+
+<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script>
+      $('.custom-file-input').on('change', function () {
+        var fileName = $(this).val().split('\\').pop();
+        $(this).siblings('.custom-file-label').addClass('selected').html(fileName);
+      });
+    </script>
+
+</body>
+</html>
