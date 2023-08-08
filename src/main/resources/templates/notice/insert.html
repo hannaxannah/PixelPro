@@ -12,6 +12,8 @@
     document.getElementById('date').valueAsDate = new Date();
 
 
+
+
     var nimportantString = [[${noticeBean.nimportant}]];
     console.log('nimportantString:' + nimportantString);
 
@@ -25,7 +27,17 @@
         }
     });
 
+
+
    });
+
+   function sub(){
+        alert(2);
+        var acontent = '공지사항이 등록되었습니다.';// 내용
+        var asurl = '/notice/list'; // url
+        var aldata = acontent + "_" + asurl;
+        socket2.send("/alert/sendAll", {}, aldata);
+    }
   </script>
 </th:block>
 
@@ -76,7 +88,7 @@
 
 
       <button type="button" class="btn btn-secondary" style="float:right; margin-bottom:10px;" onclick="location.href='/notice/list'">취소</button>
-      <input type="submit" id="submit" style="float:right; margin-bottom:10px; margin-right:7px;" value="등록" class="btn btn-success" >
+      <input type="submit" id="submit" style="float:right; margin-bottom:10px; margin-right:7px;" value="등록" class="btn btn-success" onclick="sub()">
       <input class="form-check-input" type="checkbox"  name="nimportant" value=1 id="cb1">
 
       <label for="cb1"></label>상단에 배치

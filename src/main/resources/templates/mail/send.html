@@ -18,6 +18,14 @@
     }
     function sub(){
         innercontent();
+
+        var arname = $('input[name=recipient]').val(); //받는사람
+        var asname = $('input[name=email]').val(); //보내는사람
+        var acontent = '메일이 도착했습니다.';// 내용
+        var asurl = '/mail/inbox'; // url
+        var data = arname + "_" + asname + "_" + acontent + "_" + asurl;
+        socket2.send("/alert/insertEmail", {}, data);
+
     }
     function save(){
         innercontent();
