@@ -21,4 +21,7 @@ public class CommuteService {
     }
 
 
+    public Commute findTop1ByMbnumOrderByCmnumDesc(int mbnum) {
+        return commuteRepository.findTop1ByMbnumOrderByCmnumDesc(mbnum);
+    }
 }
