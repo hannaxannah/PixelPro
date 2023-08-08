@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}">
+<head><title>PixelPro</title></head>
+
+<body class="content" layout:fragment="content">
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>중고장터</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a>Home</a></li>
+                <li class="breadcrumb-item"><a>커뮤니티</a></li>
+                <li class="breadcrumb-item active"><a href="/community/secondhand/list">중고장터</a></li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <div class="card">
+        <div class="card-body" style="display:flex; flex-direction:column;">
+            <div style="display:flex; flex-direction:row; align-items:center; justify-content:space-between; margin:20px 0;">
+                <!-- 검색 -->
+                <div class="search-bar" style="display:flex; justify-content:center; width:90%;">
+                    <form class="search-form d-flex align-items-center" method="GET" action="/community/secondhand/list" style="width:50%;">
+                        <select class="datatable-selector" name="shcategory" style="margin-right:5px;">
+                            <option value="">카테고리</option>
+                            <option value="팝니다">팝니다</option>
+                            <option value="삽니다">삽니다</option>
+                        </select>
+                        <input type="text" name="keyword" placeholder="검색" title="Enter search keyword"
+                               style="font-size:16px; color:#012970; border:1px solid rgba(1, 41, 112, 0.2); padding:7px 38px 7px 8px; border-radius:3px; transition:0.3s; width:100%;">
+                        <button type="submit" title="Search" style="border:0; padding:0; margin-left:-30px; background:none;">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </form>
+                </div>
+                <!-- End 검색 -->
+                <button type="button" class="btn btn-success" onclick="location.href='/community/secondhand/write'">글 쓰기</button>
+            </div>
+            <div class="row gy-4 posts-list" style="padding:5px;">
+                <!-- post list item -->
+                <div class="col-xl-4 col-lg-6" style="margin-bottom:20px;" th:each="lists :${lists}">
+                    <article>
+                        <div class="post-img">
+                            <img src="/NiceAdmin/assets/img/news-1.jpg" alt="" class="img-fluid">
+                        </div>
+                        <h4 class="title" style="margin-top:1.5rem;">
+                            <a th:href="@{/community/secondhand/detail(shnum=${lists.shnum})}" th:text="|[${lists.shcategory}] ${lists.shtitle}|"></a>
+                        </h4>
+
+                        <!-- 작성일, 조회수, 댓글수 -->
+                        <div class="meta-top" style="margin-top:5px; color:rgba(33, 37, 41, 0.6);">
+                            <ul style="display:flex; flex-wrap:wrap; list-style:none; align-items:center; padding-left:0; margin-bottom:0;">
+                                <li class="d-flex align-items-center">
+                                    <i class="bi bi-clock"></i>
+                                    <a style="padding-left:5px; color:rgba(33, 37, 41, 0.6);" th:text="${lists.shdate}"></a>
+                                </li>
+                                <li class="d-flex align-items-center">
+                                    <i class="bi bi-eye" style="padding-left:20px;"></i>
+                                    <a style="padding-left:5px; color:rgba(33, 37, 41, 0.6);"  th:text="|${lists.shcount}회|"></a>
+                                </li>
+                                <!--
+                                <li class="d-flex align-items-center">
+                                    <i class="bi bi-chat-dots" style="padding-left:20px;"></i>
+                                    <a style="padding-left:5px; color:rgba(33, 37, 41, 0.6);" >12개</a>
+                                </li>
+                                -->
+                            </ul>
+                        </div>
+                        <!-- End 작성일, 댓글수 -->
+                    </article>
+                </div>
+                <!-- End post list item -->
+            </div>
+            <!-- 더보기 표시 -->
+            <div class="card-footer clearfix" style="border-top:0">
+                <ul class="pagination pagination-sm m-0" style="justify-content:center">
+                    <li class="page-item" th:unless="${pageNumber > totalPages}">
+                        <a class="page-link" th:href="@{/community/secondhand/list(pageNumber=${pageNumber+1})}">더보기</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- End 더보기 표시 -->
+        </div>
+    </div>
+
+
+</main><!-- End #main -->
+</body>
