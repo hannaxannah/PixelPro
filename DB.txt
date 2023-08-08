@@ -57,7 +57,7 @@ CREATE TABLE calendar (
 	cldescription varchar2(4000) NOT NULL,
 	clstart varchar2(4000) NOT NULL,
 	clend varchar2(4000) NULL,
-	cllocation	varchar2(4000) NULL,
+	cllocation varchar2(4000) NULL,
 	cltype varchar2(4000) NOT NULL,
 	clbackgroundcolor varchar2(4000) NULL,
 	clallday varchar2(5) NOT NULL
