@@ -105,4 +105,8 @@ public class NoticeService {
     public void saveNotice(Notice notice) {
         noticeRepository.save(notice);
     }
+
+    public List<Notice> findTop10ByOrderByNimportantDescNdateDesc() {
+        return noticeRepository.findTop10ByOrderByNimportantDescNdateDesc();
+    }
 }
