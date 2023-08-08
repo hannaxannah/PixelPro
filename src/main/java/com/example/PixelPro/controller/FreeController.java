@@ -116,12 +116,8 @@ public class FreeController {
         List<FreeCommentEntity> commentlists = freeCommentService.getAllCommentLists(fnum);
         System.out.println("commentlists.size:"+commentlists.size());
 
-        //원댓글 max(fcstep)
-        Integer beforeFcstep = freeCommentService.beforeFcstep(fnum);
-
         model.addAttribute("free", freeEntity);
         model.addAttribute("comment", commentlists);
-        model.addAttribute("maxfcstep", beforeFcstep);
         return "free/detail";
     }
 
