@@ -315,8 +315,10 @@ $(document).ready(function() {
                         cache : false,
                         contentType : "application/json; charset:UTF-8",
                         data: jsonData
+                    })
+                    .fail(function (request, status, error) {
+                        document.location.href = document.location.href;
                     });
-                   $("#MainCalendar").fullCalendar('renderEvent', JSON.stringify(eventData));
                    $('#verticalycentered').find('input, textarea').val('');
                    $('#verticalycentered').find('input:checkbox').prop('checked',false);
                    $('#ends-at').prop('disabled', false);
