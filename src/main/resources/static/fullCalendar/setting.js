@@ -29,7 +29,20 @@ $(document).ready(function() {
         });
 
       loadInitialCalendar.done(function(data){ // loadInitialCalendar 로딩이 완료 된다면
-
+      var hcalendar = $('#HomeCalendar').fullCalendar({
+            themeSystem: 'bootstrap4',
+             header: { //캘린더 헤더
+               left: '', //왼쪽
+              center: '', //중간
+              right: '' //오른쪽
+           },
+            height : 300,
+            initialDate: new Date(), //오늘 날짜 기준으로 초기설정
+            defaultView: 'listDay', //오늘 일정
+            selectable: false,
+            editable: false,
+            events: data
+         });
       var calendar = $('#MainCalendar').fullCalendar({
 
         eventRender: function(event, element, view) { //일정만들기
@@ -62,6 +75,7 @@ $(document).ready(function() {
             title:    '<div class="popoverTitleCalendar">'+ event.title +'</div>',
             content:  '<div class="popoverInfoCalendar">' +
                       '<p><strong>카테고리 :</strong> ' + event.calendar + '</p>' +
+                      '<p><strong>부서 :</strong> ' + event.type + '</p>' +
                       '<p><strong>작성자 :</strong> ' + userInfo + '</p>' +
                       '<p><strong>위치 :</strong> '+locationInfo + '</p>' +
                       '<p><strong>기간:</strong> ' + displayEventDate + '</p>' +
