@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @ToString
 public class CommuteBean { //출퇴근
+    private Integer cmnum;
     private Integer mbnum;
     private Timestamp gotowork;
     private Timestamp getoff;
