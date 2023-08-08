@@ -7,22 +7,19 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 @Setter
 @Getter
 @ToString
 @NoArgsConstructor
-@DynamicInsert
-@DynamicUpdate
-@Data
 public class NoticeBean {
 
     private Integer nnum;
     private String mbname;
-    @NotBlank(message = "제목은 필수입력입니다.")
+    @NotEmpty(message = "제목은 필수입력입니다.")
     private String ntitle;
-    @NotBlank(message = "내용은 필수입력입니다.")
+    @NotEmpty(message = "내용은 필수입력입니다.")
     private String ndetail;
     private String filename;
     private String filepath;

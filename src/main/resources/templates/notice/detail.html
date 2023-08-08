@@ -52,7 +52,7 @@
         <tr>
             <td ><strong>제목</strong></td>
             <td style="width: 90%;" th:text="${notice.ntitle}"></td>
-        <tr>
+       <!-- <tr>
             <td><strong>첨부파일</strong></td>
 
           <td>
@@ -62,28 +62,9 @@
               <div th:if="${notice.filename != null}">
             <a th:href="@{${notice.filepath}}" th:text="${notice.filename}">첨부파일</a>
               </div>
-             <!-- <div th:if="${ntilce.filename == null}">
-                  <p>첨부파일이 없습니다.</p>
-              </div>
-              <div th:if="${notice.filename != null}">
-                  <a th:href="@{${notice.filepath}}" th:text="${filename}">첨부파일</a>
-              </div>-->
+
           </td>
-              <!-- <div th:if="${nfile.no != null}">
-                    <a th:href="|/attach/${nfile.no}|" th:text="${nfile.orgnm}"></a>
-                 </div>
-             </td>-->
-
-           <!-- <td>
-                <div th:if="${notice.fileId == null}">
-                   <p>첨부파일이 없습니다.</p>
-                </div>
-
-                <div th:if="${notice.fileId != null}">
-                <a th:href="@{'/download/' + ${notice.fileId}}" th:text="${filename}">첨부파일</a>
-                </div>
-            </td>-->
-        </tr>
+        </tr>-->
         <tr>
             <td colspan="2" style="height:300px;" th:text="${notice.ndetail}"></td>
         </tr>
