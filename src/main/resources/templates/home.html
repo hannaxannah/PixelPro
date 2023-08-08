@@ -41,9 +41,24 @@
             <div class="card-body">
               <h5 class="card-title">근태관리</h5>
 
-              <div>
-                <button type="button" class="btn btn-success" onClick="location.href='/commute/attendanceGotoWork'">출근</button>
-                <button type="button" class="btn btn-success" onClick="location.href='/commute/attendanceGetOffWork'">퇴근</button>
+              <!-- 오늘 출근기록이 없으면 -->
+              <div th:if="${commute == 'N'}" class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center circleGreen">
+                  <p><a href="/commute/attendanceGotoWork" style="color: #2eca6a;">on</a></p>
+                </div>
+                <div class="ps-3">
+                  <h6><a href="/commute/attendanceGotoWork">출근하기</a></h6>
+                </div>
+              </div>
+
+              <!-- 오늘 출근했으면 -->
+              <div th:if="${commute == 'Y'}" class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center circleGreen">
+                  <p><a href="/commute/attendanceGetOffWork" style="color: #2eca6a;">off</a></p>
+                </div>
+                <div class="ps-3">
+                  <h6><a href="/commute/attendanceGetOffWork">퇴근하기</a></h6>
+                </div>
               </div>
 
             </div>
@@ -57,7 +72,7 @@
 
               <div class="d-flex align-items-center">
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center circleGreen">
-                  <p><a href="/chat" style="color: #2eca6a;">1</a></p>
+                  <p><a href="/chat" style="color: #2eca6a;" th:text="${totalCount}"></a></p>
                 </div>
                 <div class="ps-3">
                   <h6><a href="/chat">채팅창 이동</a></h6>
