@@ -25,4 +25,8 @@ public class AttendanceService {
     public List<Attendance> findAll() {
         return attendanceRepository.findAll();
     }
+
+    public List<Object[]> countsByMbnumAndAtcategory(int mbnum) {
+        return attendanceRepository.countsByMbnumAndAtcategory(mbnum);
+    }
 }
