@@ -28,4 +28,9 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 
     @Query(value = "select * from member where mbnum NOT IN :mbnums", nativeQuery = true)
     List<Member> findAllByNotMbnums(@Param("mbnums") List<Integer> mbnums);
+
+    @Query(value = "select * from member where dept = :dept", nativeQuery = true)
+    List<Member> findByMbnumTeam(@Param("dept") String dept);
+
+
 }

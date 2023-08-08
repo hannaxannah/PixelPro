@@ -1,14 +1,20 @@
-package com.example.PixelPro.Bean;
+package com.example.PixelPro.entity;
 
 import lombok.*;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="calendar")
 @Setter
 @Getter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class CalendarBean {
-
+public class Calendar {
+    @Id
     private Integer clid;
     private Integer clusername;
     private String clcalendar;

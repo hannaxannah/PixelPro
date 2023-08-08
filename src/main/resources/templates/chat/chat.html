@@ -209,7 +209,7 @@ $(document).ready(  function() {
         }
     });
     var cnum = $('input[name=initCnum]').val();
-    if(cnum != null || cnum != ""){
+    if(cnum){
         var timesRun = 0;
         var interval = setInterval(function(){
         timesRun += 1;
@@ -482,7 +482,6 @@ function updateScroll(){
 
 function enterCheck(e){
     //enter치면 메시지 전송
-
     if (e.key === 'Enter' || e.keyCode === 13) {
         sendMessage();
     }

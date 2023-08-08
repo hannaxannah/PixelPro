@@ -16,11 +16,14 @@ import java.sql.Date;
 @Table(name = "attendance")
 @ToString
 public class Attendance {
-    @Id
+
     //@GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer mbnum;
     private String atcategory;
+    @Id
     private Date atdate;
+    private String atcontent;
+    private String atname;
 
     private static ModelMapper modelMapper = new ModelMapper();
     public static Attendance createAttendance(AttendanceBean attendanceBean) {

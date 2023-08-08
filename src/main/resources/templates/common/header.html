@@ -27,6 +27,7 @@
         <link th:href="@{/fullCalendar/jquery.datetimepicker.min.css}" rel="stylesheet">
         <link href='/docs/dist/demo-to-codepen.css' rel='stylesheet' />
         <link href='https://cdn.jsdelivr.net/npm/fullcalendar@3.10.5/dist/fullcalendar.min.css' rel='stylesheet' />
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <!-- Template Main CSS File -->
         <link th:href="@{/NiceAdmin/assets/css/style.css}" rel="stylesheet">
         <!-- =======================================================
@@ -191,9 +192,9 @@
             <!-- 채팅 -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/chat">
-                    <i class="bi bi-envelope"></i><span>채팅</span></i>
+                    <i class="bi bi-chat-right-dots"></i><span>채팅</span></i>
                 </a>
-            </li><!-- End 메일 -->
+            </li><!-- End 채팅 -->
             <!-- 결재 -->
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#approval-nav" data-bs-toggle="collapse" href="#">
@@ -250,35 +251,26 @@
                 </a>
                 <ul id="forms-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                     <li>
-                        <a href="forms-elements.html">
+                        <a href="/selectList">
                             <i class="bi bi-circle"></i><span>급여계산/대장</span>
                         </a>
                     </li>
                     <li>
-                        <a href="forms-layouts.html">
+                        <a href="/oneList">
                             <i class="bi bi-circle"></i><span>개인별 급여조회</span>
                         </a>
                     </li>
                     <li>
-                        <a href="forms-editors.html">
-                            <i class="bi bi-circle"></i><span>급여명세서</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="forms-validation.html">
+                        <a href="/resign/oneList">
                             <i class="bi bi-circle"></i><span>퇴직금 계산/대장</span>
                         </a>
                     </li>
                     <li>
-                        <a href="forms-validation.html">
-                            <i class="bi bi-circle"></i><span>퇴직금 지급현황</span>
+                        <a href="/resign/resignList">
+                            <i class="bi bi-circle"></i><span>퇴직금 추계액</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="forms-validation.html">
-                            <i class="bi bi-circle"></i><span>퇴직명세서</span>
-                        </a>
-                    </li>
+
                 </ul>
             </li><!-- End 급여 -->
 
@@ -299,6 +291,16 @@
                     <li>
                         <a href="">
                             <i class="bi bi-circle"></i><span>동아리</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/community/free/list">
+                            <i class="bi bi-circle"></i><span>익명게시판</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/community/secondhand/list">
+                            <i class="bi bi-circle"></i><span>중고장터</span>
                         </a>
                     </li>
                 </ul>
