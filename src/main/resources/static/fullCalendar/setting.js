@@ -92,9 +92,6 @@ $(document).ready(function() {
             container: 'body'
           });
 
-           $('#logType').val()
-           $('#logId').val()
-
            var show_username, show_type = true, show_calendar = true;
 
            var username = $('input:checkbox.filter:checked').map(function() {
@@ -279,15 +276,21 @@ $(document).ready(function() {
        newEvent = function(start, end) {
            var colorEventyType;
            $("#contextMenu").hide();
+
            $('input#title').val("");
            $('#starts-at').val(moment(start).format("YYYY-MM-DD HH:mm"));
            $('#ends-at').val(moment(end).subtract(1,'d').format("YYYY-MM-DD HH:mm"));
            $('#address_kakao1').val("");
            $('#add-event-desc').val("");
            $('#verticalycentered').modal('show');
-
+           var admin = $('#logType').val();
            var statusAllDay = $('[id=allday]').prop('checked');
            var endDay;
+
+            if(admin != "관리팀" && admin != "인사팀" ){ //관리팀이나 인사팀이 아니면 선택불가
+                $("select option[value='공지사항']").prop('disabled',true);
+                $("select option[value='휴일']").prop('disabled',true);
+            }
 
             $('.allDayNewEvent').on('change',function () {
                 if ($(this).is(':checked')) {
@@ -304,8 +307,8 @@ $(document).ready(function() {
                var startDay = moment($('#starts-at').val()).format("YYYY-MM-DD HH:mm");
                var endDay =  moment($('#ends-at').val()).format("YYYY-MM-DD HH:mm");
                var location = $('#address_kakao1').val();
-               var type = "관리자";
-               var username = 9999;
+               var type = $('#logType').val();
+               var username = parseInt($('#logId').val());
                var backgroundColor = $('#bgcolor').val();
                var calendar = $('#calendar').val();
                if (confirm("일정생성 하시겠습니까?")) {
@@ -362,25 +365,44 @@ $(document).ready(function() {
              $(".allDayEdit").prop('checked', false);
            }
 
-           $('.allDayEdit').on('change',function () {
+           if(event.username == "0"){ //공지사항으로 작성됬으면 못지우게
+                $('#editTitle').attr("readonly",true);
+                $('#editStartDate').attr("readonly",true);
+                $('#edit-event-desc').attr("readonly",true);
+                $('#deleteEvent').css('display', 'none');
+                $('#updateEvent').css('display', 'none');
+           }else if(event.username != $('#logId').val()){ //클릭한 일정과 로그인한 계정 id가 다를경우 변경,삭제 버튼 숨기기
+                $('#deleteEvent').css('display', 'none');
+                $('#updateEvent').css('display', 'none');
+           }else{
+                $('#editTitle').attr("readonly",false);
+                $('#editStartDate').attr("readonly",false);
+                $('#edit-event-desc').attr("readonly",false);
+                $('#deleteEvent').css('display', 'block');
+                $('#updateEvent').css('display', 'block');
+           }
+
+           $('#editAllday').on('change',function () {
              if ($(this).is(':checked')) {
                  $('#editEventModal').find('#editEndDate').attr("disabled", true);
                  $('#editEventModal').find('#editEndDate').val("");
                  $(".allDayEdit").prop('checked', true);
                } else {
                  $('#editEventModal').find('#editEndDate').attr("disabled", false);
+                 $('#editEventModal').find('#editEndDate').val(moment(event.end).format("YYYY-MM-DD HH:mm"));
                  $(".allDayEdit").prop('checked', false);
                }
            });
 
            $('#editTitle').val(event.title);
            $('#editStartDate').val(moment(event.start).format("YYYY-MM-DD HH:mm"));
-           $('#edit-calendar-type').val(event.calendar);
            $('#editAddress_kakao1').val(event.location);
+           $('#editCalendar-type').val(event.calendar).prop("selected",true);
            $('#edit-event-desc').val(event.description);
            $('#editBgcolor').val(event.backgroundColor);
-           $('.eventName').text(event.title);
+
            $('#editEventModal').modal('show');
+
            $('#updateEvent').unbind();
            $('#updateEvent').on('click', function() {
              var statusAllDay;
@@ -389,27 +411,56 @@ $(document).ready(function() {
              }else{
                statusAllDay = false;
              }
-             var title = $('input#editTitle').val();
-             var startDate = $('input#editStartDate').val();
-             var endDate = $('input#editEndDate').val();
-             var calendar = $('#edit-calendar-type').val();
+             var id = event.id;
+             var title = $('#editTitle').val();
+             var startDate = moment($('#editStartDate').val()).format("YYYY-MM-DD HH:mm");
+             var calendar = $('#editCalendar-type').val();
              var description = $('#edit-event-desc').val();
-             $('#editEventModal').modal('hide');
-             var eventData;
-             if (title) {
-               event.title = title
-               event.start = startDate
-               event.end = endDate
-               event.calendar = calendar
-               event.description = description
-               event.allDay = statusAllDay
-               $("#MainCalendar").fullCalendar('updateEvent', event);
-             } else {
-             alert("Title can't be blank. Please try again.")
+             if($(".allDayEdit").is(':checked')){ //하루종일이 체크되있으면
+               var endDate = null;
+            }else{ //체크 안되있으면
+               var endDate = moment($('#editEndDate').val()).format("YYYY-MM-DD HH:mm");
              }
+               var location = $('#editAddress_kakao1').val();
+               var type = event.type;
+               var username = event.username;
+               var backgroundColor = $('#editBgcolor').val();
+             $('#editEventModal').modal('hide');
+             if (confirm("일정변경 하시겠습니까?")) {
+                  var editEventData = {
+                      id : id,
+                      title: title,
+                      description: description,
+                      start: startDate,
+                       end: endDate,
+                       location: location,
+                       type: type,
+                       username: username,
+                       backgroundColor: backgroundColor,
+                       calendar: calendar,
+                       allDay: statusAllDay
+                    };
+                 var events = new Array();
+                 events.push(editEventData);
+                 var editData = JSON.stringify(events); //일정생성창에서 생성한 데이터를 json으로 바꾼후 ajax로 전달
+                  $.ajax({
+                         url: "/calendar/updateEvent",
+                         method: "POST",
+                         dataType: "json",
+                         cache : false,
+                         contentType : "application/json; charset:UTF-8",
+                         data: editData
+                     })
+                     .fail(function (request, status, error) {
+                         document.location.href = document.location.href;
+                     });
+                  }else {
+                  alert("취소됬습니다.")
+                }
            });
 
            $('#deleteEvent').on('click', function() {
+            if (confirm("일정을 정말 삭제 하시겠습니까?")) {
              $('#deleteEvent').unbind();
              if (event._id.includes("_fc")){
                $("#MainCalendar").fullCalendar('removeEvents', [event._id]);
@@ -417,6 +468,9 @@ $(document).ready(function() {
                $("#MainCalendar").fullCalendar('removeEvents', [event._id]);
              }
              $('#editEventModal').modal('hide');
+             }else{
+                alert("취소됬습니다.");
+             }
            });
          }
 
@@ -452,5 +506,9 @@ $(document).ready(function() {
 
         });
 
+        $('#closeEditModal').on('click', function() {
+            $('#editEventModal').modal('hide');
+            $('#editEventModal').hide();
+        });
   });
 

@@ -511,6 +511,8 @@ select.filter{
                 <option value="개인 메모">개인 메모</option>
                 <option value="업무">업무</option>
                 <option value="프로젝트">프로젝트</option>
+                <option value="공지사항">공지사항</option>
+                <option value="휴일">휴일</option>
               </select>
             </div>
           </div>
@@ -574,13 +576,16 @@ select.filter{
           </div>
           <div style="padding:10px;">
             <div>
-              <label><input class='filter' type="checkbox" value="0" checked>공휴일</label>
+              <label><input class='filter' type="checkbox" value="-1" checked>공지사항</label>
+            </div>
+            <div>
+              <label><input class='filter' type="checkbox" value="0" checked>휴일</label>
             </div>
             <div>
               <label><input class='filter' type="checkbox" value="1" checked>1</label>
             </div>
             <div>
-              <label><input class='filter' type="checkbox" value="9999" checked>9999</label>
+              <label><input class='filter' type="checkbox" th:value="${session.loginInfo.mbnum}" checked><span th:text="${session.loginInfo.mbname}"></span></label>
             </div>
           </div>
         </div>
@@ -655,6 +660,8 @@ select.filter{
                           <option value="개인 메모">개인 메모</option>
                           <option value="업무">업무</option>
                           <option value="프로젝트">프로젝트</option>
+                          <option value="공지사항">공지사항</option>
+                          <option value="휴일">휴일</option>
                         </select>
                       </div>
                     </div>
@@ -672,7 +679,7 @@ select.filter{
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-secondary" id="closeEditModal">닫기</button>
                     <button type="button" class="btn btn-danger" id="deleteEvent">일정 삭제</button>
                     <button type="button" class="btn btn-success" id="updateEvent">일정 변경</button>
                   </div>
