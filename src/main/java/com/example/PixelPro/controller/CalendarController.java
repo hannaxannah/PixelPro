@@ -1,13 +1,12 @@
 package com.example.PixelPro.controller;
 
+import com.example.PixelPro.entity.Calendar;
 import com.example.PixelPro.service.CalendarService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -55,10 +54,44 @@ public class CalendarController {
             jsonArr.add(jsonObj); // 대괄호 안에 넣어주기[{key:value , key:value, key:value},{key:value , key:value, key:value}]
         }
 
-        System.out.println("컨트롤러단 : "+jsonArr);
 
         return jsonArr;
 
+    }
+
+    @PostMapping("/addEvent") //ajax 데이터 전송 URL
+    @ResponseBody
+    public String addEvent(@RequestBody List<Map<String, Object>> jsonData) {
+
+        System.out.println(jsonData);
+
+        for (int i = 0; i < jsonData.size(); i++) {
+            int username = (Integer) jsonData.get(i).get("username");
+            String calendarInfo = (String) jsonData.get(i).get("calendar");
+            String title = (String) jsonData.get(i).get("title");
+            String description = (String) jsonData.get(i).get("description");
+            String startDateString = (String) jsonData.get(i).get("start");
+            String endDateString = (String) jsonData.get(i).get("end");
+            String location = (String) jsonData.get(i).get("location");
+            String type = (String) jsonData.get(i).get("type");
+            String backgroundColor = (String) jsonData.get(i).get("backgroundColor");
+            String allDay = String.valueOf(jsonData.get(i).get("allDay"));
+
+            Calendar calendar = new Calendar();
+                calendar.setClusername(username);
+                calendar.setClcalendar(calendarInfo);
+                calendar.setCltitle(title);
+                calendar.setCldescription(description);
+                calendar.setClstart(startDateString);
+                calendar.setClend(endDateString);
+                calendar.setCllocation(location);
+                calendar.setCltype(type);
+                calendar.setClbackgroundcolor(backgroundColor);
+                calendar.setClallday(allDay);
+
+            calendarService.saveCalendar(calendar);
+        }
+        return "/calendar/addEvent";
     }
 
 }

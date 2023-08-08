@@ -29,7 +29,9 @@ $(document).ready(function() {
         });
 
       loadInitialCalendar.done(function(data){ // loadInitialCalendar 로딩이 완료 된다면
+
       var calendar = $('#MainCalendar').fullCalendar({
+
         eventRender: function(event, element, view) { //일정만들기
          var startTimeEventInfo = moment(event.start).format('HH:mm'); //시작시간 포맷
          var endTimeEventInfo = moment(event.end).format('HH:mm'); //종료시간 포맷
@@ -45,6 +47,11 @@ $(document).ready(function() {
             locationInfo = event.location;
          }
 
+         if(event.username == "0"){
+            userInfo = "관리자";
+         }else{
+            userInfo = event.username;
+         }
          if(event.allDay == false){ //프로젝트 체크가 안되있을때
            displayEventDate = startDateEventInfo+" "+startTimeEventInfo + " - " + endDateEventInfo+" "+endTimeEventInfo; //시작시간-끝나는시간
          }else{
@@ -55,7 +62,7 @@ $(document).ready(function() {
             title:    '<div class="popoverTitleCalendar">'+ event.title +'</div>',
             content:  '<div class="popoverInfoCalendar">' +
                       '<p><strong>카테고리 :</strong> ' + event.calendar + '</p>' +
-                      '<p><strong>작성자 :</strong> ' + event.username + '</p>' +
+                      '<p><strong>작성자 :</strong> ' + userInfo + '</p>' +
                       '<p><strong>위치 :</strong> '+locationInfo + '</p>' +
                       '<p><strong>기간:</strong> ' + displayEventDate + '</p>' +
                       '<div class="popoverDescCalendar"><strong>내용 :</strong> '+ event.description +'</div>' +
@@ -227,75 +234,97 @@ $(document).ready(function() {
           },
        events: data //loadInitialCalendar에 담겨져서 넘어온 event값을 받는다
     });
-});
-        $('#addCustomCalendar').click(function(){ //일정생성 시 모달에 있는 값 초기화
-            $('input#title').val("");
-            $('#starts-at').val("");
-            $('#ends-at').val("");
-            $('#address_kakao1').val("");
-            $('#add-event-desc').val("");
-        });
 
+         var miniCalendar = $('#MiniCalendar').fullCalendar({
+            themeSystem: 'bootstrap4',
+             header: { //캘린더 헤더
+               left: '', //왼쪽
+              center: 'title', //중간
+              right: '' //오른쪽
+           },
+            initialDate: new Date(), //오늘 날짜 기준으로 초기설정
+            defaultView: 'basicDay', //오늘 일정
+            selectable: false,
+            editable: false,
+            events: data
+         });
+});
+
+    $('#addCustomCalendar').click(function(){ //일정 생성 버튼을 누르면 newEvent 활성화
+        const today = new Date();
+        const today1 = new Date(today);
+        today1.setDate(today.getDate()+1);
+
+        newEvent(today,today1);
+    });
 
     //일정 생성하기
        newEvent = function(start, end) {
            var colorEventyType;
            $("#contextMenu").hide();
            $('input#title').val("");
-           $('#starts-at').val(start);
-           $('#ends-at').val(end);
+           $('#starts-at').val(moment(start).format("YYYY-MM-DD HH:mm"));
+           $('#ends-at').val(moment(end).subtract(1,'d').format("YYYY-MM-DD HH:mm"));
            $('#address_kakao1').val("");
            $('#add-event-desc').val("");
            $('#verticalycentered').modal('show');
 
-           var statusAllDay;
+           var statusAllDay = $('[id=allday]').prop('checked');
            var endDay;
 
-           $('.allDayNewEvent').on('change',function () {
-
-             if ($(this).is(':checked')) {
-               statusAllDay = true;
-               var endDay = $('#ends-at').prop('disabled', true);
-             } else {
-               statusAllDay = false;
-               var endDay = $('#ends-at').prop('disabled', false);
-             }
-           });
+            $('.allDayNewEvent').on('change',function () {
+                if ($(this).is(':checked')) {
+                  statusAllDay = true;
+                } else {
+                  statusAllDay = false;
+                }
+              });
 
            $('#save-event').unbind();
            $('#save-event').on('click', function() {
-           var title = $('input#title').val();
-           var startDay = $('#starts-at').val();
-           if(!$(".allDayNewEvent").is(':checked')){
-             var endDay = $('#ends-at').val();
-           }
-           var calendar = $('#calendar-type').val();
-           var description = $('#add-event-desc').val();
-           var type = eventType;
-           if (title) {
-             var eventData = {
-                 _id: eventId,
-                 title: title,
-                 start: startDay,
-                 end: endDay,
-                 description: description,
-                 type: type,
-                 calendar: calendar,
-                 className: colorEventyType,
-                 username: 'Caio Vitorelli',
-                 backgroundColor: '#1756ff',
-                 textColor: '#ffffff',
-                 allDay: statusAllDay
-             };
-             $("#MainCalendar").fullCalendar('renderEvent', eventData, true);
-             $('#verticalycentered').find('input, textarea').val('');
-             $('#verticalycentered').find('input:checkbox').prop('checked',false);
-             $('#ends-at').prop('disabled', false);
-             $('#verticalycentered').modal('hide');
-             }
-           else {
-             alert("Title can't be blank. Please try again.")
-           }
+               var title = $('input#title').val();
+               var description = $('#add-event-desc').val();
+               var startDay = moment($('#starts-at').val()).format("YYYY-MM-DD HH:mm");
+               var endDay =  moment($('#ends-at').val()).format("YYYY-MM-DD HH:mm");
+               var location = $('#address_kakao1').val();
+               var type = "관리자";
+               var username = 9999;
+               var backgroundColor = $('#bgcolor').val();
+               var calendar = $('#calendar').val();
+               if (confirm("일정생성 하시겠습니까?")) {
+                 var eventData = {
+                     title: title,
+                     description: description,
+                     start: startDay,
+                     end: endDay,
+                     location: location,
+                     type: type,
+                     username: username,
+                     backgroundColor: backgroundColor,
+                     calendar: calendar,
+                     allDay: statusAllDay
+                   };
+                var events = new Array();
+                events.push(eventData);
+
+                var jsonData = JSON.stringify(events); //일정생성창에서 생성한 데이터를 json으로 바꾼후 ajax로 전달
+                 $.ajax({
+                        url: "/calendar/addEvent",
+                        method: "POST",
+                        dataType: "json",
+                        cache : false,
+                        contentType : "application/json; charset:UTF-8",
+                        data: jsonData
+                    });
+                   $("#MainCalendar").fullCalendar('renderEvent', JSON.stringify(eventData));
+                   $('#verticalycentered').find('input, textarea').val('');
+                   $('#verticalycentered').find('input:checkbox').prop('checked',false);
+                   $('#ends-at').prop('disabled', false);
+                   $('#verticalycentered').modal('hide');
+                 }
+               else {
+                 alert("취소됬습니다.")
+               }
            });
          }
 
@@ -330,6 +359,7 @@ $(document).ready(function() {
            $('#edit-calendar-type').val(event.calendar);
            $('#editAddress_kakao1').val(event.location);
            $('#edit-event-desc').val(event.description);
+           $('#editBgcolor').val(event.backgroundColor);
            $('.eventName').text(event.title);
            $('#editEventModal').modal('show');
            $('#updateEvent').unbind();
@@ -381,10 +411,8 @@ $(document).ready(function() {
              allowClear: true
          });
 
-        //var minDate = moment().subtract(0, 'days').millisecond(0).second(0).minute(0).hour(0);
 
         //SET DEFAULT VIEW CALENDAR
-
         var defaultCalendarView = $("#calendar_view").val();
 
         if(defaultCalendarView == 'month'){
