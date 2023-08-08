@@ -90,6 +90,12 @@
             </div>
             <hr style="height:1px; color:rgba(33, 37, 41, 0.6); margin: 0 20px;">
             <div class="card-body" style="padding:20px;">
+                <div style="font-size:1.1rem;"><b>가격 </b><a th:text="${#numbers.formatInteger(secondhand.shprice, 3, 'COMMA') + '원'}"></a></div>
+                <div style="font-size:1.1rem;"><b>거래 희망 장소 </b>
+                    <a th:if="${secondhand.shlocation == null}" th:text="없음"></a>
+                    <a th:unless="${secondhand.shlocation == null}" th:text="${secondhand.shlocation}"></a>
+                </div>
+                <hr style="height:1px; color:rgba(33, 37, 41, 0.6); margin:20px 0;">
                 <!-- 본문 -->
                 <p th:text="${secondhand.shdetail}"></p>
             </div>

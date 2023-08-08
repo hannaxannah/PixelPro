@@ -271,3 +271,62 @@ values(5, 1,'/mail/inbox', '홍길동님의 메일이 도착했습니다.', '202
 commit;
 
 
+--익명게시판 게시글
+insert into free(fnum, mbnum, fcategory, ftitle, fdetail, ffile, fcount, fdate)
+values(1, 4, '자유', '안녕하세요', '안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요', null, 0, '2023-08-08 16:34');
+insert into free(fnum, mbnum, fcategory, ftitle, fdetail, ffile, fcount, fdate)
+values(2, 3, '자유', '반가워요', '반가워요 반가워요 반가워요 반가워요 반가워요 반가워요 반가워요', null, 0, '2023-08-08 16:35');
+insert into free(fnum, mbnum, fcategory, ftitle, fdetail, ffile, fcount, fdate)
+values(3, 2, '운동', '회사 주변 헬스장 추천해주세요', '회사 주변 헬스장 추천해주세요 깨끗하고 시설 좋은 곳으로!!', null, 0, '2023-08-08 16:36');
+insert into free(fnum, mbnum, fcategory, ftitle, fdetail, ffile, fcount, fdate)
+values(4, 1, '연애', '플러팅 고수 되려면', '어떻게 해야 하나요', null, 0, '2023-08-08 16:37');
+insert into free(fnum, mbnum, fcategory, ftitle, fdetail, ffile, fcount, fdate)
+values(5, 4, '운동', '운동합시다', '체력 그지되는 중.. 다같이 운동해요.. ^^', null, 0, '2023-08-08 16:38');
+insert into free(fnum, mbnum, fcategory, ftitle, fdetail, ffile, fcount, fdate)
+values(6, 3, '자유', '오점뭐', '오늘 점심 뭐먹음? 이렇게 줄이는거 맞나요? ^^*', null, 0, '2023-08-08 16:39');
+insert into free(fnum, mbnum, fcategory, ftitle, fdetail, ffile, fcount, fdate)
+values(7, 2, '연애', '1초라도 안보이면', '2 이렇게 초초한데 3 삼초는 어떻게 기다려~~!! 이야이야이야이야', null, 1, '2023-08-08 16:40');
+insert into free(fnum, mbnum, fcategory, ftitle, fdetail, ffile, fcount, fdate)
+values(8, 1, '운동', '단백질 보충제 추천 plz', '안먹을거 같긴한데 추천 받습니다', null, 3, '2023-08-08 16:41');
+commit;
+
+--익명게시판 댓글
+insert into freecomment(fcnum, mbnum, fcdetail, fcdate, fnum, fcstep, fclevel, fclike)
+values(1, 1, '저도 잘 몰라요', '2023-08-08 16:41', 8, 0, 0, null);
+insert into freecomment(fcnum, mbnum, fcdetail, fcdate, fnum, fcstep, fclevel, fclike)
+values(2, 2, '저두여', '2023-08-08 16:42', 8, 0, 1, null);
+insert into freecomment(fcnum, mbnum, fcdetail, fcdate, fnum, fcstep, fclevel, fclike)
+values(3, 3, '아시는 분~~', '2023-08-08 16:43', 8, 1, 0, null);
+insert into freecomment(fcnum, mbnum, fcdetail, fcdate, fnum, fcstep, fclevel, fclike)
+values(4, 4, '정답 당근송', '2023-08-08 16:44', 7, 0, 0, null);
+commit;
+
+--중고장터 게시글
+insert into secondhand(shnum, mbnum, shcategory, shtitle, shprice, shdetail, shfile, shlocation, shcount, shdate)
+values(1, 1, '팝니다', '곰돌이 인형', '0', '추억의 귀여운 곰돌이 인형 사실 분~ 가격 제시 받습니다', null, null, 0, '2023-08-08 16:27');
+insert into secondhand(shnum, mbnum, shcategory, shtitle, shprice, shdetail, shfile, shlocation, shcount, shdate)
+values(2, 2, '팝니다', '넷플릭스 5개월', '50000', '1년 결제해서 5개월 남았고 싸게 팝니다', null, null, 0, '2023-08-08 16:28');
+insert into secondhand(shnum, mbnum, shcategory, shtitle, shprice, shdetail, shfile, shlocation, shcount, shdate)
+values(3, 3, '팝니다', '워터슈즈 팝니다', '5000', '총 3번 착용했고 더 이상 신을 일 없어서 팝니다', null, null, 0, '2023-08-08 16:29');
+insert into secondhand(shnum, mbnum, shcategory, shtitle, shprice, shdetail, shfile, shlocation, shcount, shdate)
+values(4, 4, '삽니다', '제 고양이 그려주실 분', '0', '사례해드립니다', null, null, 0, '2023-08-08 16:30');
+insert into secondhand(shnum, mbnum, shcategory, shtitle, shprice, shdetail, shfile, shlocation, shcount, shdate)
+values(5, 1, '팝니다', '스벅 5만원 기프티콘', '48000', '팝니다', null, null, 0, '2023-08-08 16:31');
+insert into secondhand(shnum, mbnum, shcategory, shtitle, shprice, shdetail, shfile, shlocation, shcount, shdate)
+values(6, 2, '삽니다', '아이폰13 프로 256gb', '0', '댓글로 가격 제시해주세요', null, null, 0, '2023-08-08 16:32');
+insert into secondhand(shnum, mbnum, shcategory, shtitle, shprice, shdetail, shfile, shlocation, shcount, shdate)
+values(7, 3, '팝니다', '로지텍 마우스', '20000', '싸게 가져가세요', null, null, 2, '2023-08-08 16:33');
+insert into secondhand(shnum, mbnum, shcategory, shtitle, shprice, shdetail, shfile, shlocation, shcount, shdate)
+values(8, 4, '팝니다', '에어팟 프로 팔아요', '200000', '한달 사용했고 선물 받은거 있어서 팝니다', null, null, 2, '2023-08-08 16:34');
+commit;
+
+--중고장터 댓글
+insert into secondhandcomment(shcnum, mbnum, shcdetail, shcdate, shnum, shcstep, shclevel)
+values(1, 1, '180000으로 깎아주실 수 있나요', '2023-08-08 16:41', 8, 0, 0);
+insert into secondhandcomment(shcnum, mbnum, shcdetail, shcdate, shnum, shcstep, shclevel)
+values(2, 4, '그건 좀..', '2023-08-08 16:42', 8, 0, 1);
+insert into secondhandcomment(shcnum, mbnum, shcdetail, shcdate, shnum, shcstep, shclevel)
+values(3, 3, '사겠습니다 계좌 알려주세요', '2023-08-08 16:43', 8, 1, 0);
+insert into secondhandcomment(shcnum, mbnum, shcdetail, shcdate, shnum, shcstep, shclevel)
+values(4, 2, '기종 이름 알려주세요', '2023-08-08 16:44', 7, 0, 0);
+commit;

@@ -57,9 +57,9 @@
                     <td colspan="4" style="text-align:center">게시물이 없습니다.</td>
                 </tr>
                 <tr>
-                    <th scope="row" style="text-align:center" th:text="${totalCount}"></th>
+                    <th scope="row" style="text-align:center" th:text="${lists.fnum}"></th>
                     <td>
-                        <a th:href="@{/community/free/detail(fnum=${lists.fnum})}" th:text="|[${lists.fcategory}] ${lists.ftitle}|"></a>
+                        <a style="color:#198754;" th:href="@{/community/free/detail(fnum=${lists.fnum})}" th:text="|[${lists.fcategory}] ${lists.ftitle}|"></a>
                         <!--
                         <i class="bi bi-chat-dots" style="padding-left:20px; color:rgba(33, 37, 41, 0.6);"></i>
                         <a style="padding-left:5px; color:rgba(33, 37, 41, 0.6);" th:text="|${comments.get('${lists.fnum}')}개|"></a>
@@ -76,7 +76,10 @@
         <div class="card-footer clearfix" style="border-top:0">
             <ul class="pagination pagination-sm m-0" style="justify-content:center">
                 <li class="page-item"><a class="page-link" th:href="@{/community/free/list(pageNumber=1)}">«</a></li>
-                <li th:each="pageNumber : ${#numbers.sequence(1, totalPages)}" class="page-item">
+                <li th:if="${totalPages == 0}" class="page-item">
+                    <a class="page-link" th:href="@{/community/free/list(pageNumber=1)}" th:text="1"></a>
+                </li>
+                <li th:unless="${totalPages == 0}" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}" class="page-item">
                     <a class="page-link" th:href="@{/community/free/list(pageNumber=${pageNumber})}" th:text="${pageNumber}"></a>
                 </li>
                 <li class="page-item"><a class="page-link" th:href="@{/community/free/list(pageNumber=${totalPages})}">»</a></li>

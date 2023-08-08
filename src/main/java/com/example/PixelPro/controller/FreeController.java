@@ -3,6 +3,7 @@ package com.example.PixelPro.controller;
 import com.example.PixelPro.Bean.FreeBean;
 import com.example.PixelPro.entity.FreeCommentEntity;
 import com.example.PixelPro.entity.FreeEntity;
+import com.example.PixelPro.entity.Member;
 import com.example.PixelPro.service.FreeCommentService;
 import com.example.PixelPro.service.FreeService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -35,7 +39,19 @@ public class FreeController {
     public String gotoFreeBoard(
             @RequestParam(value="fcategory", required=false) String fcategory,
             @RequestParam(value="keyword", required=false) String keyword,
-            @RequestParam(value="pageNumber", required=false) String pageNumber, Model model){
+            @RequestParam(value="pageNumber", required=false) String pageNumber,
+            Model model, HttpSession session, HttpServletResponse response) throws IOException {
+
+        /*
+        response.setContentType("text/html; charset=UTF-8");
+
+        Member member = (Member)session.getAttribute("loginInfo");
+        if(member == null){
+            session.setAttribute("destination", "redirect:/community/free/list");
+            response.getWriter().print("<script>alert('로그인이 필요합니다.');location.href='/login'</script>");
+            response.getWriter().flush();
+        }
+        */
 
         System.out.println(fcategory+"/"+keyword);
 
@@ -86,7 +102,7 @@ public class FreeController {
         }
 
         //회원번호 임시 저장
-        freeBean.setMbnum(12345);
+        //freeBean.setMbnum(12345);
 
         freeBean.setFcount(0);
 
