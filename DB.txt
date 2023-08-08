@@ -46,3 +46,39 @@ values(2, 'lee123@pixelpro.com', '이사원', '사원', 8, '1234', '010-8888-888
 
 insert into member(mbnum, email, mbname, mblevel, mbaccess, password, mbphone, mbStartDate, dept)
 values(3, 'kim123@pixelpro.com', '김과장', '과장', 4, '1234', '010-3333-3333', '2019-07-01', '인사부');
+
+
+--공지사항
+insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
+values(30,'인사팀','전자결재 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/sign/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
+
+insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
+values(31,'인사팀','전자결재 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/sign/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
+
+insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
+values(32,'인사팀','전자결재 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/sign/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
+
+insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
+values(33,'인사팀','전자결재 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/sign/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
+
+insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
+values(34,'인사팀','상단 사내경비 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/sign/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',1);
+
+insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
+values(35,'인사팀','상단 출/퇴근 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/sign/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',1);
+
+insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
+values(36,'인사팀','전자결재 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/sign/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
+
+insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
+values(37,'인사팀','상단 재택근무 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/sign/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',1);
+
+insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
+values(38,'인사팀','전자결재 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/sign/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
+
+insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
+values(39,'인사팀','전자결재 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/sign/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
+
+commit;
+select * from notice;
+

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}" xmlns:text-align="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<th:block layout:fragment="script">
+    <script th:inline = "javascript">
+  $(document).ready(function(){
+    $("#update").on("click", function(){
+                    var frm = $("#frm")[0];
+                    frm.action = "/notice/update?nnum=${bean.nnum}";
+                    frm.submit();
+                });
+        });
+
+      function deleteConfirm(){
+         var answer = confirm("데이터를 삭제할까요?");
+         return answer ? true : false;
+      }
+
+      </script>
+</th:block>
+
+<head><title>PixelPro</title></head>
+
+<body class="content" layout:fragment="content">
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>상세보기</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/notice/list">공지</a></li>
+                <li class="breadcrumb-item active">상세보기</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+
+    <form id="frm" th:action="@{'/notice/delete/'}" method="post">
+        <input type="hidden" name="nnum" th:value="${notice.nnum}"/>
+        <button style="float:right; margin-bottom:10px;" class="btn btn-secondary" onClick="return deleteConfirm()">삭제</button>
+    </form>
+
+        <form th:action="@{'/notice/update/' + ${notice.nnum}}" method="get">
+            <input type="submit" value="수정" style="float:right;  margin-bottom:10px; margin-right:7px;" class="btn btn-warning">
+        </form>
+
+        <table class="table" border="1">
+        <tr>
+            <td ><strong>제목</strong></td>
+            <td style="width: 90%;" th:text="${notice.ntitle}"></td>
+        <tr>
+            <td><strong>첨부파일</strong></td>
+
+          <td>
+              <div th:if="${notice.filename == null}">
+                  <p>첨부파일이 없습니다.</p>
+              </div>
+              <div th:if="${notice.filename != null}">
+            <a th:href="@{${notice.filepath}}" th:text="${notice.filename}">첨부파일</a>
+              </div>
+             <!-- <div th:if="${ntilce.filename == null}">
+                  <p>첨부파일이 없습니다.</p>
+              </div>
+              <div th:if="${notice.filename != null}">
+                  <a th:href="@{${notice.filepath}}" th:text="${filename}">첨부파일</a>
+              </div>-->
+          </td>
+              <!-- <div th:if="${nfile.no != null}">
+                    <a th:href="|/attach/${nfile.no}|" th:text="${nfile.orgnm}"></a>
+                 </div>
+             </td>-->
+
+           <!-- <td>
+                <div th:if="${notice.fileId == null}">
+                   <p>첨부파일이 없습니다.</p>
+                </div>
+
+                <div th:if="${notice.fileId != null}">
+                <a th:href="@{'/download/' + ${notice.fileId}}" th:text="${filename}">첨부파일</a>
+                </div>
+            </td>-->
+        </tr>
+        <tr>
+            <td colspan="2" style="height:300px;" th:text="${notice.ndetail}"></td>
+        </tr>
+            <tr></tr>
+    </table>
+
+
+    <div style="text-align:center;">
+
+        <button type="button" class="btn btn-success" onclick="location.href='/notice/list'">목록</button>
+    </div>
+
+</main><!-- End #main -->
+
+<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script>
+      $('.custom-file-input').on('change', function () {
+        var fileName = $(this).val().split('\\').pop();
+        $(this).siblings('.custom-file-label').addClass('selected').html(fileName);
+      });
+    </script>
+</body>
+</html>

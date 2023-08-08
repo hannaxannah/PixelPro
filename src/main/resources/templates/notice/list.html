@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}" xmlns:text-align="http://www.w3.org/1999/xhtml">
+
+<th:block layout:fragment="script">
+    <script th:inline = "javascript">
+
+      function allselect(obj){
+         var checkNum = document.getElementsByName('rowcheck');
+
+          if(obj.checked){ // true
+              for(var i=0; i<checkNum.length; i++){
+                  checkNum[i].checked = true;
+              }
+          }else{ // false
+              for(var i=0; i<checkNum.length; i++){
+                  checkNum[i].checked = false;
+              }
+          }
+      }
+
+      function selectDelete(){ // 선택항목 삭제
+         var rowchk = document.getElementsByName('rowcheck');
+         var flag = false;
+
+         for(i=0; i<rowchk.length; i++){
+             if(rowchk[i].checked){
+                 flag = true;
+             }
+         }
+
+         if(!flag){
+             alert('삭제할 공지를 1개 이상 선택하세요.');
+         }else{
+             var con = confirm("정말 삭제하시겠습니까?"); // 확인, 취소
+             if(con == false){
+               alert("삭제 작업이 취소되었습니다.");
+               return false;
+             }
+
+             document.mylist.submit();
+         }
+      }
+      </script>
+</th:block>
+
+<th:block layout:fragment="script2">
+
+</th:block>
+
+<head><title>PixelPro</title></head>
+
+<body class="content" layout:fragment="content">
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>공지</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/notice/list">공지</a></li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+        <button type="button" style="float:right; margin-bottom:10px;" class="btn btn-success" onClick="location.href='/notice/insert'">글쓰기</button>
+
+            <form name="mylist" action="/notice/checkDelete" method="post">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" name="allcheck" onClick="allselect(this)">No
+                        </th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>날짜</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="bean: ${notice}">
+                        <td>
+                            <input type="checkbox" name="rowcheck" th:value="${bean.nnum}">
+                            <label th:text="${bean.nnum}"></label>
+                        </td>
+                        <td>
+                            <a th:text="${bean.ntitle}" th:href="@{'/notice/detail/'+ ${bean.nnum}}"></a>
+                        </td>
+                        <td>인사팀</td>
+                        <td th:text="${bean.ndate}"></td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+            <button type="button" style="float:left;" class="btn btn-secondary" onClick="return selectDelete()">삭제</button>
+            </form>
+        <div style="text-align:center">
+        <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+            <a th:if="${page != nowPage}" th:href="@{/notice/list(page = ${page - 1})}" th:text="${page}"></a>
+            <strong th:if="${page == nowPage}" th:text="${page}" style="color : #198754;"></strong>
+        </th:block>
+        </div>
+
+
+
+
+
+</main><!-- End #main -->
+</body>
+</html>
