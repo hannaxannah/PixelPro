@@ -40,4 +40,8 @@ public class MemberService {
     public Member findByMbnum(Integer mbnum){
         return memberRepository.findByMbnum(mbnum);
     }
+
+    public List<Member> findByMbnumTeam(String dept) {
+        return memberRepository.findByMbnumTeam(dept);
+    }
 }
