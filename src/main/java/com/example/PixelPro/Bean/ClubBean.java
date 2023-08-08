@@ -14,7 +14,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 public class ClubBean {
     private Integer clnum;
-    private int mbnum;
+    private String mbname;
     @NotBlank(message = "카테고리를 선택하세요.")
     private String clcategory;
     @NotEmpty(message = "제목은 필수입력입니다.")

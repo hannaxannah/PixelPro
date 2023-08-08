@@ -183,6 +183,21 @@ values(39,'인사팀','전자결재 관련 공지사항입니다.','공지내용
 commit;
 select * from notice;
 
+insert into club(clnum,mbnum,clcategory,cltitle,cldetail,clwriter,cldate,clview)
+values(10,1,'모집','등산동아리 모집합니다^^ 많관부~','모집합니다.','김사장','2023-08-07',0);
+
+insert into club(clnum,mbnum,clcategory,cltitle,cldetail,clwriter,cldate,clview)
+values(11,2,'문의','헬스동아리 질문입니다!','질문합니다.','이사원','2023-08-07',0);
+
+insert into club(clnum,mbnum,clcategory,cltitle,cldetail,clwriter,cldate,clview)
+values(12,3,'모집','독서동아리 모집합니다','모집합니다.','김과장','2023-08-07',0);
+
+insert into club(clnum,mbnum,clcategory,cltitle,cldetail,clwriter,cldate,clview)
+values(13,4,'기타','배드민턴동아리 장소 추천받아요','모집합니다.','홍길동','2023-08-07',0);
+
+commit;
+
+
 -- 채팅 초기 값 (필수는 아님, 그냥 사이트에서 대화 생성해도 됨)
 insert into conversation values(1, sysdate, '팀원');
 insert into conversation values(2, sysdate, '팀투');

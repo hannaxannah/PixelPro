@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}">
+<head><title>PixelPro</title></head>
+<th:block layout:fragment="script">
+    <script th:inline = "javascript">
+        function submit() {
+
+            document.myform.submit();
+        }
+    </script>
+</th:block>
+<th:block layout:fragment="css">
+    <style>
+        .fieldError{
+            color: red;
+            font-size: 11pt;
+            padding: 5px 12px;
+            margin-bottom: 0;
+        }
+    </style>
+</th:block>
+<div class="content" layout:fragment="content">
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1>게시글작성</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/notice/list">동아리</a></li>
+                    <li class="breadcrumb-item active">게시글작성</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <div class="card">
+            <div class="card-body" style="display:flex; flex-direction:column;">
+
+                <!-- 글 쓰기 form -->
+                <form name="myform" action="/club/insert" method="post" th:object="${clubBean}" style="margin:5px 0;">
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">카테고리</label>
+                        <div class="col-sm-10">
+                            <select class="form-select" aria-label="Default select example" th:field="${clubBean.clcategory}">
+                                <option value="">카테고리를 선택하세요</option>
+                                <option value="모집">모집</option>
+                                <option value="문의">문의</option>
+                                <option value="기타">기타</option>
+                            </select>
+                            <p th:if="${#fields.hasErrors('clcategory')}" th:errors="*{clcategory}" class="fieldError"></p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">제목</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" th:field="${clubBean.cltitle}">
+                            <p th:if="${#fields.hasErrors('cltitle')}" th:errors="*{cltitle}" class="fieldError"></p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">내용</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" style="height:300px; resize:none;" th:field="${clubBean.cldetail}"></textarea>
+                            <p th:if="${#fields.hasErrors('cldetail')}" th:errors="*{cldetail}" class="fieldError"></p>
+                        </div>
+                    </div>
+
+                </form><!-- End 글 쓰기 form -->
+                <div style="text-align:center;">
+                    <button type="button" class="btn btn-success" onclick="submit()">완료</button>
+                </div>
+            </div>
+        </div>
+
+    </main><!-- End #main -->
+</div>

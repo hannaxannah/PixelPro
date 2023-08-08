@@ -12,4 +12,5 @@ import java.util.List;
 public interface ClubRepository extends JpaRepository<Club, Integer> {
     List<Club> findByOrderByClnumDesc();
 
+    Club findByCltitle(String cltitle);
 }
