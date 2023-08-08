@@ -3,7 +3,9 @@ package com.example.PixelPro.controller;
 
 
 import com.example.PixelPro.Bean.MemberBean;
+import com.example.PixelPro.entity.Commute;
 import com.example.PixelPro.entity.Member;
+import com.example.PixelPro.service.CommuteService;
 import com.example.PixelPro.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +24,15 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
     @Autowired
     private final MemberService memberService;
+    private final CommuteService commuteService;
 
     @GetMapping("/member/regist")
     public String registGet(Model model){
@@ -95,8 +100,24 @@ public class MemberController {
 
             return "member/login";
         } else{
+
             session.setAttribute("loginInfo",member);
             session.setAttribute("mbnum", member.getMbnum());
+
+            List<Commute> existDateList = commuteService.findByMbnum(member.getMbnum());
+            if (existDateList.isEmpty()) {
+                out.println("<script>if (confirm('출근 등록 하시겠습니까?')) { location.href='/commute/attendanceGotoWork'; }</script>");
+                out.close();
+            } else {
+                LocalDate today = LocalDate.now();
+                for (Commute existDate : existDateList) {
+                    LocalDate gotoworkDate = existDate.getGotowork().toLocalDateTime().toLocalDate();
+                    if (today.equals(gotoworkDate) == false) {
+                        out.println("<script>if (confirm('출근 등록 하시겠습니까?')) { location.href='/commute/attendanceGotoWork'; }</script>");
+                        out.close();
+                    }
+                }
+            }
             // 로그인 페이지 이동 세션 설정
             /*if(destination != null){
                 return destination;
