@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}" xmlns="http://www.w3.org/1999/xhtml">
+
+
+<head><title>PixelPro</title></head>
+
+<body class="content" layout:fragment="content">
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>공지</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/notice/list">공지</a></li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <button type="button" style="float:right; margin-bottom:10px;" class="btn btn-success" onClick="location.href='/notice/insert'">글쓰기</button>
+
+    <form name="mylist" action="" method="post">
+
+        <table class="table datatable">
+            <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>날짜</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="bean: ${}">
+                <td>
+
+                    <input type="checkbox" name="rowcheck" th:value="">
+                    <label th:text="${bean.nnum}"></label>
+                </td>
+                <td>
+                    <a th:text="" th:href=""></a>
+                </td>
+                <td>인사팀</td>
+                <td th:text=""></td>
+
+            </tr>
+            </tbody>
+        </table>
+    </form>
+    <!--<div style="text-align:center">
+        <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+            <a th:if="${page != nowPage}" th:href="@{/notice/list(page = ${page - 1})}" th:text="${page}"></a>
+            <strong th:if="${page == nowPage}" th:text="${page}" style="color : #198754;"></strong>
+        </th:block>
+    </div>-->
+
+
+
+
+
+</main><!-- End #main -->
+</body>
+</html>

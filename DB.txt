@@ -151,35 +151,37 @@ values(4, 'em@pixelpro.com', '홍길동', '사원', 8, '1234', '010-3333-3333', 
 
 --공지사항
 insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
-values(30,'인사팀','전자결재 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/sign/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
+values(30,'인사팀','전자결재 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/noticefile/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
 
 insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
-values(31,'인사팀','전자결재 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/sign/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
+values(31,'인사팀','전자결재 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/noticefile/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
 
 insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
-values(32,'인사팀','전자결재 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/sign/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
+values(32,'인사팀','전자결재 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/noticefile/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
 
 insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
-values(33,'인사팀','전자결재 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/sign/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
+values(33,'인사팀','전자결재 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/noticefile/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
 
 insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
-values(34,'인사팀','상단 사내경비 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/sign/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',1);
+values(34,'인사팀','전자결재 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/noticefile/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
 
 insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
-values(35,'인사팀','상단 출/퇴근 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/sign/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',1);
+values(35,'인사팀','상단 출/퇴근 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/noticefile/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',1);
 
 insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
-values(36,'인사팀','전자결재 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/sign/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
+values(36,'인사팀','전자결재 추가 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/noticefile/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
 
 insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
-values(37,'인사팀','상단 재택근무 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/sign/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',1);
+values(37,'인사팀','상단 재택근무 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/noticefile/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',1);
 
 insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
-values(38,'인사팀','전자결재 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/sign/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
+values(38,'인사팀','사내경비 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/noticefile/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
 
 insert into notice(nnum,mbname,ntitle,ndetail,filename,filepath,ndate,nimportant)
-values(39,'인사팀','전자결재 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/sign/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
+values(39,'인사팀','전자결재 관련 공지사항입니다.','공지내용입니다','68b35067-677a-4e83-b906-ee97f54be38f_공지.png','/noticefile/68b35067-677a-4e83-b906-ee97f54be38f_공지.png','2023-08-03',0);
 
+commit;
+select * from notice;
 
 -- 채팅 초기 값 (필수는 아님, 그냥 사이트에서 대화 생성해도 됨)
 insert into conversation values(1, sysdate, '팀원');
@@ -210,9 +212,6 @@ insert into msgstatus values(9, 2, 1, 'read', 3);
 insert into msgstatus values(10, 2, 4, 'read', 3);
 insert into msgstatus values(11, 2, 1, 'read', 4);
 insert into msgstatus values(12, 2, 4, 'read', 4);
-
-commit;
-select * from notice;
 
 
 --일반 결재(더 필요한 부분은 직접 작성하는게 더 편합니다!)

@@ -111,7 +111,8 @@
                 <tbody>
                   <tr th:each="notices:${notices}">
                     <td><a th:href="@{'/notice/detail/'+ ${notices.nnum}}" th:text="${notices.ntitle}"></a></td>
-                    <td th:text="${notices.mbname}"></td>
+                    <!--<td th:text="${notices.mbname}"></td>-->
+                    <td>인사팀</td>
                     <td th:text="${notices.ndate}"></td>
                   </tr>
                 </tbody>
