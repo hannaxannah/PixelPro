@@ -38,11 +38,18 @@
                             <th scope="col">번호</th>
                             <th scope="col">유형</th>
                             <th scope="col">사유</th>
-                            <th scope="col">진행 상태</th>
-                            <th scope="col">요청일</th>
+                            <th scope="col">이름</th>
+                            <th scope="col">날짜</th>
                         </tr>
                         </thead>
                         <tbody>
+                        <tr th:each="attendance, attendanceStat : ${myattendanceList}">
+                            <td th:text="${myattendanceList.size() - attendanceStat.index}"></td>
+                            <td th:text="${attendance.atcategory}"></td>
+                            <td th:text="${attendance.atcontent}"></td>
+                            <td th:text="${attendance.atname}"></td>
+                            <td th:text="${attendance.atdate}"></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -53,11 +60,18 @@
                             <th scope="col">번호</th>
                             <th scope="col">유형</th>
                             <th scope="col">사유</th>
-                            <th scope="col">진행 상태</th>
-                            <th scope="col">요청일</th>
+                            <th scope="col">이름</th>
+                            <th scope="col">날짜</th>
                         </tr>
                         </thead>
                         <tbody>
+                        <tr th:each="attendance, attendanceStat : ${teamattendanceList}">
+                            <td th:text="${teamattendanceList.size() - attendanceStat.index}"></td>
+                            <td th:text="${attendance.atcategory}"></td>
+                            <td th:text="${attendance.atcontent}"></td>
+                            <td th:text="${attendance.atname}"></td>
+                            <td th:text="${attendance.atdate}"></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>

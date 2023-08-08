@@ -1,10 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}">
+<head><title>PixelPro</title></head>
 
+<body class="content" layout:fragment="content">
+<main id="main" class="main">
+    <!--test-->
+    <div class="pagetitle">
+        <h1>근태 - 근태 목록</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/attendance/attendanceGList">근태</a></li>
+                <li class="breadcrumb-item active">근태 - 근태 목록</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <div class="card">
+        <div class="card-body">
+            <!-- Bordered Tabs Justified -->
+            <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+                <li class="nav-item flex-fill" role="presentation">
+                    <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-home" type="button" role="tab" aria-controls="home" aria-selected="true">내 근태 목록</button>
+                </li>
+                <li class="nav-item flex-fill" role="presentation">
+                    <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">팀 근태 목록</button>
+                </li>
+                <li class="nav-item flex-fill" role="presentation">
+                    <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-contact" type="button" role="tab" aria-controls="contact" aria-selected="false">전체 근태 목록</button>
+                </li>
+            </ul>
+            <div class="tab-content pt-2" id="borderedTabJustifiedContent">
+                <div class="tab-pane fade show active" id="bordered-justified-home" role="tabpanel" aria-labelledby="home-tab">
+                    <table class="table datatable">
+                        <thead>
+                        <tr>
+                            <th scope="col">번호</th>
+                            <th scope="col">유형</th>
+                            <th scope="col">사유</th>
+                            <th scope="col">이름</th>
+                            <th scope="col">날짜</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="attendance, attendanceStat : ${myattendanceList}">
+                            <td th:text="${myattendanceList.size() - attendanceStat.index}"></td>
+                            <td th:text="${attendance.atcategory}"></td>
+                            <td th:text="${attendance.atcontent}"></td>
+                            <td th:text="${attendance.atname}"></td>
+                            <td th:text="${attendance.atdate}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <table class="table datatable">
+                        <thead>
+                        <tr>
+                            <th scope="col">번호</th>
+                            <th scope="col">유형</th>
+                            <th scope="col">사유</th>
+                            <th scope="col">이름</th>
+                            <th scope="col">날짜</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="attendance, attendanceStat : ${teamattendanceList}">
+                            <td th:text="${teamattendanceList.size() - attendanceStat.index}"></td>
+                            <td th:text="${attendance.atcategory}"></td>
+                            <td th:text="${attendance.atcontent}"></td>
+                            <td th:text="${attendance.atname}"></td>
+                            <td th:text="${attendance.atdate}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="bordered-justified-contact" role="tabpanel" aria-labelledby="contact-tab">
+                    <table class="table datatable">
+                        <thead>
+                        <tr>
+                            <th scope="col">번호</th>
+                            <th scope="col">유형</th>
+                            <th scope="col">사유</th>
+                            <th scope="col">이름</th>
+                            <th scope="col">날짜</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="attendance, attendanceStat : ${entireattendanceList}">
+                            <td th:text="${entireattendanceList.size() - attendanceStat.index}"></td>
+                            <td th:text="${attendance.atcategory}"></td>
+                            <td th:text="${attendance.atcontent}"></td>
+                            <td th:text="${attendance.atname}"></td>
+                            <td th:text="${attendance.atdate}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div><!-- End Bordered Tabs Justified -->
+        </div>
+    </div>
+</main><!-- End #main -->
 </body>
-</html>
