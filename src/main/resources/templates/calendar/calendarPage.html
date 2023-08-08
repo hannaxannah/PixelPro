@@ -443,7 +443,7 @@ select.filter{
 <body class="content toggle-sidebar" layout:fragment="content">
 
 <!-- 일정 생성 모달창 -->
-<div class="modal fade" id="verticalycentered" tabindex="-1" style="display: none;" aria-hidden="true">
+<div class="modal fade" id="verticalycentered" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
@@ -453,7 +453,7 @@ select.filter{
 
           <div class="row">
             <div class="col-xs-12">
-              <label class="col-xs-4" for="title">프로젝트</label>
+              <label class="col-xs-4" for="title">하루종일</label>
               <input class='allDayNewEvent' type="checkbox"></label>
             </div>
           </div>
@@ -467,18 +467,18 @@ select.filter{
           <div class="row">
             <div class="col-xs-12">
               <label class="col-xs-4" for="starts-at">시작 시간</label>
-              <input class="inputModal" type="text" name="starts_at" id="starts-at" />
+              <input class="inputModal" type="datetime-local" name="starts_at" id="starts-at" step="1800"/>
             </div>
           </div>
           <div class="row">
             <div class="col-xs-12">
               <label class="col-xs-4" for="ends-at">종료 시간</label>
-              <input class="inputModal" type="text" name="ends_at" id="ends-at" />
+              <input class="inputModal" type="datetime-local" name="ends_at" id="ends-at" step="1800"/>
             </div>
           </div>
           <div class="row">
             <div class="col-xs-12">
-              <label class="col-xs-4" for="ends-at">위치</label>
+              <label class="col-xs-4" for="location">위치</label>
               <input class="inputModal" type="text" name="address_kakao1" id="address_kakao1" readonly />
             </div>
           </div>
@@ -487,7 +487,7 @@ select.filter{
               <label class="col-xs-4" for="calendar-type">카테고리</label>
               <select class="inputModal" type="text" name="calendar-type" id="calendar-type">
                 <option value="개인 메모">개인 메모</option>
-                <option value="회사일">회사일</option>
+                <option value="업무">업무</option>
               </select>
             </div>
           </div>
@@ -498,9 +498,6 @@ select.filter{
             </div>
           </div>
         </div>
-
-
-
 
               <div class="modal-footer" style="float: right;">
                 <button type="button" class="btn btn-success" id="save-event">일정 만들기</button>
@@ -524,23 +521,34 @@ select.filter{
 
 <main id="main" class="main" style="padding:0px;">
 
-
   <div class="left-part bg-white fixed-left-part">
     <div class="position-relative ps-container ps-theme-default">
       <div class="p-15">
         <div class="p-15">
-          <button type="button" class="btn btn-success" style="width:100%" data-bs-toggle="modal" data-bs-target="#verticalycentered" id="addCustomCalendar"><i class="bi bi-calendar2-plus" style="float:left"></i>일정 생성</button>
+          <button type="button" class="btn btn-success" style="width:100%" data-bs-toggle="modal" data-bs-target="#verticalycentered" id="addCustomCalendar" onclick="resetTime();"><i class="bi bi-calendar2-plus" style="float:left"></i>일정 생성</button>
         </div>
         <div class="p-15">
-          <h4>오늘의 일정</h4>
+          <h3 style="text-align: center;">오늘의 일정</h3>
           <div id="MiniCalendar"></div>
         </div>
-        검색<br>
-        <div class="input-group">
-          <label class="checkbox-inline"><input class='filter' type="checkbox" value="Caio Vitorelli" checked>Caio Vitorelli</label>
-          <label class="checkbox-inline"><input class='filter' type="checkbox" value="Peter Grant" checked>Peter Grant</label>
-          <label class="checkbox-inline"><input class='filter' type="checkbox" value="Adam Rackham" checked>Adam Rackham</label>
-          <label class="checkbox-inline"><input class='filter' type="checkbox" value="김" checked>김</label>
+        <div data-select2-id="13">
+          <label>종류 선택</label>
+          <div class="input-group">
+            <select class="filter select2-hidden-accessible" id="calendar_filter" multiple="" data-select2-id="calendar_filter" tabindex="-1" aria-hidden="true">
+              <option value="Sales" data-select2-id="14">개인메모</option>
+              <option value="Lettings" data-select2-id="15">업무</option>
+              <option value="" data-select2-id="16"></option>
+            </select>
+            <span class="select2 select2-container select2-container--default select2-container--below" dir="ltr" data-select2-id="2" style="width: 500px;">
+          </div>
+        </div>
+        <div style="padding:10px;">
+          <div>
+            <label><input class='filter' type="checkbox" value="0" checked>0</label>
+          </div>
+          <div>
+            <label><input class='filter' type="checkbox" value="1" checked>1</label>
+          </div>
         </div>
       </div>
 
@@ -558,8 +566,6 @@ select.filter{
       </nav>
     </div><!-- End Page Title -->
 
-
-
     <section class="section">
       <div class="p-20">
         <div class="card" style="margin-bottom: 100px;">
@@ -568,50 +574,53 @@ select.filter{
               <div class="print-visible" id='MainCalendar'></div>
             </div>
 
-
             <div class="modal fade" tabindex="-1" role="dialog" id="editEventModal">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Edit <span class="eventName"></span></h4>
+                    <h4 class="modal-title">일정 수정</h4>
                   </div>
                   <div class="modal-body">
 
-
-
                     <div class="row">
                       <div class="col-xs-12">
-                        <label class="col-xs-4" for="title">All Day Event ?</label>
+                        <label class="col-xs-4" for="title">하루종일</label>
+                        <input type="hidden" name="calId" id="calId">
                         <input class='allDayEdit' type="checkbox"></label>
                       </div>
                     </div>
 
                     <div class="row">
                       <div class="col-xs-12">
-                        <label class="col-xs-4" for="title">Event title</label>
+                        <label class="col-xs-4" for="title">제목</label>
                         <input class="inputModal" type="text" name="editTitle" id="editTitle" />
                       </div>
                     </div>
 
                     <div class="row">
                       <div class="col-xs-12">
-                        <label class="col-xs-4" for="starts-at">Starts at</label>
-                        <input class="inputModal" type="text" name="editStartDate" id="editStartDate" />
+                        <label class="col-xs-4" for="starts-at">시작 시간</label>
+                        <input class="inputModal" type="datetime-local" name="editStartDate" id="editStartDate" step="1800"/>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-xs-12">
-                        <label class="col-xs-4" for="ends-at">Ends at</label>
-                        <input class="inputModal" type="text" name="editEndDate" id="editEndDate" />
+                        <label class="col-xs-4" for="ends-at">종료 시간</label>
+                        <input class="inputModal" type="datetime-local" name="editEndDate" id="editEndDate" step="1800"/>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-xs-12">
-                        <label class="col-xs-4" for="edit-calendar-type">Calendar</label>
-                        <select class="inputModal" type="text" name="edit-calendar-type" id="edit-calendar-type">
-                          <option value="Sales">Sales</option>
-                          <option value="Lettings">Lettings</option>
+                        <label class="col-xs-4" for="location">위치</label>
+                        <input class="inputModal" type="text" name="editAddress_kakao1" id="editAddress_kakao1" readonly />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-12">
+                        <label class="col-xs-4" for="calendar-type">카테고리</label>
+                        <select class="inputModal" type="text" name="calendar-type" id="calendar-type">
+                          <option value="개인 메모">개인 메모</option>
+                          <option value="업무">업무</option>
                         </select>
                       </div>
                     </div>
@@ -623,9 +632,9 @@ select.filter{
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger" id="deleteEvent">Delete Event</button>
-                    <button type="button" class="btn btn-primary" id="updateEvent">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-danger" id="deleteEvent">일정 삭제</button>
+                    <button type="button" class="btn btn-success" id="updateEvent">일정 변경</button>
                   </div>
                 </div><!-- /.modal-content -->
               </div><!-- /.modal-dialog -->
