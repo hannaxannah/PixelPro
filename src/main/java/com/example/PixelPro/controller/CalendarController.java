@@ -1,14 +1,18 @@
 package com.example.PixelPro.controller;
 
 import com.example.PixelPro.entity.Calendar;
+import com.example.PixelPro.entity.Member;
 import com.example.PixelPro.service.CalendarService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +25,15 @@ public class CalendarController {
     CalendarService calendarService;
 
     @GetMapping(value = "/main")
-    public String mainPage(HttpServletRequest request){
+    public String mainPage(HttpSession session, HttpServletResponse response, Model model) throws IOException  {
 
+        response.setContentType("text/html; charset=UTF-8");
+        Member member = (Member)session.getAttribute("loginInfo");
+        if(member == null){
+            session.setAttribute("destination", "redirect:/mail/inbox");
+            response.getWriter().print("<script>alert('로그인이 필요합니다.');location.href='/login'</script>");
+            response.getWriter().flush();
+        }
 
         return "calendar/calendarPage";
     }
@@ -95,6 +106,43 @@ public class CalendarController {
             calendarService.saveCalendar(calendar);
         }
         return "/calendar/addEvent";
+    }
+
+    @PostMapping("/updateEvent") //ajax 데이터 전송 URL
+    @ResponseBody
+    public String updateEvent(@RequestBody List<Map<String, Object>> jsonData) {
+
+        System.out.println(jsonData);
+
+        for (int i = 0; i < jsonData.size(); i++) {
+            int id = Integer.parseInt(String.valueOf(jsonData.get(i).get("id")));
+            int username = Integer.parseInt(String.valueOf(jsonData.get(i).get("username")));
+            String calendarInfo = (String) jsonData.get(i).get("calendar");
+            String title = (String) jsonData.get(i).get("title");
+            String description = (String) jsonData.get(i).get("description");
+            String startDateString = (String) jsonData.get(i).get("start");
+            String endDateString = (String) jsonData.get(i).get("end");
+            String location = (String) jsonData.get(i).get("location");
+            String type = (String) jsonData.get(i).get("type");
+            String backgroundColor = (String) jsonData.get(i).get("backgroundColor");
+            String allDay = String.valueOf(jsonData.get(i).get("allDay"));
+
+            Calendar calendar = new Calendar();
+                calendar.setClid(id);
+                calendar.setClusername(username);
+                calendar.setClcalendar(calendarInfo);
+                calendar.setCltitle(title);
+                calendar.setCldescription(description);
+                calendar.setClstart(startDateString);
+                calendar.setClend(endDateString);
+                calendar.setCllocation(location);
+                calendar.setCltype(type);
+                calendar.setClbackgroundcolor(backgroundColor);
+                calendar.setClallday(allDay);
+
+            calendarService.saveCalendar(calendar);
+        }
+        return "/calendar/updateEvent";
     }
 
 }
