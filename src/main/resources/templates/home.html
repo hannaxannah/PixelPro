@@ -5,6 +5,20 @@
       layout:decorate="~{common/mylayout}">
 <head><title>PixelPro</title></head>
 
+<th:block layout:fragment="css">
+  <style>
+    .circleGreen{
+      color: #2eca6a;
+      font-size: 32px;
+      line-height: 0;
+      width: 64px;
+      height: 64px;
+      flex-shrink: 0;
+      flex-grow: 0;
+    }
+  </style>
+</th:block>
+
 <body class="content" layout:fragment="content">
 <main id="main" class="main">
 
@@ -19,17 +33,59 @@
 
   <div class="row">
 
-    <div class="col-lg-2">
+    <div class="col-lg-7">
       <div class="row">
 
-        <div class="col-12">
+        <div class="col-xxl-4 col-md-6">
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">근태관리</h5>
 
-              출근완료
+              <div>
+                <button type="button" class="btn btn-success" onClick="location.href='/commute/attendanceGotoWork'">출근</button>
+                <button type="button" class="btn btn-success" onClick="location.href='/commute/attendanceGetOffWork'">퇴근</button>
+              </div>
 
-              버튼 -> 출근하기
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xxl-4 col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">안읽은 채팅</h5>
+
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center circleGreen">
+                  <p><a href="/chat" style="color: #2eca6a;">1</a></p>
+                </div>
+                <div class="ps-3">
+                  <h6><a href="/chat">채팅창 이동</a></h6>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xxl-4 col-md-6">
+          <div class="card info-card sales-card">
+            <div class="card-body">
+              <h5 class="card-title">안읽은 메일</h5>
+
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center circleGreen">
+                  <p><a href="/mail/unreadMail" style="color: #2eca6a;" th:text="${countMail}"></a></p>
+                </div>
+                <div class="ps-3" th:if="${inbox == null}">
+                  <h6><a href="/mail/inbox">메일이 없습니다.</a></h6>
+                </div>
+                <div class="ps-3" th:if="${inbox != null}">
+                  <h6><a th:text="${inbox.ititle}" th:href="@{/mail/detailMail(inum=${inbox.inum})}"></a></h6>
+                  <span class="text-muted small pt-2 ps-1" th:text="${inbox.email}">발신자</span>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -37,8 +93,24 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">진행중인 프로젝트</h5>
-
+              <h5 class="card-title"><a href="/notice/list">공지사항</a></h5>
+              <div th:if="${notices == null}}">공지사항이 없습니다.</div>
+              <table class="table table table-hover" th:if="${notices != null}">
+                <thead>
+                <tr>
+                  <th scope="col">제목</th>
+                  <th scope="col">작성자</th>
+                  <th scope="col">날짜</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="notices:${notices}">
+                  <td><a th:href="@{'/notice/detail/'+ ${notices.nnum}}" th:text="${notices.ntitle}"></a></td>
+                  <td th:text="${notices.mbname}"></td>
+                  <td th:text="${notices.ndate}"></td>
+                </tr>
+                </tbody>
+              </table>
 
             </div>
           </div>
@@ -53,8 +125,10 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">오늘의 일정</h5>
-
+              <h5 class="card-title">
+                오늘의 일정
+                <span><a href="/notice/list">| 전체 일정 보러가기</a></span>
+              </h5>
               <div id="HomeCalendar"></div>
 
             </div>
@@ -64,23 +138,30 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">전자결재 진행현황</h5>
+              <h5 class="card-title">전자결재 진행현황
+                <span><a href="/approval/gapprovalList">| 전체 결재 내역 보러가기</a>
+              </h5>
 
-              <table class="table table-borderless">
+              <table class="table table-hover">
                 <thead>
                 <tr>
-                  <th scope="col">제목</th>
+                  <th scope="col" style="width: 50%;">제목</th>
                   <th scope="col">진행상태</th>
-                  <th scope="col">승인자</th>
                   <th scope="col">요청일</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                <tr th:each="gapproval : ${gapprovalList}">
+                  <td>
+                    <a th:href="@{/approval/gapprovalDetail(ganum=${gapproval.ganum})}" th:text="${gapproval.gsubject}"></a>
+                  </td>
+                  <td>
+                    <span th:if="${gapproval.gstatus == '1차 승인 요청'}" th:text="${gapproval.gstatus}" class="badge bg-warning"></span>
+                    <span th:if="${gapproval.gstatus == '2차 승인 요청'}" th:text="${gapproval.gstatus}" class="badge bg-warning"></span>
+                    <span th:if="${gapproval.gstatus == '승인 완료'}" th:text="${gapproval.gstatus}" class="badge bg-success"></span>
+                    <span th:if="${gapproval.gstatus == '반려'}" th:text="${gapproval.gstatus}" class="badge bg-danger"></span>
+                  </td>
+                  <td th:text="${gapproval.gdate}"></td>
                 </tr>
                 </tbody>
               </table>
@@ -92,37 +173,6 @@
       </div>
     </div>
 
-    <div class="col-lg-5">
-      <div class="row">
-
-        <div class="col-12">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">공지사항</h5>
-
-              <table class="table table-borderless">
-                <thead>
-                  <tr>
-                    <th scope="col">제목</th>
-                    <th scope="col">작성자</th>
-                    <th scope="col">날짜</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr th:each="notices:${notices}">
-                    <td><a th:href="@{'/notice/detail/'+ ${notices.nnum}}" th:text="${notices.ntitle}"></a></td>
-                    <td th:text="${notices.mbname}"></td>
-                    <td th:text="${notices.ndate}"></td>
-                  </tr>
-                </tbody>
-              </table>
-
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
 
   </div>
 

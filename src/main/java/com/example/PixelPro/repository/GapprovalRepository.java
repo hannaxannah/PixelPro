@@ -12,4 +12,6 @@ public interface GapprovalRepository extends JpaRepository<Gapproval, Integer> {
     List<Gapproval> findByGwmbnumOrderByGanumDesc(int mbnum);
 
     List<Gapproval> findByGhmbnumOrderByGanumDesc(int mbnum);
+
+    List<Gapproval> findTop5ByGwmbnumOrderByGanumDesc(int mbnum);
 }

@@ -31,4 +31,8 @@ public class GapprovalService {
     public void deleteByGanum(Integer ganum) {
         gapprovalRepository.deleteById(ganum);
     }
+
+    public List<Gapproval> findTop5ByGwmbnumOrderByGanumDesc(int mbnum) {
+        return gapprovalRepository.findTop5ByGwmbnumOrderByGanumDesc(mbnum);
+    }
 }
