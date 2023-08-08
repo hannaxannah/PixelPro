@@ -135,4 +135,8 @@ public class MailService {
     public int countByRecipientAndStatus(String email, String unread) {
         return mailrepository.countByRecipientAndStatus(email, unread);
     }
+
+    public Inbox findTop1ByRecipientAndStatusOrderBySenddateDesc(String email, String unread) {
+        return mailrepository.findTop1ByRecipientAndStatusOrderBySenddateDesc(email, unread);
+    }
 }

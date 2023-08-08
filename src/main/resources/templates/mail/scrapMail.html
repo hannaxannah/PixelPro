@@ -188,7 +188,7 @@
 
 
                                     <td class="w3 read">
-                                        <a th:if="${list.attach != null}" href="@{/mail/detailMail(inum=${list.inum})}">
+                                        <a th:if="${list.attach != null}" th:href="@{/mail/detailMail(inum=${list.inum})}">
                                             <i class="bx bx-paperclip"></i>
                                         </a>
                                     </td>
