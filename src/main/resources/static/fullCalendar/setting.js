@@ -63,7 +63,16 @@ $(document).ready(function() {
 
          if(event.username == "0"){
             userInfo = "관리자";
-         }else{
+         }else if(event.username == "1"){
+            userInfo = "김사장";
+         }else if(event.username == "2"){
+             userInfo = "이사원";
+           }else if(event.username == "3"){
+            userInfo = "김과장";
+         }else if(event.username == "4"){
+              userInfo = "홍길동";
+           }
+         else{
             userInfo = event.username;
          }
          if(event.allDay == false){ //프로젝트 체크가 안되있을때
@@ -252,6 +261,7 @@ $(document).ready(function() {
               center: 'title', //중간
               right: '' //오른쪽
            },
+            height : 'auto',
             initialDate: new Date(), //오늘 날짜 기준으로 초기설정
             defaultView: 'basicDay', //오늘 일정
             selectable: false,
