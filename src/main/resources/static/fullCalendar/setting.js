@@ -29,7 +29,6 @@ $(document).ready(function() {
         });
 
       loadInitialCalendar.done(function(data){ // loadInitialCalendar 로딩이 완료 된다면
-      alert(JSON.stringify(data));
       var calendar = $('#MainCalendar').fullCalendar({
         eventRender: function(event, element, view) { //일정만들기
          var startTimeEventInfo = moment(event.start).format('HH:mm'); //시작시간 포맷
@@ -37,6 +36,14 @@ $(document).ready(function() {
          var startDateEventInfo = moment(event.start).format('YYYY/MM/DD'); //시작시간 포맷
          var endDateEventInfo = moment(event.end).format('YYYY/MM/DD'); //종료시간 포맷 자꾸 끝나는일이 +1되서 나와서 subtract해서 -1일
          var displayEventDate; //보여지는 시간
+         var locationInfo; //위치정보
+         var userInfo; //유저정보 0은 개발팀
+
+         if(event.location == null){
+            locationInfo = "없음";
+         }else{
+            locationInfo = event.location;
+         }
 
          if(event.allDay == false){ //프로젝트 체크가 안되있을때
            displayEventDate = startDateEventInfo+" "+startTimeEventInfo + " - " + endDateEventInfo+" "+endTimeEventInfo; //시작시간-끝나는시간
@@ -47,9 +54,9 @@ $(document).ready(function() {
           element.popover({ //마우스 hover할때 나오는 팝업
             title:    '<div class="popoverTitleCalendar">'+ event.title +'</div>',
             content:  '<div class="popoverInfoCalendar">' +
-                      '<p><strong>종류 :</strong> ' + event.calendar + '</p>' +
+                      '<p><strong>카테고리 :</strong> ' + event.calendar + '</p>' +
                       '<p><strong>작성자 :</strong> ' + event.username + '</p>' +
-                      '<p><strong>위치 :</strong> '+ "한국" + '</p>' +
+                      '<p><strong>위치 :</strong> '+locationInfo + '</p>' +
                       '<p><strong>기간:</strong> ' + displayEventDate + '</p>' +
                       '<div class="popoverDescCalendar"><strong>내용 :</strong> '+ event.description +'</div>' +
                       '</div>',
@@ -63,15 +70,6 @@ $(document).ready(function() {
             container: 'body'
           });
 
-           /*if (event.username == "Caio Vitorelli") { //일정 색상 설정
-               element.css('background-color', '#f4516c');
-           }
-           if (event.username == "Peter Grant") {
-               element.css('background-color', '#1756ff');
-           }
-           if (event.username == "Adam Rackham") {
-               element.css('background-color', '#9816f4');
-           }*/
 
            var show_username, show_type = true, show_calendar = true;
 
