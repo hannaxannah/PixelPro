@@ -145,5 +145,22 @@ public class CalendarController {
         return "/calendar/updateEvent";
     }
 
+    @PostMapping("/deleteEvent") //ajax 데이터 전송 URL
+    @ResponseBody
+    public String deleteEvent(@RequestBody List<Map<String, Object>> jsonData) {
+
+        for (int i = 0; i < jsonData.size(); i++) {
+            int id = Integer.parseInt(String.valueOf(jsonData.get(i).get("id")));
+
+            Calendar calendar = new Calendar();
+                calendar.setClid(id);
+
+            calendarService.deleteById(calendar);
+        }
+
+
+        return "/calendar/deleteEvent";
+    }
+
 }
 

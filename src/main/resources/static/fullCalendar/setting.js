@@ -92,15 +92,11 @@ $(document).ready(function() {
             container: 'body'
           });
 
-           var show_username, show_type = true, show_calendar = true;
+           var show_username = true, show_type = true, show_calendar = true;
 
-           var username = $('input:checkbox.filter:checked').map(function() {
-               return $(this).val();
-           }).get();
            var types = $('#type_filter').val(); //필터 type
            var calendars = $('#calendar_filter').val(); //필터 calendars
 
-           show_username = username.indexOf(event.username) >= 0; //이름찾기
 
            if (types && types.length > 0) { //타입이 하나라도 있다면
                if (types[0] == "all") { //디폴트 0은 전부표시
@@ -394,6 +390,7 @@ $(document).ready(function() {
                }
            });
 
+
            $('#editTitle').val(event.title);
            $('#editStartDate').val(moment(event.start).format("YYYY-MM-DD HH:mm"));
            $('#editAddress_kakao1').val(event.location);
@@ -417,10 +414,10 @@ $(document).ready(function() {
              var calendar = $('#editCalendar-type').val();
              var description = $('#edit-event-desc').val();
              if($(".allDayEdit").is(':checked')){ //하루종일이 체크되있으면
-               var endDate = null;
-            }else{ //체크 안되있으면
-               var endDate = moment($('#editEndDate').val()).format("YYYY-MM-DD HH:mm");
-             }
+                   var endDate = null;
+                }else{ //체크 안되있으면
+                   var endDate = moment($('#editEndDate').val()).format("YYYY-MM-DD HH:mm");
+                 }
                var location = $('#editAddress_kakao1').val();
                var type = event.type;
                var username = event.username;
@@ -450,29 +447,38 @@ $(document).ready(function() {
                          cache : false,
                          contentType : "application/json; charset:UTF-8",
                          data: editData
-                     })
-                     .fail(function (request, status, error) {
+                     }).fail(function (request, status, error) {
                          document.location.href = document.location.href;
                      });
                   }else {
                   alert("취소됬습니다.")
-                }
+                };//변경
            });
 
            $('#deleteEvent').on('click', function() {
-            if (confirm("일정을 정말 삭제 하시겠습니까?")) {
-             $('#deleteEvent').unbind();
-             if (event._id.includes("_fc")){
-               $("#MainCalendar").fullCalendar('removeEvents', [event._id]);
-             } else {
-               $("#MainCalendar").fullCalendar('removeEvents', [event._id]);
-             }
-             $('#editEventModal').modal('hide');
-             }else{
-                alert("취소됬습니다.");
-             }
-           });
-         }
+               if (confirm("일정삭제 하시겠습니까?")) {
+                var id = event.id;
+                var deleteEventData = {
+                    id : id
+                };
+                var events = new Array();
+                 events.push(deleteEventData);
+                 var deleteData = JSON.stringify(events);
+                     $.ajax({
+                         url: "/calendar/deleteEvent",
+                         method: "POST",
+                         dataType: "json",
+                         cache : false,
+                         contentType : "application/json; charset:UTF-8",
+                         data: deleteData
+                     }).fail(function (request, status, error) {
+                        document.location.href = document.location.href;
+                     });
+                }else{
+                     alert("취소됬습니다.")
+                }
+                });
+        };
 
 
     $('.filter').on('change', function() {

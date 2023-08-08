@@ -27,4 +27,9 @@ public class CalendarService {
     public void saveCalendar(Calendar calendar) {
         calendarRepository.save(calendar);
     }
+
+    public void deleteById(Calendar calendar) {
+        int id = calendar.getClid();
+        calendarRepository.deleteById(id);
+    }
 }
