@@ -1,6 +1,7 @@
 package com.example.PixelPro.service;
 
 import com.example.PixelPro.entity.Club;
+import com.example.PixelPro.entity.Notice;
 import com.example.PixelPro.repository.ClubRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -49,4 +51,10 @@ public class ClubService {
         clubrepository.deleteById(clnum);
     }
 
+    public Page<Club> findByOrderByClnumDesc(Pageable pageable) {
+        List<Club> clubs = clubrepository.findByOrderByClnumDesc();
+
+        return clubrepository.findAll(pageable);
+
+    }
 }

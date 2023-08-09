@@ -3,6 +3,8 @@ package com.example.PixelPro.controller;
 import com.example.PixelPro.Bean.ClubBean;
 import com.example.PixelPro.entity.ClubComment;
 import com.example.PixelPro.entity.Club;
+import com.example.PixelPro.entity.Member;
+import com.example.PixelPro.entity.Notice;
 import com.example.PixelPro.service.ClubCommentService;
 import com.example.PixelPro.service.ClubService;
 import com.example.PixelPro.service.MemberService;
@@ -10,6 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +24,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
@@ -42,37 +49,30 @@ public class ClubController {
 
     /*목록*/
     @GetMapping({"/club/list"})
-    public String gotoFreeBoard(
-            @RequestParam(value="clcategory", required=false) String clcategory,
-            @RequestParam(value="keyword", required=false) String keyword,
-            @RequestParam(value="pageNumber", required=false) String pageNumber, Model model){
+    public String gotoFreeBoard(HttpSession session, HttpServletResponse response,
+                                Model model, @PageableDefault(page=0, size = 5, sort = "clnum", direction = Sort.Direction.DESC) Pageable pageable) throws IOException {
 
-        System.out.println(clcategory+"/"+keyword);
-
-        Map<String, String> map = new HashMap<>();
-        map.put("clcategory", clcategory);
-        map.put("keyword", "%"+keyword+"%");
-
-        if(pageNumber == null) {
-            pageNumber = "1";
+        response.setContentType("text/html; charset=UTF-8");
+        Member member = (Member)session.getAttribute("loginInfo");
+        if(member == null){
+            session.setAttribute("destination", "redirect:/club/list");
+            response.getWriter().print("<script>alert('로그인이 필요합니다.');location.href='/login'</script>");
+            response.getWriter().flush();
         }
 
-        Page<Club> clubBoardList = clubService.getListsBySearch(map, Integer.valueOf(pageNumber)-1);
-        long totalCount = clubBoardList.getTotalElements();
-        long totalPages = clubBoardList.getTotalPages();
+        Page<Club> lists = clubService.findByOrderByClnumDesc(pageable);
 
-        List<Club> lists = clubBoardList.getContent();
-
-        Map<Integer, Integer> comments = new HashMap<>();
-        for(Club club : lists) {
-            List<ClubComment> commentlists = clubCommentService.getAllCommentLists(club.getClnum());
-            comments.put(club.getClnum(), commentlists.size());
-        }
+        int nowPage = lists.getPageable().getPageNumber() + 1;
+        int startPage = Math.max(nowPage - 4, 1);
+        int endPage = Math.min(nowPage + 5, lists.getTotalPages());
 
         model.addAttribute("lists", lists);
-        model.addAttribute("comments", comments);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("nowPage", nowPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
+        model.addAttribute("lists", clubService.findByOrderByClnumDesc(pageable));
+
 
         return "club/list";
     }
@@ -91,20 +91,20 @@ public class ClubController {
     public String insertPost(@Valid ClubBean clubBean,
                              BindingResult bindingResult, Model model) {
 
-        if (bindingResult.hasErrors()) {
+      /*  if (bindingResult.hasErrors()) {
             model.addAttribute("clubBean", clubBean);
             return "/club/insert";
-        }
+        }*/
 
 
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         clubBean.setCldate(now.format(dateTimeFormatter));
 
         Club club = Club.insertClub(clubBean);
         clubService.saveClub(club);
 
-        if(!clubBean.getFilename().equals("")){
+       /* if(!clubBean.getFilename().equals("")){
             String uploadPath = "C:\\PixelPro\\src\\main\\resources\\clubFile";
             File destination = new File(uploadPath + File.separator + clubBean.getUpload().getOriginalFilename());
             MultipartFile multi =  clubBean.getUpload();
@@ -115,7 +115,7 @@ public class ClubController {
             } catch (IOException e){
 
             }
-        }
+        }*/
 
         return "redirect:/club/list";
     }
@@ -127,7 +127,7 @@ public class ClubController {
 
         Club club = clubService.findByClnum(clnum);
 
-        club.setClview(club.getClview()+1);
+       /* club.setClview(club.getClview()+1);*/
         clubService.saveClub(club);
 
         List<ClubComment> commentlists = clubCommentService.getAllCommentLists(clnum);

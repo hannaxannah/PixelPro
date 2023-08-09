@@ -25,8 +25,6 @@ public class Club {
     private String clwriter;
     private String filename;
     private String cldate;
-    @ColumnDefault("0")
-    private Integer clview;
 
     private static ModelMapper modelMapper = new ModelMapper();
     public static Club insertClub(ClubBean clubBean) {
