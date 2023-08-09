@@ -25,7 +25,6 @@ public class ClubBean {
     private String clwriter;
     private String filename;
     private String cldate;
-    private Integer clview;
 
 
     private MultipartFile upload;

@@ -29,18 +29,16 @@
                 <th>번호</th>
                 <th>카테고리</th>
                 <th>제목</th>
-                <th>조회수</th>
                 <th>날짜</th>
             </tr>
             </thead>
             <tbody th:each="lists : ${lists}">
             <tr>
-               <th scope="" style="text-align:center" th:text="${totalCount}"></th>
+               <th scope="" style="text-align:center" th:text="${lists.clnum}"></th>
                 <td th:text="${lists.clcategory}"></td>
                 <td>
                     <a th:href="@{/club/detail(clnum=${lists.clnum})}" th:text="|${lists.cltitle}|"></a>
                 </td>
-                <td style="text-align:center" th:text="${lists.clview}"></td>
                 <td style="text-align:center" th:text="${lists.cldate}"></td>
             </tr>
 
@@ -63,14 +61,11 @@
         <button type="button" style="float:right; margin-bottom:10px;" class="btn btn-success" onClick="location.href='/club/insert'">글쓰기</button>
     </form>
 
-    <div class="card-footer clearfix" style="border-top:0">
-        <ul class="pagination pagination-sm m-0" style="justify-content:center">
-            <li class="page-item"><a class="page-link" th:href="@{/club/list(pageNumber=1)}">«</a></li>
-            <li th:each="pageNumber : ${#numbers.sequence(1, totalPages)}" class="page-item">
-                <a class="page-link" th:href="@{/club/list(pageNumber=${pageNumber})}" th:text="${pageNumber}"></a>
-            </li>
-            <li class="page-item"><a class="page-link" th:href="@{/club/list(pageNumber=${totalPages})}">»</a></li>
-        </ul>
+    <div style="text-align:center">
+        <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+            <a th:if="${page != nowPage}" th:href="@{/club/list(page = ${page - 1})}" th:text="${page}"></a>
+            <strong th:if="${page == nowPage}" th:text="${page}" style="color : #198754;"></strong>
+        </th:block>
     </div>
 
 </main><!-- End #main -->

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/mylayout}" xmlns:text-align="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<th:block layout:fragment="script">
+    <script th:inline = "javascript">
+        function reply(elem,ID,fcstep) {
+            //답글 입력 창이 평소엔 닫혀있다가 답글 클릭 시 열림
+            var inputreply = document.getElementById(ID + ' ' + fcstep);
+            console.log(inputreply);
+            console.log(ID + ' ' + fcstep);
+            if (elem.className !='dropdown-item replybutton') {
+                elem.className = 'dropdown-item replybutton';
+                inputreply.style.display = "none";
+            } else {
+                elem.className ='dropdown-item';
+                inputreply.style.display = "block";
+            }
+
+        }
+
+        function deletePost() {
+
+            const urlParams = new URL(location.href).searchParams;
+            const fnum = urlParams.get('fnum');
+            console.log('fnum:'+fnum);
+
+            if(confirm('글을 삭제하시겠습니까?')) {
+                window.location.href='/community/free/delete?fnum='+fnum;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+</th:block>
+
+<head><title>PixelPro</title></head>
+
+<body class="content" layout:fragment="content">
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>상세보기</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item"><a href="">커뮤니티</a></li>
+                <li class="breadcrumb-item"><a href="/club/list">동아리</a></li>
+                <li class="breadcrumb-item active">상세보기</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+
+    <form id="frm" th:action="@{'/club/delete/'}" method="post">
+        <input type="hidden" name="clnum" th:value="${club.clnum}"/>
+        <button style="float:right; margin-bottom:10px;" class="btn btn-secondary" onClick="return deleteConfirm()">삭제</button>
+    </form>
+
+    <form th:action="@{'/club/update/' + ${club.clnum}}" method="get">
+        <input type="submit" value="수정" style="float:right;  margin-bottom:10px; margin-right:7px;" class="btn btn-warning">
+    </form>
+
+    <table class="table" border="1">
+        <tr>
+            <td ><strong>제목</strong></td>
+            <td style="width: 90%;" th:text="${club.cltitle}"></td>
+        <tr>
+            <td><strong>첨부파일</strong></td>
+
+            <td>
+                <div th:if="${club.filename == null}">
+                    <p>첨부파일이 없습니다.</p>
+                </div>
+                <div th:if="${club.filename != null}">
+                    <a class="card-text" style="margin-left: 10px;"
+                       th:href="@{'/download/club/' + ${club.filename}}"
+                       th:text="${club.filename}" ></a>
+                </div>
+
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="height:300px;" th:text="${club.cldetail}"></td>
+        </tr>
+        <tr></tr>
+    </table>
+
+    <div class="card">
+        <div class="card-body">
+            <!-- 댓글 -->
+            <div class="comments" th:each="comment : ${comment}">
+                <!-- 삭제된 원댓글 -->
+                <div class="comment" th:if="${comment.cldetail == '삭제된 댓글입니다.'}">
+                    <div class="d-flex" style="flex-direction:column;">
+                        <div>
+                            <h5><a class="comment" style="color:rgba(33, 37, 41, 0.6);">(삭제)</a></h5>
+                            <p th:text="${comment.cldetail}"></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- End 삭제된 원댓글 -->
+                <!-- 원댓글 -->
+                <div class="comment" th:if="${comment.cllevel == 0} and ${comment.cldetail != '삭제된 댓글입니다.'}">
+                    <div class="d-flex" style="flex-direction:column;">
+                        <div>
+                            <h5><a class="comment" style="color:#198754;"></a></h5>
+                            <p th:text="${comment.cldetail}"></p>
+                            <a style="color:rgba(33, 37, 41, 0.6);" th:text="${comment.cldate}"></a>
+                        </div>
+                        <!-- ... | 답글, 수정, 삭제 -->
+                        <div class="filter" style="position:absolute; right:5px;">
+                            <a class="icon" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="min-width:4rem;">
+                                <li><a class="dropdown-item replybutton" style="cursor:pointer;" th:onclick="reply(this,'reply-form',[[${comment.clstep}]])">답글</a></li>
+                                <li><a class="dropdown-item" href="#">수정</a></li>
+                                <li><a class="dropdown-item" th:href="@{/club/deletecomment(conum=${comment.conum}, clnum=${comment.clnum})}">삭제</a></li>
+                            </ul>
+                        </div>
+                        <!-- End ... -->
+                        <!-- 답글 입력 창 (평소 display none, 답글 클릭 시 display block) -->
+                        <div th:id="|reply-form ${comment.clstep}|" class="reply-form" style="display:none; padding-left:40px;">
+                            <form action="/club/replycomment" method="post">
+                                <input type="hidden" name="clnum" th:value="${club.clnum}">
+                                <input type="hidden" name="conum" th:value="${comment.conum}">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <textarea name="cldetail" id="" class="form-control" style="height:40px; resize:none;" placeholder="답글을 입력하세요"></textarea>
+                                    <div style="margin-left:10px;">
+                                        <button type="submit" class="btn btn-success"><i class="bi bi-send"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- End 답글 입력 창 -->
+                    </div>
+                </div>
+                <!-- End 원댓글 -->
+                <!-- 답글 -->
+                <div class="comment comment-reply" th:if="${comment.cllevel > 0}">
+                    <div class="d-flex">
+                        <div>
+                            <h5><a class="comment"></a></h5>
+                            <p th:text="${comment.cldetail}"></p>
+                            <a style="color:rgba(33, 37, 41, 0.6);" th:text="${comment.cldate}"></a>
+                        </div>
+                        <!-- ... | 수정, 삭제 -->
+                        <div class="filter" style="position:absolute; right:5px;">
+                            <a class="icon" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="min-width:4rem;">
+                                <li><a class="dropdown-item" href="#">수정</a></li>
+                                <li><a class="dropdown-item" th:href="@{/club/deletecomment(conum=${comment.conum}, clnum=${comment.clnum})}">삭제</a></li>
+                            </ul>
+                        </div>
+                        <!-- End ... -->
+                    </div>
+                </div>
+                <!-- End 답글 -->
+            </div>
+
+            <div class="reply-form">
+                <form action="/club/writecomment" method="post">
+                    <input type="hidden" name="clnum" th:value="${club.clnum}">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <textarea name="cldetail" id="comment-form" class="form-control" style="height:40px; resize:none;" placeholder="댓글을 입력하세요"></textarea>
+                        <div style="margin-left:10px;">
+                            <button type="submit" class="btn btn-success"><i class="bi bi-send"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+    <div style="text-align:center;">
+
+        <button type="button" class="btn btn-success" onclick="location.href='/club/list'">목록</button>
+    </div>
+
+</main><!-- End #main -->
+
+<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script>
+      $('.custom-file-input').on('change', function () {
+        var fileName = $(this).val().split('\\').pop();
+        $(this).siblings('.custom-file-label').addClass('selected').html(fileName);
+      });
+    </script>
+</body>
+</html>

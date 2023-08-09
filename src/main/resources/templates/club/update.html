@@ -26,12 +26,13 @@
     <main id="main" class="main">
 
         <div class="pagetitle">
-            <h1>게시글작성</h1>
+            <h1>게시글수정</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/notice/list">커뮤니티</a></li>
                     <li class="breadcrumb-item"><a href="/notice/list">동아리</a></li>
-                    <li class="breadcrumb-item active">게시글작성</li>
+                    <li class="breadcrumb-item active">게시글수정</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -40,7 +41,7 @@
             <div class="card-body" style="display:flex; flex-direction:column;">
 
                 <!-- 글 쓰기 form -->
-                <form name="myform" action="/club/insert" method="post" th:object="${clubBean}" style="margin:5px 0;">
+                <form name="myform" action="/club/update" method="post" enctype="multipart/form-data" th:object="${clubBean}" style="margin:5px 0;">
                     <div class="row mb-3">
                         <label class="col-sm-2 col-form-label">카테고리</label>
                         <div class="col-sm-10">
