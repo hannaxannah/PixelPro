@@ -254,6 +254,7 @@ public class GapprovalController {
             return "/approval/gapprovalUpdate";
         }
         else {
+            System.out.println("gapprovalBean.getGstatus() : " + gapprovalBean.getGstatus());
             if(!gapprovalBean.getGstatus().equals("반려")){
                 response.getWriter().print("<script>alert('반려된 결재만 수정 가능합니다.');location.href='/approval/gapprovalList'</script>");
                 response.getWriter().flush();

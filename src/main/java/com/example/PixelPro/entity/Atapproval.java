@@ -17,7 +17,8 @@ import java.sql.Date;
 @ToString
 public class Atapproval {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gapprovalgenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gapprovalgenerator")
     //@SequenceGenerator(name = "atapprovalseq", initialValue=1, allocationSize=1)
     private Integer atnum;
 
