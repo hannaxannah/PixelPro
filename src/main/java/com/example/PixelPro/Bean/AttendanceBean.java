@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class AttendanceBean { //근태 상태
+    private Integer atnum;
     private Integer mbnum;
     private String atcategory;
     private String atdate;
