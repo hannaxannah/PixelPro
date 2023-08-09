@@ -33,6 +33,8 @@
             <form action="/approval/gapprovalUpdate" method="post" class="row g-3" th:object="${gapprovalBean}">
                 <div class="col-md-12">
                     <input type="hidden" th:field="*{ganum}">
+                    <input type="hidden" th:field="*{gstatus}">
+                    <input type="hidden" th:field="*{gwmbnum}">
                 </div>
                 <div align="right">
                     <input type="submit" class="btn btn-success" value="서류 수정">
