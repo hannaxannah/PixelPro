@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -22,8 +23,24 @@ public class ClubBean {
     @NotEmpty(message = "내용은 필수입력입니다.")
     private String cldetail;
     private String clwriter;
+    private String filename;
     private String cldate;
-    private int clview;
+    private Integer clview;
 
+
+    private MultipartFile upload;
+
+    public MultipartFile getUpload() {
+        return upload;
+    }
+
+    public void setUpload(MultipartFile upload) {
+        this.upload = upload;
+        String fileName = upload.getOriginalFilename();
+
+        System.out.println("fileName : " + fileName);
+
+        this.filename = fileName;
+    }
 
 }

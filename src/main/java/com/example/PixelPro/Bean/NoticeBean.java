@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
@@ -42,6 +43,21 @@ public class NoticeBean {
                 .nimportant(nimportant)
                 .build();
         return build;
+    }
+
+    private MultipartFile upload;
+
+    public MultipartFile getUpload() {
+        return upload;
+    }
+
+    public void setUpload(MultipartFile upload) {
+        this.upload = upload;
+        String fileName = upload.getOriginalFilename();
+
+        System.out.println("fileName : " + fileName);
+
+        this.filename = fileName;
     }
 
     @Builder

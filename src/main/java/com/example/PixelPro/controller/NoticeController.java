@@ -6,23 +6,29 @@ import com.example.PixelPro.entity.Notice;
 import com.example.PixelPro.service.MemberService;
 import com.example.PixelPro.service.NoticeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +85,19 @@ public class NoticeController {
             return "/notice/insert";
         }
 
+        if(!noticeBean.getFilename().equals("")){
+            String uploadPath = "C:\\PixelPro\\src\\main\\resources\\noticeFile";
+            File destination = new File(uploadPath + File.separator + noticeBean.getUpload().getOriginalFilename());
+            MultipartFile multi =  noticeBean.getUpload();
+            try {
+                multi.transferTo(destination);
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (IOException e){
+
+            }
+        }
+
         Notice notice = Notice.insertNotice(noticeBean);
         noticeService.saveNotice(notice);
 
@@ -99,43 +118,25 @@ public class NoticeController {
         return "/notice/detail";
     }
 
-    //첨부파일 다운로드
-   /* @GetMapping("/download")
-    public ResponseEntity<Resource> download(@ModelAttribute NoticeBean notice) throws IOException {
+    /* 파일 다운 처리 */
+    @RequestMapping("/download/notice/{filename}")
+    public ResponseEntity<Resource> fileDownload(@PathVariable("filename") String filename) throws IOException {
+        File file = new File("C:/PixelPro/src/main/resources/noticeFile/" + filename);
+        Path path = Paths.get("C:/");
 
-        Path path = Paths.get(notice.getFilename());
-        String contentType = Files.probeContentType(path);
+        if (!file.exists()) {
+            // 파일이 존재하지 않을 경우,
+            return ResponseEntity.notFound().build();
+        }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentDisposition(
-                ContentDisposition.builder("attachment")
-                        .filename(notice.getFilename(), StandardCharsets.UTF_8)
-                        .build());
-        headers.add(HttpHeaders.CONTENT_TYPE, contentType);
-
-        Resource resource = new InputStreamResource(Files.newInputStream(path));
-
-        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
-
-    }*/
-
-    /*// 첨부 파일 다운로드
-    @GetMapping("/attach/{no}")
-    public ResponseEntity<UrlResource> downloadAttach(@PathVariable Long no) throws MalformedURLException {
-
-        NFile file = nFileRepository.findById(no).orElse(null);
-
-        UrlResource resource = new UrlResource("file:" + file.getSavedpath());
-
-        String encodedFileName = UriUtils.encode(file.getOrgnm(), StandardCharsets.UTF_8);
-
-        // 파일 다운로드 대화상자가 뜨도록 하는 헤더를 설정해주는 것
-        // Content-Disposition 헤더에 attachment; filename="업로드 파일명" 값을 준다.
-        String contentDisposition = "attachment; filename=\"" + encodedFileName + "\"";
-
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,contentDisposition).body(resource);
+        Resource resource = new InputStreamResource(Files.newInputStream(file.toPath()));
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
+                .body(resource);
     }
-*/
+
+
     @PostMapping(value = "/notice/delete")
     public String delete(@RequestParam("nnum") int nnum){
         noticeService.noticeDelete(nnum);
