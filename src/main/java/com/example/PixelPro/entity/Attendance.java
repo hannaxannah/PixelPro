@@ -11,6 +11,11 @@ import java.sql.Date;
 @Entity(name = "attendance")
 @Setter
 @Getter
+@SequenceGenerator(
+        name = "attendancegenerator",
+        sequenceName = "attendancegenerator", // 매핑할 데이터베이스 시퀀스 이름
+        initialValue = 1,
+        allocationSize = 1)
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "attendance")
@@ -18,9 +23,11 @@ import java.sql.Date;
 public class Attendance {
 
     //@GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "attendancegenerator")
+    private Integer atnum;
     private Integer mbnum;
     private String atcategory;
-    @Id
     private Date atdate;
     private String atcontent;
     private String atname;

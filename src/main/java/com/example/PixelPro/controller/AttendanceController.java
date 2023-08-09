@@ -61,9 +61,19 @@ public class AttendanceController {
 
         BigDecimal offNum = BigDecimal.valueOf(0);
 
-        if(member.getMblevel().equals("대리")){
+        if(member.getMblevel().equals("사원")){
             offNum = BigDecimal.valueOf(15);
         }
+        if(member.getMblevel().equals("대리")){
+            offNum = BigDecimal.valueOf(17);
+        }
+        if(member.getMblevel().equals("과장")){
+            offNum = BigDecimal.valueOf(20);
+        }
+        if(member.getMblevel().equals("사장")){
+            offNum = BigDecimal.valueOf(25);
+        }
+
         model.addAttribute("offNum",offNum);
         return "/attendance/attendanceCheck";
     }
