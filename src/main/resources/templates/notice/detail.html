@@ -60,7 +60,9 @@
                     <p>첨부파일이 없습니다.</p>
                 </div>
                 <div th:if="${notice.filename != null}">
-                    <a th:href="@{${notice.filepath}}" th:text="${notice.filename}">첨부파일</a>
+                    <a class="card-text" style="margin-left: 10px;"
+                       th:href="@{'/download/notice/' + ${notice.filename}}"
+                       th:text="${notice.filename}" ></a>
                 </div>
 
             </td>

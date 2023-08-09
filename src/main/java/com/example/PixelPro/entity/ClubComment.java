@@ -1,7 +1,6 @@
 package com.example.PixelPro.entity;
 
 import com.example.PixelPro.Bean.ClubCommentBean;
-import com.example.PixelPro.Bean.FreeCommentBean;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,6 +8,7 @@ import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+
 @Entity
 @Table(name="clubcomment")
 @Setter
@@ -19,7 +19,7 @@ public class ClubComment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer conum;
     private Integer clnum;
-    private Integer mbnum;
+    private String mbname;
     private String cldetail;
     private String cldate;
     private Integer cllike;
