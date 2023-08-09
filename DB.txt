@@ -241,6 +241,20 @@ values(3,'<table style="border-collapse: collapse; width: 100%; height: 364.68px
 
 select * from gapproval;
 
+--근태
+insert into attendance values(attendancegenerator.nextval,'연차', '병가', TO_DATE('2023-08-12', 'YYYY-MM-DD'),'이사원',2);
+insert into attendance values(attendancegenerator.nextval,'연차', '병가', TO_DATE('2023-08-13', 'YYYY-MM-DD'),'이사원',2);
+insert into attendance values(attendancegenerator.nextval,'월차', '병가', TO_DATE('2023-08-14', 'YYYY-MM-DD'),'이사원',2);
+insert into attendance values(attendancegenerator.nextval,'월차', '병가', TO_DATE('2023-08-15', 'YYYY-MM-DD'),'이사원',2);
+insert into attendance values(attendancegenerator.nextval,'휴가', '여행', TO_DATE('2023-08-16', 'YYYY-MM-DD'),'이사원',2);
+insert into attendance values(attendancegenerator.nextval,'휴가', '여행', TO_DATE('2023-08-17', 'YYYY-MM-DD'),'이사원',2);
+insert into attendance values(attendancegenerator.nextval,'반차', '병가', TO_DATE('2023-08-18', 'YYYY-MM-DD'),'이사원',2);
+insert into attendance values(attendancegenerator.nextval,'연차', '병가', TO_DATE('2023-08-18', 'YYYY-MM-DD'),'김과장',3);
+insert into attendance values(attendancegenerator.nextval,'월차', '병가', TO_DATE('2023-08-19', 'YYYY-MM-DD'),'김과장',3);
+insert into attendance values(attendancegenerator.nextval,'월차', '병가', TO_DATE('2023-08-20', 'YYYY-MM-DD'),'김과장',3);
+
+
+
 -----알림테이블	--아직 메일만 됩니다! 김사장 >> 홍길동 메일 보내면 홍길동에 알림
 drop table alert cascade constraints;
 create table alert (
