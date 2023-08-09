@@ -91,7 +91,7 @@ public class ClubController {
     public String insertPost(@Valid ClubBean clubBean,
                              BindingResult bindingResult, Model model) {
 
-      /*  if (bindingResult.hasErrors()) {
+        /*if (bindingResult.hasErrors()) {
             model.addAttribute("clubBean", clubBean);
             return "/club/insert";
         }*/
@@ -158,12 +158,12 @@ public class ClubController {
 
 
     /*수정버튼*/
-    @GetMapping(value = "/club/update")
+    @GetMapping(value = "/club/update/{clnum}")
     public String updateGet(@RequestParam("clnum") int clnum, Model model){
 
         Club club = clubService.findByClnum(clnum);
         model.addAttribute("clubBean", club);
-        return "club/update";
+        return "/club/update";
     }
 
 
