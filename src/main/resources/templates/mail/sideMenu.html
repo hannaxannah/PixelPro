@@ -17,7 +17,7 @@
             <div class="row mailTopmenu">
                 <div class="col-4">
                     <a th:if="${session.MailBar == 'unreadMail'}" class="main-Font-Color" href="/mail/unreadMail">
-                        <i class="bx mailTopIcon">0</i>
+                        <i class="bx mailTopIcon" th:text="${session.unreadCount}"></i>
                         <div class="mailBottom">안읽음</div>
                     </a>
                     <a th:if="${session.MailBar != 'unreadMail'}" href="/mail/unreadMail">
