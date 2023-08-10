@@ -158,7 +158,7 @@ public class AtapprovalController {
                     atapprovalBean.setAtstatus("승인 완료");
                     atapprovalBean.setAthmbnum(-1);
 
-                    AttendanceBean attendanceBean = new AttendanceBean(atapproval.getAtwmbnum(), atapproval.getAtcategory(), atapproval.getReqdate().toString(), atapproval.getAtcontent(), memberName.getMbname());
+                    AttendanceBean attendanceBean = new AttendanceBean(0,atapproval.getAtwmbnum(), atapproval.getAtcategory(), atapproval.getReqdate().toString(), atapproval.getAtcontent(), memberName.getMbname());
                     Attendance attendance = Attendance.createAttendance(attendanceBean);
                     attendanceService.save(attendance);
                 }
@@ -166,7 +166,7 @@ public class AtapprovalController {
                 atapprovalBean.setAtstatus("승인 완료");
                 atapprovalBean.setAthmbnum(-1);
 
-                AttendanceBean attendanceBean = new AttendanceBean(atapproval.getAtwmbnum(), atapproval.getAtcategory(), atapproval.getReqdate().toString(), atapproval.getAtcontent(), memberName.getMbname());
+                AttendanceBean attendanceBean = new AttendanceBean(0,atapproval.getAtwmbnum(), atapproval.getAtcategory(), atapproval.getReqdate().toString(), atapproval.getAtcontent(), memberName.getMbname());
                 Attendance attendance = Attendance.createAttendance(attendanceBean);
                 attendanceService.save(attendance);
             }

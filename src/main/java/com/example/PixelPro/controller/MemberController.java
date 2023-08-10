@@ -105,17 +105,44 @@ public class MemberController {
             session.setAttribute("mbnum", member.getMbnum());
 
             List<Commute> existDateList = commuteService.findByMbnum(member.getMbnum());
+            for (Commute existDate : existDateList) {
+
+                if (existDate != null && existDate.getGotowork() != null) {
+                    LocalDate today = LocalDate.now();
+                    boolean hasOverlap = false;
+
+                    LocalDate gotoworkDate = existDate.getGotowork().toLocalDateTime().toLocalDate();
+
+                    if (today.equals(gotoworkDate)) {
+                        hasOverlap = true;
+                        break; // 겹치는 값이 하나라도 있으면 루프를 종료
+                    }
+
+                    if (!hasOverlap) {
+                        out.println("<script>if (confirm('출근 등록 하시겠습니까?')) { location.href='/commute/attendanceGotoWork'; } else { location.href='/home'; }</script>");
+                        out.close();
+                    }
+                }
+            }
             if (existDateList.isEmpty()) {
-                out.println("<script>if (confirm('출근 등록 하시겠습니까?')) { location.href='/commute/attendanceGotoWork'; } else{location.href='/home'}</script>");
+                out.println("<script>if (confirm('출근f 등록 하시겠습니까?')) { location.href='/commute/attendanceGotoWork'; } else{location.href='/home'}</script>");
                 out.close();
             } else {
                 LocalDate today = LocalDate.now();
+                boolean hasOverlap = false;
+
                 for (Commute existDate : existDateList) {
                     LocalDate gotoworkDate = existDate.getGotowork().toLocalDateTime().toLocalDate();
-                    if (today.equals(gotoworkDate) == false) {
-                        out.println("<script>if (confirm('출근 등록 하시겠습니까?')) { location.href='/commute/attendanceGotoWork'; }else{location.href='/home'}</script>");
-                        out.close();
+
+                    if (today.equals(gotoworkDate)) {
+                        hasOverlap = true;
+                        break;
                     }
+                }
+
+                if (!hasOverlap) {
+                    out.println("<script>if (confirm('출근 등록 하시겠습니까?')) { location.href='/commute/attendanceGotoWork'; } else { location.href='/home'; }</script>");
+                    out.close();
                 }
             }
             // 로그인 페이지 이동 세션 설정

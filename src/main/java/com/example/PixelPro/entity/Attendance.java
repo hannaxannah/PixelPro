@@ -25,7 +25,7 @@ public class Attendance {
     //@GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "attendancegenerator")
-    private Integer atnum;
+    private Integer adnum;
     private Integer mbnum;
     private String atcategory;
     private Date atdate;
