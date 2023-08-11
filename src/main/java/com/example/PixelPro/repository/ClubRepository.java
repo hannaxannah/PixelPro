@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface ClubRepository extends JpaRepository<Club, Integer> {
 
-    List<Club> findByOrderByClnumDesc();
+    List<Club> findByOrderByCldateDesc();
 
     Club findByCltitle(String cltitle);
 
@@ -22,6 +22,7 @@ public interface ClubRepository extends JpaRepository<Club, Integer> {
     Page<Club> findByClcategoryAndCltitleLike(@Param("category") String clcategory,
                                                   @Param("keyword") String keyword, Pageable pageable);
 
+    Club findByClnum(int clnum);
 
-
+    List<Club> findByClwriterOrderByClnumDesc(int mbnum);
 }

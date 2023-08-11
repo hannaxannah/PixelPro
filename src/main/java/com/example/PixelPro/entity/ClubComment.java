@@ -19,7 +19,7 @@ public class ClubComment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer conum;
     private Integer clnum;
-    private String mbname;
+    private Integer mbnum;
     private String cldetail;
     private String cldate;
     private Integer cllike;

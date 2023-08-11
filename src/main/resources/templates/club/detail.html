@@ -5,7 +5,7 @@
       layout:decorate="~{common/mylayout}" xmlns:text-align="http://www.w3.org/1999/xhtml"
       xmlns:sec="http://www.w3.org/1999/xhtml">
 <th:block layout:fragment="script">
-    <script th:inline = "javascript">
+    <script th:inline="javascript">
         function reply(elem,ID,fcstep) {
             //답글 입력 창이 평소엔 닫혀있다가 답글 클릭 시 열림
             var inputreply = document.getElementById(ID + ' ' + fcstep);
@@ -34,6 +34,7 @@
                 return false;
             }
         }
+
     </script>
 </th:block>
 
@@ -54,40 +55,48 @@
         </nav>
     </div><!-- End Page Title -->
 
+    <div class="card">
+        <div class="card-body">
+            <div>
+                <form id="frm" th:action="@{'/club/delete/'}" method="post">
+                    <input type="hidden" name="clnum" th:value="${club.clnum}"/>
+                    <button style="float:right; margin-bottom:10px; margin-top:10px;" class="btn btn-secondary"
+                            onClick="return deleteConfirm()">
+                        삭제
+                    </button>
+                </form>
+            </div>
+            <form th:action="@{'/club/update/' + ${club.clnum}}" method="get">
+                <input type="submit" value="수정" style="float:right; margin-top:10px; margin-bottom:10px; margin-right:7px;"
+                       class="btn btn-warning">
+            </form>
 
-    <form id="frm" th:action="@{'/club/delete/'}" method="post">
-        <input type="hidden" name="clnum" th:value="${club.clnum}"/>
-        <button style="float:right; margin-bottom:10px;" class="btn btn-secondary" onClick="return deleteConfirm()">삭제</button>
-    </form>
+            <table class="table" border="1">
+                <tr>
+                    <td><strong>제목</strong></td>
+                    <td style="width: 90%;" th:text="${club.cltitle}"></td>
+                <tr>
+                    <td><strong>첨부파일</strong></td>
 
-    <form th:action="@{'/club/update/' + ${club.clnum}}" method="get">
-        <input type="submit" value="수정" style="float:right;  margin-bottom:10px; margin-right:7px;" class="btn btn-warning">
-    </form>
+                    <td>
+                        <div th:if="${club.filename == null}">
+                            <p>첨부파일이 없습니다.</p>
+                        </div>
+                        <div th:if="${club.filename != null}">
+                            <a class="card-text" style="margin-left: 10px;"
+                               th:href="@{'/download/club/' + ${club.filename}}"
+                               th:text="${club.filename}" ></a>
+                        </div>
 
-    <table class="table" border="1">
-        <tr>
-            <td ><strong>제목</strong></td>
-            <td style="width: 90%;" th:text="${club.cltitle}"></td>
-        <tr>
-            <td><strong>첨부파일</strong></td>
-
-            <td>
-                <div th:if="${club.filename == null}">
-                    <p>첨부파일이 없습니다.</p>
-                </div>
-                <div th:if="${club.filename != null}">
-                    <a class="card-text" style="margin-left: 10px;"
-                       th:href="@{'/download/club/' + ${club.filename}}"
-                       th:text="${club.filename}" ></a>
-                </div>
-
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" style="height:300px;" th:text="${club.cldetail}"></td>
-        </tr>
-        <tr></tr>
-    </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="height:300px;" th:text="${club.cldetail}"></td>
+                </tr>
+                <tr></tr>
+            </table>
+        </div>
+    </div>
 
     <div class="card">
         <div class="card-body">
@@ -113,23 +122,30 @@
                         </div>
                         <!-- ... | 답글, 수정, 삭제 -->
                         <div class="filter" style="position:absolute; right:5px;">
-                            <a class="icon" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></a>
+                            <a class="icon" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i
+                                    class="bi bi-three-dots"></i></a>
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="min-width:4rem;">
-                                <li><a class="dropdown-item replybutton" style="cursor:pointer;" th:onclick="reply(this,'reply-form',[[${comment.clstep}]])">답글</a></li>
-                                <li><a class="dropdown-item" href="#">수정</a></li>
-                                <li><a class="dropdown-item" th:href="@{/club/deletecomment(conum=${comment.conum}, clnum=${comment.clnum})}">삭제</a></li>
+                                <li><a class="dropdown-item replybutton" style="cursor:pointer;"
+                                       th:onclick="reply(this,'reply-form',[[${comment.clstep}]])">답글</a></li>
+                               <!-- <li><a class="dropdown-item" href="#">수정</a></li>-->
+                                <li><a class="dropdown-item"
+                                       th:href="@{/club/deletecomment(conum=${comment.conum}, clnum=${comment.clnum})}">삭제</a>
+                                </li>
                             </ul>
                         </div>
                         <!-- End ... -->
                         <!-- 답글 입력 창 (평소 display none, 답글 클릭 시 display block) -->
-                        <div th:id="|reply-form ${comment.clstep}|" class="reply-form" style="display:none; padding-left:40px;">
+                        <div th:id="|reply-form ${comment.clstep}|" class="reply-form"
+                             style="display:none; padding-left:40px;">
                             <form action="/club/replycomment" method="post">
                                 <input type="hidden" name="clnum" th:value="${club.clnum}">
                                 <input type="hidden" name="conum" th:value="${comment.conum}">
                                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <textarea name="cldetail" id="" class="form-control" style="height:40px; resize:none;" placeholder="답글을 입력하세요"></textarea>
+                                    <textarea name="cldetail" id="" class="form-control"
+                                              style="height:40px; resize:none;" placeholder="답글을 입력하세요."></textarea>
                                     <div style="margin-left:10px;">
-                                        <button type="submit" class="btn btn-success"><i class="bi bi-send"></i></button>
+                                        <button type="submit" class="btn btn-success"><i class="bi bi-send"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </form>
@@ -148,10 +164,13 @@
                         </div>
                         <!-- ... | 수정, 삭제 -->
                         <div class="filter" style="position:absolute; right:5px;">
-                            <a class="icon" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></a>
+                            <a class="icon" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i
+                                    class="bi bi-three-dots"></i></a>
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="min-width:4rem;">
-                                <li><a class="dropdown-item" href="#">수정</a></li>
-                                <li><a class="dropdown-item" th:href="@{/club/deletecomment(conum=${comment.conum}, clnum=${comment.clnum})}">삭제</a></li>
+                             <!--   <li><a class="dropdown-item" href="#">수정</a></li>-->
+                                <li><a class="dropdown-item"
+                                       th:href="@{/club/deletecomment(conum=${comment.conum}, clnum=${comment.clnum})}">삭제</a>
+                                </li>
                             </ul>
                         </div>
                         <!-- End ... -->
@@ -164,7 +183,8 @@
                 <form action="/club/writecomment" method="post">
                     <input type="hidden" name="clnum" th:value="${club.clnum}">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <textarea name="cldetail" id="comment-form" class="form-control" style="height:40px; resize:none;" placeholder="댓글을 입력하세요"></textarea>
+                        <textarea name="cldetail" id="comment-form" class="form-control"
+                                  style="height:40px; resize:none;" placeholder="댓글을 입력하세요."></textarea>
                         <div style="margin-left:10px;">
                             <button type="submit" class="btn btn-success"><i class="bi bi-send"></i></button>
                         </div>
@@ -172,10 +192,10 @@
                 </form>
             </div>
 
-    <div style="text-align:center;">
+            <div style="text-align:center;">
 
-        <button type="button" class="btn btn-success" onclick="location.href='/club/list'">목록</button>
-    </div>
+                <button type="button" class="btn btn-success" style="margin-top:20px;" onclick="location.href='/club/list'">목록</button>
+            </div>
 
 </main><!-- End #main -->
 
@@ -186,6 +206,7 @@
         var fileName = $(this).val().split('\\').pop();
         $(this).siblings('.custom-file-label').addClass('selected').html(fileName);
       });
-    </script>
+
+</script>
 </body>
 </html>

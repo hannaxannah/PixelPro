@@ -15,18 +15,17 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 public class ClubBean {
     private Integer clnum;
-    private String mbname;
+    private Integer mbnum;
     @NotBlank(message = "카테고리를 선택하세요.")
     private String clcategory;
     @NotEmpty(message = "제목은 필수입력입니다.")
     private String cltitle;
     @NotEmpty(message = "내용은 필수입력입니다.")
     private String cldetail;
-    private String clwriter;
-    private String filename;
+    private String clwriter; //게시글작성자
+    private String cfilename;
+    private String cfilepath;
     private String cldate;
-
-
     private MultipartFile upload;
 
     public MultipartFile getUpload() {
@@ -39,7 +38,7 @@ public class ClubBean {
 
         System.out.println("fileName : " + fileName);
 
-        this.filename = fileName;
+        this.cfilename = fileName;
     }
 
 }

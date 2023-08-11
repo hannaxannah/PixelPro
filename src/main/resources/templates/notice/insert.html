@@ -2,17 +2,12 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/mylayout}" xmlns:text-align="http://www.w3.org/1999/xhtml">
+      layout:decorate="~{common/mylayout}" xmlns="http://www.w3.org/1999/xhtml">
 
 <th:block layout:fragment="script">
 
-  <script th:inline = "javascript">
+    <script th:inline="javascript">
    $(document).ready(function(){
-
-    document.getElementById('date').valueAsDate = new Date();
-
-
-
 
     var nimportantString = [[${noticeBean.nimportant}]];
     console.log('nimportantString:' + nimportantString);
@@ -26,27 +21,29 @@
           $(this).attr('checked',true);
         }
     });
-
-
-
    });
 
    function sub(){
-        alert(2);
+        //alert(2);
         var acontent = '공지사항이 등록되었습니다.';// 내용
         var asurl = '/notice/list'; // url
         var aldata = acontent + "_" + asurl;
         socket2.send("/alert/sendAll", {}, aldata);
     }
-  </script>
+
+
+
+
+
+    </script>
 </th:block>
 
 <head><title>PixelPro</title></head>
 
 <body class="content" layout:fragment="content">
 <main id="main" class="main">
-  <th:block layout:fragment="css">
-  <style>
+    <th:block layout:fragment="css">
+        <style>
 
   input[id="cb1"] + label {
 	display: inline-block;
@@ -69,56 +66,66 @@
       color : red;
       font-size:9pt;
 }
-</style>
-  </th:block>
-
-  <div class="pagetitle">
-    <h1>공지작성</h1>
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/home">Home</a></li>
-        <li class="breadcrumb-item"><a href="/notice/list">공지</a></li>
-        <li class="breadcrumb-item active">공지작성</li>
-      </ol>
-    </nav>
-  </div><!-- End Page Title -->
-
-    <form name="myform" method="post" action="/notice/insert" enctype="multipart/form-data" th:object="${noticeBean}">
-      <input id="nnum"  type="hidden" th:value="${notice?.nnum}" />
 
 
-      <button type="button" class="btn btn-secondary" style="float:right; margin-bottom:10px;" onclick="location.href='/notice/list'">취소</button>
-      <input type="submit" id="submit" style="float:right; margin-bottom:10px; margin-right:7px;" value="등록" class="btn btn-success" onclick="sub()">
-      <input class="form-check-input" type="checkbox"  name="nimportant" value=1 id="cb1">
 
-      <label for="cb1"></label>상단에 배치
-      <div class="form-group">
-          <input type="text" class="form-control" id="ntitle" th:field="*{ntitle}" placeholder="제목을 입력하세요."/>
-            <p th:if="${#fields.hasErrors('ntitle')}" th:errors="*{ntitle}" class="fieldError"></p>
 
-      </div>
 
-      <div class="form-group">
-        <div class="custom-file" id="inputFile">
-          <input type="file" name="file" id="file" class="custom-file-input">
-          <label class="custom-file-label" for="file">파일을 선택하세요.</label>
+        </style>
+    </th:block>
+
+    <div class="pagetitle">
+        <h1>공지작성</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item"><a href="/notice/list">공지</a></li>
+                <li class="breadcrumb-item active">공지작성</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <div class="card">
+        <div class="card-body" style="display:flex; flex-direction:column;">
+            <form name="myform" method="post" action="/notice/insert" enctype="multipart/form-data"
+                  th:object="${noticeBean}">
+
+                <input type="hidden" name="mbnum" th:field="${clubBean.mbnum}">
+                <input id="nnum" type="hidden" th:value="${notice?.nnum}"/>
+
+                <div style="height:60px;">
+                    <button type="button" class="btn btn-secondary" style="float:right; margin-top:10px;"
+                            onclick="location.href='/notice/list'">취소
+                    </button>
+                    <input type="submit" id="submit" style="float:right; margin-top:10px; margin-right:7px;"
+                           value="등록"
+                           class="btn btn-success" onclick="sub()">
+                </div>
+
+
+                <div class="form-group" style="margin-top:25px;">
+                    <input class="form-check-input" type="checkbox" name="nimportant" value=1 id="cb1">
+                    <label for="cb1" style="margin-bottom:6px;"></label><label
+                        style="white-space:nowrap; margin-bottom:20px">상단에 배치</label>
+                    <input type="text" class="form-control" id="ntitle" th:field="*{ntitle}" placeholder="제목을 입력하세요."/>
+                    <p th:if="${#fields.hasErrors('ntitle')}" th:errors="*{ntitle}" class="fieldError"></p>
+
+                </div>
+
+                <div class="form-group">
+                    <div class="custom-file" id="inputFile">
+                        <input type="file" name="upload" id="upload" class="custom-file-input">
+                        <label class="custom-file-label" for="upload">파일을 선택하세요.</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <textarea type="text" class="form-control" id="ndetail" th:field="*{ndetail}"
+                              placeholder="내용을 입력하세요." rows="15px;"></textarea>
+                    <p th:if="${#fields.hasErrors('ndetail')}" th:errors="*{ndetail}" class="fieldError"></p>
+                </div>
         </div>
-      </div>
-
-      <div class="form-group">
-          <textarea type="text" class="form-control" id="ndetail" th:field="*{ndetail}" placeholder="내용을 입력하세요." rows="13px;"></textarea>
-        <p th:if="${#fields.hasErrors('ndetail')}" th:errors="*{ndetail}" class="fieldError"></p>
-      </div>
-      <div class="form-group">
-      <input type="date" class="form-control" id="date" name="date" value="${sysdate}" th:field="*{ndate}" readonly>
-      </div>
-
-
-
+    </div>
     </form>
-
-
-
 
 </main><!-- End #main -->
 
@@ -129,7 +136,10 @@
         var fileName = $(this).val().split('\\').pop();
         $(this).siblings('.custom-file-label').addClass('selected').html(fileName);
       });
-    </script>
+
+
+
+</script>
 
 </body>
 </html>

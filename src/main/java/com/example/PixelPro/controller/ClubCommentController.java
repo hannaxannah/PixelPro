@@ -36,7 +36,7 @@ public class ClubCommentController {
         ClubCommentBean clubCommentBean = new ClubCommentBean();
 
         clubCommentBean.setClnum(clnum);
-        clubCommentBean.setMbname(club.getMbname());
+        clubCommentBean.setMbnum(club.getMbnum());
         clubCommentBean.setCldetail(cldetail);
 
         LocalDateTime now = LocalDateTime.now();
@@ -75,7 +75,7 @@ public class ClubCommentController {
 
         ClubCommentBean clubCommentBean = new ClubCommentBean();
         clubCommentBean.setClnum(clnum);
-        clubCommentBean.setMbname(conumEntity.getMbname());
+        clubCommentBean.setMbnum(conumEntity.getMbnum());
         clubCommentBean.setCldetail(cldetail);
         clubCommentBean.setClstep(conumEntity.getClstep());
         clubCommentBean.setCllevel(conumEntity.getCllevel()+1);

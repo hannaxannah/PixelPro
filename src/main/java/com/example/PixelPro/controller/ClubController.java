@@ -1,10 +1,10 @@
 package com.example.PixelPro.controller;
 
 import com.example.PixelPro.Bean.ClubBean;
+import com.example.PixelPro.entity.Atapproval;
 import com.example.PixelPro.entity.ClubComment;
 import com.example.PixelPro.entity.Club;
 import com.example.PixelPro.entity.Member;
-import com.example.PixelPro.entity.Notice;
 import com.example.PixelPro.service.ClubCommentService;
 import com.example.PixelPro.service.ClubService;
 import com.example.PixelPro.service.MemberService;
@@ -34,9 +34,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -50,7 +48,7 @@ public class ClubController {
     /*목록*/
     @GetMapping({"/club/list"})
     public String gotoFreeBoard(HttpSession session, HttpServletResponse response,
-                                Model model, @PageableDefault(page=0, size = 5, sort = "clnum", direction = Sort.Direction.DESC) Pageable pageable) throws IOException {
+                                Model model, @PageableDefault(page=0, size = 7, sort = {"cldate"}, direction = Sort.Direction.DESC) Pageable pageable) throws IOException {
 
         response.setContentType("text/html; charset=UTF-8");
         Member member = (Member)session.getAttribute("loginInfo");
@@ -60,18 +58,19 @@ public class ClubController {
             response.getWriter().flush();
         }
 
-        Page<Club> lists = clubService.findByOrderByClnumDesc(pageable);
+        Page<Club> list = clubService.findByOrderByCldateDesc(pageable);
 
-        int nowPage = lists.getPageable().getPageNumber() + 1;
+        int nowPage = list.getPageable().getPageNumber() + 1;
         int startPage = Math.max(nowPage - 4, 1);
-        int endPage = Math.min(nowPage + 5, lists.getTotalPages());
+        int endPage = Math.min(nowPage + 5, list.getTotalPages());
 
-        model.addAttribute("lists", lists);
+        model.addAttribute("list", list);
         model.addAttribute("nowPage", nowPage);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
 
-        model.addAttribute("lists", clubService.findByOrderByClnumDesc(pageable));
+
+        model.addAttribute("club", clubService.findByOrderByCldateDesc(pageable));
 
 
         return "club/list";
@@ -80,22 +79,50 @@ public class ClubController {
 
     /*글쓰기 버튼 클릭시*/
     @GetMapping(value="/club/insert")
-    public String insertGet(Model model){
+    public String insertGet(Model model,HttpSession session, HttpServletResponse response) throws IOException {
+
+        response.setContentType("text/html; charset=UTF-8");
+        Member member = (Member) session.getAttribute("loginInfo");
+        if(member == null){
+            session.setAttribute("destination", "redirect:/approval/atapprovalInsert");
+            response.getWriter().print("<script>alert('로그인이 필요합니다.');location.href='/login'</script>");
+            response.getWriter().flush();
+        }
 
         model.addAttribute("clubBean", new ClubBean());
+        List<Member> memberList = memberService.findByOrderByDeptAscMblevelAsc();
+        model.addAttribute("memberList", memberList);
+        model.addAttribute("loginInfo",member);
+
+        Integer mbnum = (Integer)session.getAttribute("mbnum");
+        ClubBean clubBean = new ClubBean();
+        clubBean.setMbnum(mbnum);
+        model.addAttribute("clubBean", clubBean);
+
         return "club/insert";
     }
 
     /*게시판글 등록시*/
     @PostMapping(value="/club/insert")
     public String insertPost(@Valid ClubBean clubBean,
-                             BindingResult bindingResult, Model model) {
+                             BindingResult bindingResult, HttpSession session,HttpServletResponse response,Model model) throws IOException {
+
+        response.setContentType("text/html; charset=UTF-8");
+        Member member = (Member) session.getAttribute("loginInfo");
+        List<Member> memberList = memberService.findByOrderByDeptAscMblevelAsc();
+        model.addAttribute("memberList", memberList);
+
+        if(member == null){
+            session.setAttribute("destination", "redirect:/approval/atapprovalInsert");
+            response.getWriter().print("<script>alert('로그인이 필요합니다.');location.href='/login'</script>");
+            response.getWriter().flush();
+        }
+
 
         /*if (bindingResult.hasErrors()) {
             model.addAttribute("clubBean", clubBean);
             return "/club/insert";
         }*/
-
 
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -104,7 +131,7 @@ public class ClubController {
         Club club = Club.insertClub(clubBean);
         clubService.saveClub(club);
 
-       /* if(!clubBean.getFilename().equals("")){
+        /*if(!clubBean.getCfilename().equals("")){
             String uploadPath = "C:\\PixelPro\\src\\main\\resources\\clubFile";
             File destination = new File(uploadPath + File.separator + clubBean.getUpload().getOriginalFilename());
             MultipartFile multi =  clubBean.getUpload();
@@ -139,9 +166,9 @@ public class ClubController {
     }
 
     /* 파일 다운 처리 */
-    @RequestMapping("/download/club/{filename}")
-    public ResponseEntity<Resource> fileDownload(@PathVariable("filename") String filename) throws IOException {
-        File file = new File("C:/PixelPro/src/main/resources/clubFile/" + filename);
+    @RequestMapping("/download/club/{cfilename}")
+    public ResponseEntity<Resource> fileDownload(@PathVariable("cfilename") String cfilename) throws IOException {
+        File file = new File("C:/PixelPro/src/main/resources/clubFile/" + cfilename);
         Path path = Paths.get("C:/");
 
         if (!file.exists()) {
@@ -157,10 +184,10 @@ public class ClubController {
     }
 
 
+
     /*수정버튼*/
     @GetMapping(value = "/club/update/{clnum}")
-    public String updateGet(@RequestParam("clnum") int clnum, Model model){
-
+    public String updateGet(@PathVariable("clnum") int clnum, Model model){
         Club club = clubService.findByClnum(clnum);
         model.addAttribute("clubBean", club);
         return "/club/update";
@@ -181,6 +208,22 @@ public class ClubController {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         clubBean.setCldate(now.format(dateTimeFormatter));
 
+
+        if(!clubBean.getCfilename().equals("")){
+            String uploadPath = "C:\\PixelPro\\src\\main\\resources\\clubFile";
+            File destination = new File(uploadPath + File.separator + clubBean.getUpload().getOriginalFilename());
+            MultipartFile multi =  clubBean.getUpload();
+            try {
+                multi.transferTo(destination);
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (IOException e){
+
+            }
+        }
+
+
+
         Club club = Club.insertClub(clubBean);
         clubService.saveClub(club);
 
@@ -188,7 +231,7 @@ public class ClubController {
     }
 
     /*글 삭제*/
-    @GetMapping(value = "/club/delete")
+    @PostMapping(value = "/club/delete")
     public String delete(@RequestParam("clnum") int clnum){
         clubService.deleteByClnum(clnum);
         return "redirect:/club/list";

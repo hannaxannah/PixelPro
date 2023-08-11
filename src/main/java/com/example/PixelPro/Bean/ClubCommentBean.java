@@ -12,7 +12,7 @@ public class ClubCommentBean {
 
     private Integer conum;
     private Integer clnum;
-    private String mbname;
+    private Integer mbnum;
     @NotBlank(message = "댓글을 입력하세요.")
     private String cldetail;
     private String cldate;

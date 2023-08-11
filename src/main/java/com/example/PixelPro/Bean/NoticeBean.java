@@ -1,10 +1,6 @@
 package com.example.PixelPro.Bean;
 
-import com.example.PixelPro.entity.Notice;
 import lombok.*;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Column;
@@ -24,15 +20,13 @@ public class NoticeBean {
     private String ndetail;
     private String filename;
     private String filepath;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(columnDefinition = "date default sysdate")
     private String ndate;
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int nimportant;
 
 
 
-    public Notice toEntity(){
+/*    public Notice toEntity(){
         Notice build = Notice.builder()
                 .nnum(nnum)
                 .mbname(mbname)
@@ -43,7 +37,7 @@ public class NoticeBean {
                 .nimportant(nimportant)
                 .build();
         return build;
-    }
+    }*/
 
     private MultipartFile upload;
 
@@ -60,7 +54,7 @@ public class NoticeBean {
         this.filename = fileName;
     }
 
-    @Builder
+   /* @Builder
     public NoticeBean(Integer nnum, String mbname,
                       String ntitle, String ndetail, String filename, String filepath,
                       int nimportant){
@@ -71,6 +65,6 @@ public class NoticeBean {
         this.filename = filename;
         this.filepath = filepath;
         this.nimportant = nimportant;
-    }
+    }*/
 
 }
