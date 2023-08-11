@@ -120,7 +120,7 @@
             <div class="card-body" style="padding:20px;">
                 <!-- 본문 -->
                 <p th:text="${free.fdetail}"></p>
-                <img th:if="${free.storefilename != null}" th:src="@{|/freeSecondhandFiles/${free.storefilename}|}" style="height:500px;">
+                <img th:if="${free.ffile != null}" th:src="@{|/freeSecondhandFiles/${free.storefilename}|}" style="height:500px;">
                 <!-- End 본문 -->
             </div>
         </div>

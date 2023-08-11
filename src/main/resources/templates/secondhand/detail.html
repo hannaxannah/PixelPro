@@ -126,7 +126,7 @@
                 <hr style="height:1px; color:rgba(33, 37, 41, 0.6); margin:20px 0;">
                 <!-- 본문 -->
                 <p th:text="${secondhand.shdetail}"></p>
-                <img th:if="${secondhand.storefilename != null}" th:src="@{|/freeSecondhandFiles/${secondhand.storefilename}|}" style="height:500px;">
+                <img th:if="${secondhand.shfile != null}" th:src="@{|/freeSecondhandFiles/${secondhand.storefilename}|}" style="height:500px;">
                 <!-- End 본문 -->
             </div>
         </div>
