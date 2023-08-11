@@ -44,12 +44,12 @@
                 <!-- post list item -->
                 <div class="col-xl-4 col-lg-6" style="margin-bottom:20px;" th:each="lists :${lists}">
                     <article>
-                        <div class="post-img" th:if="${lists.storefilename == null}">
+                        <div class="post-img" th:if="${lists.shfile == null}">
                             <img src="/freeSecondhandFiles/present.png" alt="" class="img-fluid">
                             <!-- @{|/freeSecondhandFiles/${imgs.get(lists.shnum)}|} -->
                             <!-- /NiceAdmin/assets/img/news-1.jpg -->
                         </div>
-                        <div class="post-img" th:if="${lists.storefilename != null}">
+                        <div class="post-img" th:if="${lists.shfile != null}">
                             <img th:src="@{|/freeSecondhandFiles/${lists.storefilename}|}" alt="" class="img-fluid">
                         </div>
                         <h4 class="title" style="margin-top:1.5rem;">
