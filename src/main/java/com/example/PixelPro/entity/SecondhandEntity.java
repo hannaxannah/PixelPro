@@ -26,6 +26,7 @@ public class SecondhandEntity {
     private String shprice; //가격
     private String shlocation; //거래 희망 장소
     private String shfile; //파일이름
+    private String storefilename;   //서버 내부에서 관리하는 파일명
     private String shdate; //작성날짜
     private Integer shcount; //조회수
 

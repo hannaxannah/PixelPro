@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -27,14 +28,16 @@ public class FreeCommentController {
     @PostMapping(value = "community/free/writecomment")
     public String writeFreeBoardComment(@RequestParam(value="fnum", required = false) int fnum,
                                  @RequestParam(value="fcdetail", required = false) String fcdetail,
-                                 Model model){
+                                 Model model, HttpSession session){
 
         FreeEntity freeEntity = freeService.findByFnum(fnum);
 
         FreeCommentBean freeCommentBean = new FreeCommentBean();
 
         freeCommentBean.setFnum(fnum);
-        freeCommentBean.setMbnum(freeEntity.getMbnum());
+
+        Integer mbnum = (Integer)session.getAttribute("mbnum");
+        freeCommentBean.setMbnum(mbnum);
         freeCommentBean.setFcdetail(fcdetail);
 
         LocalDateTime now = LocalDateTime.now();
@@ -66,13 +69,15 @@ public class FreeCommentController {
     public String replyFreeBoardComment(@RequestParam(value = "fnum", required = false) int fnum,
                                         @RequestParam(value = "fcnum", required = false) int fcnum,
                                         @RequestParam(value = "fcdetail", required = false) String fcdetail,
-                                        Model model) {
+                                        Model model, HttpSession session) {
 
         FreeCommentEntity fcnumEntity = freeCommentService.findByFcnum(fcnum);
 
         FreeCommentBean freeCommentBean = new FreeCommentBean();
         freeCommentBean.setFnum(fnum);
-        freeCommentBean.setMbnum(fcnumEntity.getMbnum());
+
+        Integer mbnum = (Integer)session.getAttribute("mbnum");
+        freeCommentBean.setMbnum(mbnum);
         freeCommentBean.setFcdetail(fcdetail);
         freeCommentBean.setFcstep(fcnumEntity.getFcstep());
         freeCommentBean.setFclevel(fcnumEntity.getFclevel()+1);
@@ -98,9 +103,34 @@ public class FreeCommentController {
         return "redirect:/community/free/detail?fnum=" + fnum;
     }
 
-    //댓글 수정
+    //댓글, 답글 수정
+    @PostMapping(value = "community/free/updatecomment")
+    public String updateFreeBoardComment(@RequestParam(value="fnum", required = false) int fnum,
+                                         @RequestParam(value="fcnum", required = false) int fcnum,
+                                         @RequestParam(value="fcdetail", required = false) String fcdetail,
+                                         Model model, HttpSession session){
 
-    //답글 수정
+        FreeCommentEntity fcnumEntity = freeCommentService.findByFcnum(fcnum);
+        FreeCommentBean freeCommentBean = new FreeCommentBean();
+
+        freeCommentBean.setFnum(fnum);
+        freeCommentBean.setFcnum(fcnum);
+
+        Integer mbnum = (Integer)session.getAttribute("mbnum");
+        freeCommentBean.setMbnum(mbnum);
+        freeCommentBean.setFcdetail(fcdetail);
+        freeCommentBean.setFcstep(fcnumEntity.getFcstep());
+        freeCommentBean.setFclevel(fcnumEntity.getFclevel());
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        freeCommentBean.setFcdate(now.format(dateTimeFormatter));
+
+        FreeCommentEntity freeCommentEntity = FreeCommentEntity.insertFreeBoardComment(freeCommentBean);
+        freeCommentService.saveFreeComment(freeCommentEntity);
+
+        return "redirect:/community/free/detail?fnum=" + fnum;
+    }
 
     //댓글, 답글 삭제
     @GetMapping(value = "community/free/deletecomment")
@@ -108,7 +138,8 @@ public class FreeCommentController {
                          @RequestParam("fnum") int fnum){
 
         FreeCommentEntity fcnumEntity = freeCommentService.findByFcnum(fcnum);
-        if(fcnumEntity.getFclevel() == 0) {
+        Boolean replyExistance = freeCommentService.replyexist(fcnum);
+        if((fcnumEntity.getFclevel() == 0) && replyExistance) {
             fcnumEntity.setFcdetail("삭제된 댓글입니다.");
             freeCommentService.saveFreeComment(fcnumEntity);
         }

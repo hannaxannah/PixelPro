@@ -1,5 +1,6 @@
 package com.example.PixelPro.service;
 
+import com.example.PixelPro.entity.FreeCommentEntity;
 import com.example.PixelPro.entity.SecondhandCommentEntity;
 import com.example.PixelPro.repository.SecondhandCommentRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,17 @@ public class SecondhandCommentService {
 
     public void deleteByShcnum(int shcnum) {
         secondhandCommentRepository.deleteById(shcnum);
+    }
+
+    public Boolean replyexist(int shcnum) {
+        SecondhandCommentEntity secondhandCommentEntity = secondhandCommentRepository.findByShcnum(shcnum);
+        List<SecondhandCommentEntity> replyLists = secondhandCommentRepository.findByShcstepAndShnum(secondhandCommentEntity.getShcstep(), secondhandCommentEntity.getShnum());
+        System.out.println("replyLists.size:"+replyLists.size());
+        if(replyLists.size() > 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }

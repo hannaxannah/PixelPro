@@ -1,6 +1,8 @@
 package com.example.PixelPro.controller;
 
+import com.example.PixelPro.Bean.FreeCommentBean;
 import com.example.PixelPro.Bean.SecondhandCommentBean;
+import com.example.PixelPro.entity.FreeCommentEntity;
 import com.example.PixelPro.entity.SecondhandCommentEntity;
 import com.example.PixelPro.entity.SecondhandEntity;
 import com.example.PixelPro.service.SecondhandCommentService;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -27,14 +30,17 @@ public class SecondhandCommentController {
     @PostMapping(value = "community/secondhand/writecomment")
     public String writeFreeBoardComment(@RequestParam(value="shnum", required = false) int shnum,
                                         @RequestParam(value="shcdetail", required = false) String shcdetail,
-                                        Model model){
+                                        @RequestParam(value="shcsecret", required = false) String shcsecret,
+                                        Model model, HttpSession session){
 
         SecondhandEntity secondhandEntity = secondhandService.findByShnum(shnum);
 
         SecondhandCommentBean secondhandCommentBean = new SecondhandCommentBean();
 
         secondhandCommentBean.setShnum(shnum);
-        secondhandCommentBean.setMbnum(secondhandEntity.getMbnum());
+
+        Integer mbnum = (Integer)session.getAttribute("mbnum");
+        secondhandCommentBean.setMbnum(mbnum);
         secondhandCommentBean.setShcdetail(shcdetail);
 
         LocalDateTime now = LocalDateTime.now();
@@ -55,6 +61,13 @@ public class SecondhandCommentController {
 
         secondhandCommentBean.setShclevel(0);
 
+        System.out.println("shcsecret:"+shcsecret);
+        if(shcsecret == null) {
+            secondhandCommentBean.setShcsecret("open");
+        } else {
+            secondhandCommentBean.setShcsecret("secret");
+        }
+
         SecondhandCommentEntity secondhandCommentEntity = SecondhandCommentEntity.insertSecondhandBoardComment(secondhandCommentBean);
         secondhandCommentService.saveSecondhandComment(secondhandCommentEntity);
 
@@ -66,13 +79,16 @@ public class SecondhandCommentController {
     public String replyFreeBoardComment(@RequestParam(value = "shnum", required = false) int shnum,
                                         @RequestParam(value = "shcnum", required = false) int shcnum,
                                         @RequestParam(value = "shcdetail", required = false) String shcdetail,
-                                        Model model) {
+                                        @RequestParam(value="shcsecret", required = false) String shcsecret,
+                                        Model model, HttpSession session) {
 
         SecondhandCommentEntity shcnumEntity = secondhandCommentService.findByShcnum(shcnum);
 
         SecondhandCommentBean secondhandCommentBean = new SecondhandCommentBean();
         secondhandCommentBean.setShnum(shnum);
-        secondhandCommentBean.setMbnum(shcnumEntity.getMbnum());
+
+        Integer mbnum = (Integer)session.getAttribute("mbnum");
+        secondhandCommentBean.setMbnum(mbnum);
         secondhandCommentBean.setShcdetail(shcdetail);
         secondhandCommentBean.setShcstep(shcnumEntity.getShcstep());
         secondhandCommentBean.setShclevel(shcnumEntity.getShclevel()+1);
@@ -92,15 +108,53 @@ public class SecondhandCommentController {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         secondhandCommentBean.setShcdate(now.format(dateTimeFormatter));
 
+        if(shcsecret == null) {
+            secondhandCommentBean.setShcsecret("open");
+        } else {
+            secondhandCommentBean.setShcsecret("secret");
+        }
+
         SecondhandCommentEntity secondhandCommentEntity = SecondhandCommentEntity.insertSecondhandBoardComment(secondhandCommentBean);
         secondhandCommentService.saveSecondhandComment(secondhandCommentEntity);
 
         return "redirect:/community/secondhand/detail?shnum=" + shnum;
     }
 
-    //댓글 수정
+    //댓글, 답글 수정
+    @PostMapping(value = "community/secondhand/updatecomment")
+    public String updateFreeBoardComment(@RequestParam(value="shnum", required = false) int shnum,
+                                         @RequestParam(value="shcnum", required = false) int shcnum,
+                                         @RequestParam(value="shcdetail", required = false) String shcdetail,
+                                         @RequestParam(value="shcsecret", required = false) String shcsecret,
+                                         Model model, HttpSession session){
 
-    //답글 수정
+        SecondhandCommentEntity shcnumEntity = secondhandCommentService.findByShcnum(shcnum);
+
+        SecondhandCommentBean secondhandCommentBean = new SecondhandCommentBean();
+        secondhandCommentBean.setShnum(shnum);
+        secondhandCommentBean.setShcnum(shcnum);
+
+        Integer mbnum = (Integer)session.getAttribute("mbnum");
+        secondhandCommentBean.setMbnum(mbnum);
+        secondhandCommentBean.setShcdetail(shcdetail);
+        secondhandCommentBean.setShcstep(shcnumEntity.getShcstep());
+        secondhandCommentBean.setShclevel(shcnumEntity.getShclevel());
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        secondhandCommentBean.setShcdate(now.format(dateTimeFormatter));
+
+        if(shcsecret == null) {
+            secondhandCommentBean.setShcsecret("open");
+        } else {
+            secondhandCommentBean.setShcsecret("secret");
+        }
+
+        SecondhandCommentEntity secondhandCommentEntity = SecondhandCommentEntity.insertSecondhandBoardComment(secondhandCommentBean);
+        secondhandCommentService.saveSecondhandComment(secondhandCommentEntity);
+
+        return "redirect:/community/secondhand/detail?shnum=" + shnum;
+    }
 
     //댓글, 답글 삭제
     @GetMapping(value = "community/secondhand/deletecomment")
@@ -108,7 +162,8 @@ public class SecondhandCommentController {
                          @RequestParam("shnum") int shnum){
 
         SecondhandCommentEntity shcnumEntity = secondhandCommentService.findByShcnum(shcnum);
-        if(shcnumEntity.getShclevel() == 0) {
+        Boolean replyExistance = secondhandCommentService.replyexist(shcnum);
+        if((shcnumEntity.getShclevel() == 0) && replyExistance) {
             shcnumEntity.setShcdetail("삭제된 댓글입니다.");
             secondhandCommentService.saveSecondhandComment(shcnumEntity);
         }
