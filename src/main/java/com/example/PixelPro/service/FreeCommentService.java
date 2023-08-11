@@ -38,6 +38,18 @@ public class FreeCommentService {
         return freeCommentEntity;
     }
 
+    public Boolean replyexist(int fcnum) {
+        FreeCommentEntity freeCommentEntity = freeCommentRepository.findByFcnum(fcnum);
+        List<FreeCommentEntity> replyLists = freeCommentRepository.findByFcstepAndFnum(freeCommentEntity.getFcstep(), freeCommentEntity.getFnum());
+        System.out.println("replyLists.size:"+replyLists.size());
+        if(replyLists.size() > 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     public void deleteByFcnum(int fcnum) {
         freeCommentRepository.deleteById(fcnum);
     }

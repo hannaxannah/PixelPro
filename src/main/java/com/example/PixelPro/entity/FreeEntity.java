@@ -26,6 +26,7 @@ public class FreeEntity {
     @Column(length = 50000)
     private String fdetail; //내용
     private String ffile; //파일이름
+    private String storefilename;   //서버 내부에서 관리하는 파일명
     private String fdate; //작성날짜
     private Integer fcount; //조회수
 

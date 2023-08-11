@@ -57,7 +57,7 @@
                     <td colspan="4" style="text-align:center">게시물이 없습니다.</td>
                 </tr>
                 <tr>
-                    <th scope="row" style="text-align:center" th:text="${lists.fnum}"></th>
+                    <th scope="row" style="text-align:center" th:text="${totalCount - (((pageNumber-1)*5) + listsStat.index)}"></th>
                     <td>
                         <a style="color:#198754;" th:href="@{/community/free/detail(fnum=${lists.fnum})}" th:text="|[${lists.fcategory}] ${lists.ftitle}|"></a>
                         <!--
@@ -79,8 +79,8 @@
                 <li th:if="${totalPages == 0}" class="page-item">
                     <a class="page-link" th:href="@{/community/free/list(pageNumber=1)}" th:text="1"></a>
                 </li>
-                <li th:unless="${totalPages == 0}" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}" class="page-item">
-                    <a class="page-link" th:href="@{/community/free/list(pageNumber=${pageNumber})}" th:text="${pageNumber}"></a>
+                <li th:unless="${totalPages == 0}" th:each="pageNum : ${#numbers.sequence(1, totalPages)}" class="page-item">
+                    <a class="page-link" th:href="@{/community/free/list(pageNumber=${pageNum})}" th:text="${pageNum}"></a>
                 </li>
                 <li class="page-item"><a class="page-link" th:href="@{/community/free/list(pageNumber=${totalPages})}">»</a></li>
             </ul>
