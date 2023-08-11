@@ -2,15 +2,11 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/mylayout}" xmlns:text-align="http://www.w3.org/1999/xhtml"
-      xmlns:sec="http://www.w3.org/1999/xhtml">
+      layout:decorate="~{common/mylayout}" xmlns="http://www.w3.org/1999/xhtml">
 
 <th:block layout:fragment="script">
-    <script th:inline = "javascript">
+    <script th:inline="javascript">
         $(document).ready(function(){
-
-         document.getElementById('date').valueAsDate = new Date();
-
 
              var nimportant = [[${noticeBean.nimportant}]];
              console.log('nimportant:' + nimportant);
@@ -23,7 +19,10 @@
 
 
                });
-  </script>
+
+
+
+    </script>
 </th:block>
 
 <head><title>PixelPro</title></head>
@@ -54,7 +53,10 @@
       color : red;
       font-size:9pt;
 }
-</style>
+
+
+
+        </style>
     </th:block>
 
     <div class="pagetitle">
@@ -62,45 +64,71 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                <li class="breadcrumb-item"><a href="/mail/inbox">공지</a></li>
+                <li class="breadcrumb-item"><a href="/notice/list">공지</a></li>
                 <li class="breadcrumb-item active">공지수정</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
 
-    <div>
-        <form name="myform" method="post" action="/notice/update" enctype="multipart/form-data" th:object="${noticeBean}">
-            <input type="hidden" th:field ="*{nnum}">
+    <div class="card">
+        <div class="card-body" style="display:flex; flex-direction:column;">
+            <div>
+                <form name="myform" method="post" action="/notice/update" enctype="multipart/form-data"
+                      th:object="${noticeBean}">
+                    <input type="hidden" th:field="*{nnum}">
+                    <input type="hidden" th:field="*{filename}">
+                    <div style="height:60px;">
+                        <button type="button" style="float:right; margin-top:10px; margin-bottom:10px;" class="btn btn-secondary"
+                                onclick="location.href='/notice/list'">취소
+                        </button>
+                        <input type="submit" id="submit" style="float:right; margin-top:10px; margin-bottom:10px; margin-right:7px;"
+                               value="수정"
+                               class="btn btn-success">
+                    </div>
 
-            <button type="button" style="float:right; margin-bottom:10px;" class="btn btn-secondary" onclick="location.href='/notice/list'">취소</button>
-            <input type="submit" id="submit" style="float:right; margin-bottom:10px; margin-right:7px;" value="수정" class="btn btn-success" >
+                    <div class="form-group" style="margin-top:25px;">
+                        <input class="form-check-input" type="checkbox" id="cb1" name="nimportant" value=1>
+                        <label for="cb1" style="margin-bottom:6px;"></label><label
+                            style="white-space:nowrap; margin-bottom:6px">상단에 배치</label>
+                        <input type="text" class="form-control" id="ntitle" th:field="*{ntitle}"
+                               placeholder="제목을 입력하세요."/>
+                        <p th:if="${#fields.hasErrors('ntitle')}" th:errors="*{ntitle}" class="fieldError"></p>
+
+                    </div>
+
+                    <div class="form-group">
+                        <div class="custom-file" id="inputFile">
+                            <input type="file" name="upload" id="upload" class="custom-file-input">
+                            <label class="custom-file-label" th:field="*{filename}" th:text="*{filename}" for="upload">파일을
+                                선택하세요.</label>
+                        </div>
+                    </div>
 
 
-            <input class="form-check-input" type="checkbox" id="cb1" name="nimportant" value=1 >
+                    <div class="form-group">
+                        <p th:each="notice, index : ${notice}">
+                            <a th:href="@{'/download/notice/' + ${notice.filename}}"
+                               th:text="${notice.filename}"></a> <!--파일이름-->
+                            <span>
+                <button th:fileId="${notice.filename}" th:onclick="boardDelete(this.getAttribute('filename'))"
+                        type="button" class="btn btn-outline-danger">삭제</button>
+            </span>
+                        </p>
+                    </div>
 
-            <label for="cb1"></label>상단에 배치
 
-            <div class="form-group">
-                <input type="text" class="form-control" id="ntitle" th:field="*{ntitle}" placeholder="제목을 입력하세요."/>
-                <p th:if="${#fields.hasErrors('ntitle')}" th:errors="*{ntitle}" class="fieldError"></p>
+                    <!--   <div>
+                           <a class="card-text" style="margin-left: 10px;"
+                                  th:field="*{filename}" th:text="*{filename}"></a>
+                       </div>-->
 
+                    <div class="form-group">
+                <textarea type="text" class="form-control" id="ndetail" th:field="*{ndetail}" placeholder="내용을 입력하세요."
+                          rows="13px;"></textarea>
+                        <p th:if="${#fields.hasErrors('ndetail')}" th:errors="*{ndetail}" class="fieldError"></p>
+                    </div>
             </div>
-
-            <!--<div class="form-group">
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="file" id="customFile" th:field="*{filename}"/>
-                    <label class="custom-file-label" for="customFile" th:field="*{filename}" th:text="*{filename}"></label>
-                </div>
-            </div>-->
-
-            <div class="form-group">
-                <textarea type="text" class="form-control" id="ndetail" th:field="*{ndetail}" placeholder="내용을 입력하세요." rows="13px;"></textarea>
-                <p th:if="${#fields.hasErrors('ndetail')}" th:errors="*{ndetail}" class="fieldError"></p>
-            </div>
-            <div class="form-group">
-                <input type="date" id="date" class="form-control" name="date" value="${sysdate}" th:field="*{ndate}" readonly>
-            </div>
-
+        </div>
         </form>
     </div><!-- End Page Title -->
 
@@ -113,6 +141,9 @@
         var fileName = $(this).val().split('\\').pop();
         $(this).siblings('.custom-file-label').addClass('selected').html(fileName);
       });
-    </script>
+
+
+
+</script>
 </body>
 </html>

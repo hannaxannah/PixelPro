@@ -26,8 +26,6 @@ public class Notice {
     private String ndetail;
     private String filename;
     private String filepath;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @ColumnDefault("sysdate")
     private String ndate;
 
     @ColumnDefault("0")
@@ -37,19 +35,6 @@ public class Notice {
     public static Notice insertNotice(NoticeBean noticeBean) {
         return modelMapper.map(noticeBean, Notice.class);
 
-    }
-
-    @Builder
-    public Notice(Integer nnum, String mbname,
-                  String ntitle, String ndetail, String filename, String filepath,
-                  int nimportant) {
-        this.nnum = nnum;
-        this.mbname = mbname;
-        this.ntitle = ntitle;
-        this.ndetail = ndetail;
-        this.filename = filename;
-        this.filepath = filepath;
-        this.nimportant = nimportant;
     }
 
 }

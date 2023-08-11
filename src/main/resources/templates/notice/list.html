@@ -61,13 +61,14 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                <li class="breadcrumb-item"><a href="/notice/list">공지</a></li>
+                <li class="breadcrumb-item active"><a>공지</a></li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
 
 
-
+    <div class="card">
+        <div class="card-body">
             <form name="mylist" action="/notice/checkDelete" method="post">
             <table class="table datatable">
                 <thead>
@@ -85,25 +86,31 @@
                             <label th:text="${bean.nnum}"></label>
                         </td>
                         <td>
+                            <a th:if="${bean.nimportant == 1 }">
+                            <a style="color:red;">[중요] </a>
+                            </a>
                             <a th:text="${bean.ntitle}" th:href="@{'/notice/detail/'+ ${bean.nnum}}"></a>
                         </td>
-                        <td>인사팀</td>
+                        <td th:text="${session.loginInfo.dept}"></td>
                         <td th:text="${bean.ndate}"></td>
                     </tr>
                 </tbody>
             </table>
 
+                <div th:if="${session.loginInfo.dept == '인사팀' }">
             <button type="button" style="float:left;" class="btn btn-secondary" onClick="return selectDelete()">삭제</button>
             <button type="button" style="float:right;" class="btn btn-success" onClick="location.href='/notice/insert'">글쓰기</button>
-
+                </div>
             </form>
+
         <div style="text-align:center">
         <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
             <a th:if="${page != nowPage}" th:href="@{/notice/list(page = ${page - 1})}" th:text="${page}"></a>
             <strong th:if="${page == nowPage}" th:text="${page}" style="color : #198754;"></strong>
         </th:block>
         </div>
-
+        </div>
+    </div>
 
 
 

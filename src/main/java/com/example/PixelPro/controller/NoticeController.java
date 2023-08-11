@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +44,7 @@ public class NoticeController {
     /*목록*/
     @GetMapping({"/notice/list"})
     public String selectAll(HttpSession session, HttpServletResponse response,
-                            Model model, @PageableDefault(page=0, size = 5, sort = {"nimportant","nnum"}, direction = Sort.Direction.DESC) Pageable pageable) throws IOException {
+                            Model model, @PageableDefault(page=0, size = 5, sort = {"nimportant","ndate"}, direction = Sort.Direction.DESC) Pageable pageable) throws IOException {
 
         response.setContentType("text/html; charset=UTF-8");
         Member member = (Member)session.getAttribute("loginInfo");
@@ -52,7 +54,9 @@ public class NoticeController {
             response.getWriter().flush();
         }
 
-        Page<Notice> list = noticeService.findByOrderByNnumDescNimportantDesc(pageable);
+
+
+        Page<Notice> list = noticeService.findByOrderByNimportantDescNdateDesc(pageable);
 
         int nowPage = list.getPageable().getPageNumber() + 1;
         int startPage = Math.max(nowPage - 4, 1);
@@ -63,7 +67,8 @@ public class NoticeController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
 
-        model.addAttribute("notice", noticeService.findByOrderByNnumDescNimportantDesc(pageable));
+        model.addAttribute("notice", noticeService.findByOrderByNimportantDescNdateDesc(pageable));
+
         return "/notice/list";
     }
 
@@ -85,6 +90,13 @@ public class NoticeController {
             return "/notice/insert";
         }
 
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        noticeBean.setNdate(now.format(dateTimeFormatter));
+
+        Notice notice = Notice.insertNotice(noticeBean);
+        noticeService.saveNotice(notice);
+
         if(!noticeBean.getFilename().equals("")){
             String uploadPath = "C:\\PixelPro\\src\\main\\resources\\noticeFile";
             File destination = new File(uploadPath + File.separator + noticeBean.getUpload().getOriginalFilename());
@@ -98,9 +110,6 @@ public class NoticeController {
             }
         }
 
-        Notice notice = Notice.insertNotice(noticeBean);
-        noticeService.saveNotice(notice);
-
         return "redirect:/notice/list";
     }
 
@@ -112,8 +121,6 @@ public class NoticeController {
         System.out.println(notice.getNnum());
         model.addAttribute("notice",notice);
 
-        /*List<NFile> files = nFileRepository.findAll();
-        model.addAttribute("all",files);*/
 
         return "/notice/detail";
     }
@@ -158,6 +165,24 @@ public class NoticeController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("noticeBean", notice);
             return "/notice/update";
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        notice.setNdate(now.format(dateTimeFormatter));
+
+
+        if(!notice.getFilename().equals("")){
+            String uploadPath = "C:\\PixelPro\\src\\main\\resources\\noticeFile";
+            File destination = new File(uploadPath + File.separator + notice.getUpload().getOriginalFilename());
+            MultipartFile multi =  notice.getUpload();
+            try {
+                multi.transferTo(destination);
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (IOException e){
+
+            }
         }
 
         noticeService.saveNotice(Notice.insertNotice(notice));

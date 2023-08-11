@@ -26,7 +26,7 @@ public class ClubService {
     }
 
     public Club findByClnum(int clnum) {
-        Club club = clubrepository.findById(clnum).orElseThrow();
+        Club club = clubrepository.findByClnum(clnum);
         return club;
     }
 
@@ -48,13 +48,18 @@ public class ClubService {
     }
 
     public void deleteByClnum(int clnum) {
-        clubrepository.deleteById(clnum);
+        Club club = clubrepository.findByClnum(clnum);
+        clubrepository.delete(club);
     }
 
-    public Page<Club> findByOrderByClnumDesc(Pageable pageable) {
-        List<Club> clubs = clubrepository.findByOrderByClnumDesc();
+    public Page<Club> findByOrderByCldateDesc(Pageable pageable) {
+        List<Club> clubs = clubrepository.findByOrderByCldateDesc();
 
         return clubrepository.findAll(pageable);
 
+    }
+
+    public List<Club> findByClwriterOrderByClnumDesc(int mbnum) {
+        return clubrepository.findByClwriterOrderByClnumDesc(mbnum);
     }
 }

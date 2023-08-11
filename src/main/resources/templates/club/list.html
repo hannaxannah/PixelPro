@@ -14,60 +14,52 @@
         <h1>동아리</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item"><a>커뮤니티</a></li>
-                <li class="breadcrumb-item"><a href="/club/list">동아리</a></li>
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item"><a href="">커뮤니티</a></li>
+                <li class="breadcrumb-item active"><a>동아리</a></li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
 
-    <form name="mylist" action="" method="post">
+    <div class="card">
+        <div class="card-body" style="display:flex; flex-direction:column;">
+            <form name="mylist" action="" method="post">
 
-        <table class="table datatable">
-            <thead>
-            <tr>
-                <th>번호</th>
-                <th>카테고리</th>
-                <th>제목</th>
-                <th>날짜</th>
-            </tr>
-            </thead>
-            <tbody th:each="lists : ${lists}">
-            <tr>
-               <th scope="" style="text-align:center" th:text="${lists.clnum}"></th>
-                <td th:text="${lists.clcategory}"></td>
-                <td>
-                    <a th:href="@{/club/detail(clnum=${lists.clnum})}" th:text="|${lists.cltitle}|"></a>
-                </td>
-                <td style="text-align:center" th:text="${lists.cldate}"></td>
-            </tr>
+                <table class="table datatable">
+                    <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>카테고리</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>날짜</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="bean : ${club}">
+                        <td style="text-align:center" th:text="${bean.clnum}"></td>
+                        <td th:text="${bean.clcategory}"></td>
+                        <td>
+                            <a th:href="@{/club/detail(clnum=${bean.clnum})}" th:text="|${bean.cltitle}|"></a>
+                        </td>
+                        <td style="text-align:center" th:text="${bean.clwriter}"></td>
+                        <td style="text-align:center" th:text="${bean.cldate}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button type="button" style="float:right; margin-bottom:10px;" class="btn btn-success"
+                        onClick="location.href='/club/insert'">글쓰기
+                </button>
+            </form>
 
-               <!--<td>
-                    <label th:text="${lists.clnum}"></label>
-                </td>
-                <td>
-                    <label th:text="${lists.clcategory}"></label>
-                </td>
-                <td>
-                    <a th:href="@{/club/detail(clnum=${lists.clnum})}" th:text="|${lists.cltitle}|"></a>
-                </td>
-                <td>
-                    <span th:text="${lists.clview}"></span>
-                </td>
-                <td th:text="${lists.cldate}"></td>
-            </tr>-->
-            </tbody>
-        </table>
-        <button type="button" style="float:right; margin-bottom:10px;" class="btn btn-success" onClick="location.href='/club/insert'">글쓰기</button>
-    </form>
-
-    <div style="text-align:center">
-        <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
-            <a th:if="${page != nowPage}" th:href="@{/club/list(page = ${page - 1})}" th:text="${page}"></a>
-            <strong th:if="${page == nowPage}" th:text="${page}" style="color : #198754;"></strong>
-        </th:block>
+            <div style="text-align:center">
+                <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                    <a th:if="${page != nowPage}" th:href="@{/club/list(page = ${page - 1})}" th:text="${page}"></a>
+                    <strong th:if="${page == nowPage}" th:text="${page}" style="color : #198754;"></strong>
+                </th:block>
+            </div>
+        </div>
     </div>
-
 </main><!-- End #main -->
 </body>
 </html>

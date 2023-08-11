@@ -5,11 +5,13 @@
       layout:decorate="~{common/mylayout}">
 <head><title>PixelPro</title></head>
 <th:block layout:fragment="script">
-    <script th:inline = "javascript">
+    <script th:inline="javascript">
         function submit() {
 
             document.myform.submit();
         }
+
+
     </script>
 </th:block>
 <th:block layout:fragment="css">
@@ -20,6 +22,8 @@
             padding: 5px 12px;
             margin-bottom: 0;
         }
+
+
     </style>
 </th:block>
 <div class="content" layout:fragment="content">
@@ -36,56 +40,72 @@
             </nav>
         </div><!-- End Page Title -->
 
-        <div class="card">
-            <div class="card-body" style="display:flex; flex-direction:column;">
+        <form name="myform" action="/club/insert" method="post" th:object="${clubBean}"
+              style="margin:5px 0;">
+            <div class="card">
+                <div class="card-body" style="display:flex; flex-direction:column;">
+                    <div style="height:60px;">
+                        <button type="button" class="btn btn-secondary"
+                                style="float:right; margin-bottom:10px; margin-top:10px;"
+                                onclick="location.href='/club/list'">취소
+                        </button>
+                        <button type="button" class="btn btn-success"
+                                style="float:right; margin-bottom:10px;  margin-top:10px; margin-right:7px;"
+                                onclick="submit()">등록
+                        </button>
+                    </div>
+                    <div class="form-group" style="margin-top:25px;">
+                        <!-- 글 쓰기 form -->
 
-                <!-- 글 쓰기 form -->
-                <form name="myform" action="/club/insert" method="post" th:object="${clubBean}" style="margin:5px 0;">
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label">카테고리</label>
-                        <div class="col-sm-10">
-                            <select class="form-select" aria-label="Default select example" th:field="${clubBean.clcategory}">
+                        <div class="form-group">
+                            <select class="form-select" aria-label="Default select example"
+                                    th:field="${clubBean.clcategory}">
                                 <option value="">카테고리를 선택하세요</option>
                                 <option value="모집">모집</option>
                                 <option value="문의">문의</option>
                                 <option value="기타">기타</option>
                             </select>
-                            <p th:if="${#fields.hasErrors('clcategory')}" th:errors="*{clcategory}" class="fieldError"></p>
+                            <p th:if="${#fields.hasErrors('clcategory')}" th:errors="*{clcategory}"
+                               class="fieldError"></p>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label">제목</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" th:field="${clubBean.cltitle}">
+
+                        <div class="form-group">
+                            <input type="text" class="form-control" th:field="${clubBean.cltitle}"
+                                   placeholder="제목을 입력하세요.">
                             <p th:if="${#fields.hasErrors('cltitle')}" th:errors="*{cltitle}" class="fieldError"></p>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label">내용</label>
-                        <div class="col-sm-10">
-                            <textarea class="form-control" style="height:300px; resize:none;" th:field="${clubBean.cldetail}"></textarea>
+
+                        <div class="form-group">
+                            <div class="custom-file" id="inputFile">
+                                <input type="file" name="upload" id="upload" class="custom-file-input">
+                                <label class="custom-file-label" for="upload">파일을 선택하세요.</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea class="form-control" style="height:300px; resize:none;"
+                                      th:field="${clubBean.cldetail}"></textarea>
                             <p th:if="${#fields.hasErrors('cldetail')}" th:errors="*{cldetail}" class="fieldError"></p>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <div class="custom-file" id="inputFile">
-                            <input type="file" name="upload" id="upload" class="custom-file-input">
-                            <label class="custom-file-label" for="upload">파일을 선택하세요.</label>
-                        </div>
-                    </div>
-
-                </form><!-- End 글 쓰기 form -->
-                <div style="text-align:center;">
-                    <button type="button" class="btn btn-success" onclick="submit()">완료</button>
                 </div>
             </div>
-        </div>
-        <script>
+        </form><!-- End 글 쓰기 form -->
+
+    </main><!-- End #main -->
+    <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script>
       $('.custom-file-input').on('change', function () {
         var fileName = $(this).val().split('\\').pop();
         $(this).siblings('.custom-file-label').addClass('selected').html(fileName);
       });
+
+
+
+
+
+
     </script>
-    </main><!-- End #main -->
 </div>
+</html>

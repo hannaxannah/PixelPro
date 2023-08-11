@@ -23,20 +23,9 @@ public class NoticeService {
 
     /*목록*/
     @Transactional
-    public Page<Notice> findByOrderByNnumDescNimportantDesc(Pageable pageable) {
-        List<Notice> notices = noticeRepository.findByOrderByNnumDescNimportantDesc();
-            /* List<Notice> noticeBeanList = new ArrayList<>();
-           for (Notice notice : notices) {
-                Notice bean = Notice.builder()
-                        .nnum(notice.getNnum())
-                        .mbname(notice.getMbname())
-                        .ntitle(notice.getNtitle())
-                        .ndetail(notice.getNdetail())
-                        .ndate(notice.getNdate())
-                        .build();
+    public Page<Notice> findByOrderByNimportantDescNdateDesc(Pageable pageable) {
+        List<Notice> notices = noticeRepository.findByOrderByNimportantDescNdateDesc();
 
-                noticeBeanList.add(bean);
-            }*/
         return noticeRepository.findAll(pageable);
     }
 
@@ -109,4 +98,5 @@ public class NoticeService {
     public List<Notice> findTop10ByOrderByNimportantDescNdateDesc() {
         return noticeRepository.findTop10ByOrderByNimportantDescNdateDesc();
     }
+
 }
