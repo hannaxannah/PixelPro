@@ -40,11 +40,15 @@
             </nav>
         </div><!-- End Page Title -->
 
-        <form name="myform" action="/club/insert" method="post" th:object="${clubBean}"
+        <form name="myform" action="/club/insert" method="post" th:object="${clubBean}" enctype="multipart/form-data"
               style="margin:5px 0;">
             <div class="card">
                 <div class="card-body" style="display:flex; flex-direction:column;">
                     <div style="height:60px;">
+
+                        <input type="hidden" name="clwriter" th:value="${ session.loginInfo.mbname }">
+                        <input type="hidden" name="clname" th:value="${session.loginInfo.mbname}">
+
                         <button type="button" class="btn btn-secondary"
                                 style="float:right; margin-bottom:10px; margin-top:10px;"
                                 onclick="location.href='/club/list'">취소

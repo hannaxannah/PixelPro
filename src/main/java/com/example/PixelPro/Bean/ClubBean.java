@@ -26,6 +26,8 @@ public class ClubBean {
     private String cfilename;
     private String cfilepath;
     private String cldate;
+
+
     private MultipartFile upload;
 
     public MultipartFile getUpload() {

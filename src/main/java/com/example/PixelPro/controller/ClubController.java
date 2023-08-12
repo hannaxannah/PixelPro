@@ -1,6 +1,7 @@
 package com.example.PixelPro.controller;
 
 import com.example.PixelPro.Bean.ClubBean;
+import com.example.PixelPro.Bean.MemberBean;
 import com.example.PixelPro.entity.Atapproval;
 import com.example.PixelPro.entity.ClubComment;
 import com.example.PixelPro.entity.Club;
@@ -79,50 +80,22 @@ public class ClubController {
 
     /*글쓰기 버튼 클릭시*/
     @GetMapping(value="/club/insert")
-    public String insertGet(Model model,HttpSession session, HttpServletResponse response) throws IOException {
-
-        response.setContentType("text/html; charset=UTF-8");
-        Member member = (Member) session.getAttribute("loginInfo");
-        if(member == null){
-            session.setAttribute("destination", "redirect:/approval/atapprovalInsert");
-            response.getWriter().print("<script>alert('로그인이 필요합니다.');location.href='/login'</script>");
-            response.getWriter().flush();
-        }
+    public String insertGet(Model model,HttpSession session){
 
         model.addAttribute("clubBean", new ClubBean());
-        List<Member> memberList = memberService.findByOrderByDeptAscMblevelAsc();
-        model.addAttribute("memberList", memberList);
-        model.addAttribute("loginInfo",member);
-
-        Integer mbnum = (Integer)session.getAttribute("mbnum");
-        ClubBean clubBean = new ClubBean();
-        clubBean.setMbnum(mbnum);
-        model.addAttribute("clubBean", clubBean);
-
-        return "club/insert";
+        return "/club/insert";
     }
 
     /*게시판글 등록시*/
     @PostMapping(value="/club/insert")
     public String insertPost(@Valid ClubBean clubBean,
-                             BindingResult bindingResult, HttpSession session,HttpServletResponse response,Model model) throws IOException {
-
-        response.setContentType("text/html; charset=UTF-8");
-        Member member = (Member) session.getAttribute("loginInfo");
-        List<Member> memberList = memberService.findByOrderByDeptAscMblevelAsc();
-        model.addAttribute("memberList", memberList);
-
-        if(member == null){
-            session.setAttribute("destination", "redirect:/approval/atapprovalInsert");
-            response.getWriter().print("<script>alert('로그인이 필요합니다.');location.href='/login'</script>");
-            response.getWriter().flush();
-        }
+                             BindingResult bindingResult,Model model) {
 
 
-        /*if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("clubBean", clubBean);
             return "/club/insert";
-        }*/
+        }
 
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -131,7 +104,8 @@ public class ClubController {
         Club club = Club.insertClub(clubBean);
         clubService.saveClub(club);
 
-        /*if(!clubBean.getCfilename().equals("")){
+
+        if(!clubBean.getCfilename().equals("")){
             String uploadPath = "C:\\PixelPro\\src\\main\\resources\\clubFile";
             File destination = new File(uploadPath + File.separator + clubBean.getUpload().getOriginalFilename());
             MultipartFile multi =  clubBean.getUpload();
@@ -142,7 +116,7 @@ public class ClubController {
             } catch (IOException e){
 
             }
-        }*/
+        }
 
         return "redirect:/club/list";
     }

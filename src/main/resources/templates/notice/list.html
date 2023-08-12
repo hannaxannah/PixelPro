@@ -91,7 +91,7 @@
                             </a>
                             <a th:text="${bean.ntitle}" th:href="@{'/notice/detail/'+ ${bean.nnum}}"></a>
                         </td>
-                        <td th:text="${session.loginInfo.dept}"></td>
+                        <td th:text="${bean.mbname}"></td>
                         <td th:text="${bean.ndate}"></td>
                     </tr>
                 </tbody>

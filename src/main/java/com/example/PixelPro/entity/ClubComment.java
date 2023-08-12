@@ -22,6 +22,7 @@ public class ClubComment {
     private Integer mbnum;
     private String cldetail;
     private String cldate;
+    private String clname; //댓글작성자
     private Integer cllike;
     private Integer clstep;
     private Integer cllevel;

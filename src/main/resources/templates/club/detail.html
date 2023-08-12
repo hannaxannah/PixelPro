@@ -21,6 +21,36 @@
 
         }
 
+        function updateComment(elem,ID,conum) {
+            //수정 클릭 시 열림
+            var inputreply = document.getElementById(ID + ' ' + conum);
+            console.log(inputreply);
+            console.log(ID + ' ' + conum);
+            if (elem.className !='dropdown-item updatebutton') {
+                elem.className = 'dropdown-item updatebutton';
+                inputreply.style.display = "none";
+            } else {
+                elem.className ='dropdown-item';
+                inputreply.style.display = "block";
+            }
+
+        }
+
+        function updateReply(elem,ID,conum) {
+            //수정(답글) 클릭 시 열림
+            var inputreply = document.getElementById(ID + ' ' + conum);
+            console.log(inputreply);
+            console.log(ID + ' ' + conum);
+            if (elem.className !='dropdown-item updateReply') {
+                elem.className = 'dropdown-item updateReply';
+                inputreply.style.display = "none";
+            } else {
+                elem.className ='dropdown-item';
+                inputreply.style.display = "block";
+            }
+
+        }
+
         function deletePost() {
 
             const urlParams = new URL(location.href).searchParams;
@@ -34,6 +64,8 @@
                 return false;
             }
         }
+
+
 
     </script>
 </th:block>
@@ -56,146 +88,186 @@
     </div><!-- End Page Title -->
 
     <div class="card">
-        <div class="card-body">
+        <div class="card-body" style="margin-top:10px;">
             <div>
-                <form id="frm" th:action="@{'/club/delete/'}" method="post">
-                    <input type="hidden" name="clnum" th:value="${club.clnum}"/>
-                    <button style="float:right; margin-bottom:10px; margin-top:10px;" class="btn btn-secondary"
-                            onClick="return deleteConfirm()">
-                        삭제
-                    </button>
-                </form>
+
+                <div th:if="${session.loginInfo.mbname == club.clwriter }">
+                    <form id="frm" th:action="@{'/club/delete/'}" method="post">
+                        <input type="hidden" name="clnum" th:value="${club.clnum}"/>
+                        <button style="float:right; margin-bottom:10px; margin-top:10px;" class="btn btn-secondary"
+                                onClick="return deleteConfirm()">삭제</button>
+                    </form>
+                    <form th:action="@{'/club/update/' + ${club.clnum}}" method="get">
+                        <input type="submit" value="수정"
+                               style="float:right; margin-top:10px; margin-bottom:10px; margin-right:7px;"
+                               class="btn btn-warning">
+                    </form>
+                </div>
+                <table class="table" border="1">
+                    <tr>
+                        <td><strong>제목</strong></td>
+                        <td style="width: 90%;" th:text="${club.cltitle}"></td>
+                    <tr>
+                        <td><strong>첨부파일</strong></td>
+
+                        <td>
+                            <div th:if="${club.cfilename == null}">
+                                <p>첨부파일이 없습니다.</p>
+                            </div>
+                            <div th:if="${club.cfilename != null}">
+                                <a class="card-text" style="margin-left: 10px;"
+                                   th:href="@{'/download/club/' + ${club.cfilename}}"
+                                   th:text="${club.cfilename}"></a>
+                            </div>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="height:300px;" th:text="${club.cldetail}"></td>
+                    </tr>
+                    <tr></tr>
+                </table>
             </div>
-            <form th:action="@{'/club/update/' + ${club.clnum}}" method="get">
-                <input type="submit" value="수정" style="float:right; margin-top:10px; margin-bottom:10px; margin-right:7px;"
-                       class="btn btn-warning">
-            </form>
-
-            <table class="table" border="1">
-                <tr>
-                    <td><strong>제목</strong></td>
-                    <td style="width: 90%;" th:text="${club.cltitle}"></td>
-                <tr>
-                    <td><strong>첨부파일</strong></td>
-
-                    <td>
-                        <div th:if="${club.filename == null}">
-                            <p>첨부파일이 없습니다.</p>
-                        </div>
-                        <div th:if="${club.filename != null}">
-                            <a class="card-text" style="margin-left: 10px;"
-                               th:href="@{'/download/club/' + ${club.filename}}"
-                               th:text="${club.filename}" ></a>
-                        </div>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="height:300px;" th:text="${club.cldetail}"></td>
-                </tr>
-                <tr></tr>
-            </table>
         </div>
-    </div>
 
-    <div class="card">
-        <div class="card-body">
-            <!-- 댓글 -->
-            <div class="comments" th:each="comment : ${comment}">
-                <!-- 삭제된 원댓글 -->
-                <div class="comment" th:if="${comment.cldetail == '삭제된 댓글입니다.'}">
-                    <div class="d-flex" style="flex-direction:column;">
-                        <div>
-                            <h5><a class="comment" style="color:rgba(33, 37, 41, 0.6);">(삭제)</a></h5>
-                            <p th:text="${comment.cldetail}"></p>
+        <div class="card" style="margin-top:30px;">
+            <div class="card-body">
+                <!-- 댓글 -->
+                <div class="comments" th:each="comment : ${comment}">
+                    <!-- 삭제된 원댓글 -->
+                    <div class="comment" th:if="${comment.cldetail == '삭제된 댓글입니다.'}">
+                        <div class="d-flex" style="flex-direction:column;">
+                            <div>
+                                <h5><a class="comment" style="color:rgba(33, 37, 41, 0.6);"></a></h5>
+                                <p th:text="${comment.cldetail}"></p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- End 삭제된 원댓글 -->
-                <!-- 원댓글 -->
-                <div class="comment" th:if="${comment.cllevel == 0} and ${comment.cldetail != '삭제된 댓글입니다.'}">
-                    <div class="d-flex" style="flex-direction:column;">
-                        <div>
-                            <h5><a class="comment" style="color:#198754;"></a></h5>
-                            <p th:text="${comment.cldetail}"></p>
-                            <a style="color:rgba(33, 37, 41, 0.6);" th:text="${comment.cldate}"></a>
-                        </div>
-                        <!-- ... | 답글, 수정, 삭제 -->
-                        <div class="filter" style="position:absolute; right:5px;">
-                            <a class="icon" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i
-                                    class="bi bi-three-dots"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="min-width:4rem;">
-                                <li><a class="dropdown-item replybutton" style="cursor:pointer;"
-                                       th:onclick="reply(this,'reply-form',[[${comment.clstep}]])">답글</a></li>
-                               <!-- <li><a class="dropdown-item" href="#">수정</a></li>-->
-                                <li><a class="dropdown-item"
-                                       th:href="@{/club/deletecomment(conum=${comment.conum}, clnum=${comment.clnum})}">삭제</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- End ... -->
-                        <!-- 답글 입력 창 (평소 display none, 답글 클릭 시 display block) -->
-                        <div th:id="|reply-form ${comment.clstep}|" class="reply-form"
-                             style="display:none; padding-left:40px;">
-                            <form action="/club/replycomment" method="post">
-                                <input type="hidden" name="clnum" th:value="${club.clnum}">
-                                <input type="hidden" name="conum" th:value="${comment.conum}">
-                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <!-- End 삭제된 원댓글 -->
+                    <!-- 원댓글 -->
+                    <div class="comment" th:if="${comment.cllevel == 0} and ${comment.cldetail != '삭제된 댓글입니다.'}">
+                        <div class="d-flex" style="flex-direction:column;">
+                            <div>
+                                <h5>
+                                    <a class="comment" style="color:#198754;">
+                                        <a th:text="${club.clwriter}"></a> <!--작성자-->
+                                    </a>
+                                </h5>
+                                <p th:text="${comment.cldetail}"></p>
+                                <a style="color:rgba(33, 37, 41, 0.6);" th:text="${comment.cldate}"></a>
+                            </div>
+                            <!-- ... | 답글, 수정, 삭제 -->
+                            <div class="filter" style="position:absolute; right:5px;">
+                                <a class="icon" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i
+                                        class="bi bi-three-dots"></i></a>
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="min-width:4rem;">
+                                    <li><a class="dropdown-item replybutton" style="cursor:pointer;"
+                                           th:onclick="reply(this,'reply-form',[[${comment.clstep}]])">답글</a></li>
+                                    <li><a class="dropdown-item updatebutton" style="cursor:pointer;"
+                                           th:onclick="updateComment(this,'update-form',[[${comment.conum}]])">수정</a></li>
+                                    <li><a class="dropdown-item"
+                                           th:href="@{/club/deletecomment(conum=${comment.conum}, clnum=${comment.clnum})}">삭제</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- End ... -->
+                            <!-- 답글 입력 창 (평소 display none, 답글 클릭 시 display block) -->
+                            <div th:id="|reply-form ${comment.clstep}|" class="reply-form"
+                                 style="display:none; padding-left:40px;">
+                                <form action="/club/replycomment" method="post">
+                                    <input type="hidden" name="clnum" th:value="${club.clnum}">
+                                    <input type="hidden" name="conum" th:value="${comment.conum}">
+                                    <input type="hidden" name="clname" th:value="${session.loginInfo.mbname}">
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
                                     <textarea name="cldetail" id="" class="form-control"
                                               style="height:40px; resize:none;" placeholder="답글을 입력하세요."></textarea>
-                                    <div style="margin-left:10px;">
-                                        <button type="submit" class="btn btn-success"><i class="bi bi-send"></i>
-                                        </button>
+                                        <div style="margin-left:10px;">
+                                            <button type="submit" class="btn btn-success"><i class="bi bi-send"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
+                            <!-- End 답글 입력 창 -->
+                            <!-- 댓글 수정 창 (평소 display none, 답글 클릭 시 display block) -->
+                            <div th:id="|update-form ${comment.conum}|" class="reply-form" style="display:none; padding-left:40px;">
+                                <form action="/club/updatecomment" method="post">
+                                    <input type="hidden" name="clnum" th:value="${club.clnum}">
+                                    <input type="hidden" name="conum" th:value="${comment.conum}">
+                                    <input type="hidden" name="clname" th:value="${ session.loginInfo.mbname }">
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <textarea name="cldetail" id="update-comment" class="form-control" style="height:40px; resize:none;" th:text="${comment.cldetail}"></textarea>
+                                        <div style="margin-left:10px;">
+                                            <button type="submit" class="btn btn-success"><i class="bi bi-send"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- End 댓글 수정 창 -->
                         </div>
-                        <!-- End 답글 입력 창 -->
                     </div>
+                    <!-- End 원댓글 -->
+                    <!-- 답글 -->
+                    <div class="comment comment-reply" th:if="${comment.cllevel > 0}">
+                        <div class="d-flex" style="flex-direction:column;">
+                            <div>
+                                <h5>
+                                    <label class="comment" th:text="${club.clwriter}"></label> <!--작성자-->
+                                </h5>
+                                <p th:text="${comment.cldetail}"></p>
+                                <a style="color:rgba(33, 37, 41, 0.6);" th:text="${comment.cldate}"></a>
+                            </div>
+                            <!-- ... | 수정, 삭제 -->
+                            <div class="filter" style="position:absolute; right:5px;">
+                                <a class="icon" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i
+                                        class="bi bi-three-dots"></i></a>
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="min-width:4rem;">
+                                    <li><a class="dropdown-item updateReply" style="cursor:pointer;" th:onclick="updateReply(this,'update-reply',[[${comment.conum}]])">수정</a></li>
+                                    <li><a class="dropdown-item" th:href="@{/club/deletecomment(conum=${comment.conum}, clnum=${comment.clnum})}">삭제</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- End ... -->
+                            <!-- 답글 수정 창 (평소 display none, 답글 클릭 시 display block) -->
+                            <div th:id="|update-reply ${comment.conum}|" class="reply-form" style="display:none;">
+                                <form action="/club/updatecomment" method="post">
+                                    <input type="hidden" name="clnum" th:value="${club.clnum}">
+                                    <input type="hidden" name="conum" th:value="${comment.conum}">
+                                    <input type="hidden" name="clname" th:value="${ session.loginInfo.mbname }">
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <textarea name="cldetail" id="update-reply" class="form-control" style="height:40px; resize:none;" th:text="${comment.cldetail}"></textarea>
+                                        <div style="margin-left:10px;">
+                                            <button type="submit" class="btn btn-success"><i class="bi bi-send"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- End 답글 수정 창 -->
+                        </div>
+                    </div>
+                    <!-- End 답글 -->
                 </div>
-                <!-- End 원댓글 -->
-                <!-- 답글 -->
-                <div class="comment comment-reply" th:if="${comment.cllevel > 0}">
-                    <div class="d-flex">
-                        <div>
-                            <h5><a class="comment"></a></h5>
-                            <p th:text="${comment.cldetail}"></p>
-                            <a style="color:rgba(33, 37, 41, 0.6);" th:text="${comment.cldate}"></a>
+
+                <div class="reply-form">
+                    <form action="/club/writecomment" method="post">
+                        <input type="hidden" name="clnum" th:value="${club.clnum}">
+                        <input type="hidden" name="clname" th:value="${ session.loginInfo.mbname }">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <textarea name="cldetail" id="comment-form" class="form-control" style="height:40px; resize:none;" placeholder="댓글을 입력하세요."></textarea>
+                            <div style="margin-left:10px;">
+                                <button type="submit" class="btn btn-success"><i class="bi bi-send"></i></button>
+                            </div>
                         </div>
-                        <!-- ... | 수정, 삭제 -->
-                        <div class="filter" style="position:absolute; right:5px;">
-                            <a class="icon" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i
-                                    class="bi bi-three-dots"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="min-width:4rem;">
-                             <!--   <li><a class="dropdown-item" href="#">수정</a></li>-->
-                                <li><a class="dropdown-item"
-                                       th:href="@{/club/deletecomment(conum=${comment.conum}, clnum=${comment.clnum})}">삭제</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- End ... -->
-                    </div>
+                    </form>
                 </div>
-                <!-- End 답글 -->
             </div>
+        </div>
+                <div style="text-align:center;">
 
-            <div class="reply-form">
-                <form action="/club/writecomment" method="post">
-                    <input type="hidden" name="clnum" th:value="${club.clnum}">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <textarea name="cldetail" id="comment-form" class="form-control"
-                                  style="height:40px; resize:none;" placeholder="댓글을 입력하세요."></textarea>
-                        <div style="margin-left:10px;">
-                            <button type="submit" class="btn btn-success"><i class="bi bi-send"></i></button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <div style="text-align:center;">
-
-                <button type="button" class="btn btn-success" style="margin-top:20px;" onclick="location.href='/club/list'">목록</button>
-            </div>
+                    <button type="button" class="btn btn-success" style="margin-top:20px;"
+                            onclick="location.href='/club/list'">목록
+                    </button>
+                </div>
 
 </main><!-- End #main -->
 
@@ -206,6 +278,8 @@
         var fileName = $(this).val().split('\\').pop();
         $(this).siblings('.custom-file-label').addClass('selected').html(fileName);
       });
+
+
 
 </script>
 </body>
