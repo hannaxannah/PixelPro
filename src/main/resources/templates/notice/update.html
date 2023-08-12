@@ -75,6 +75,8 @@
             <div>
                 <form name="myform" method="post" action="/notice/update" enctype="multipart/form-data"
                       th:object="${noticeBean}">
+                    <input type="hidden" name="mbname" th:value="${ session.loginInfo.dept }">
+
                     <input type="hidden" th:field="*{nnum}">
                     <input type="hidden" th:field="*{filename}">
                     <div style="height:60px;">

@@ -1,8 +1,12 @@
 package com.example.PixelPro.controller;
 
 import com.example.PixelPro.Bean.ClubCommentBean;
+import com.example.PixelPro.Bean.FreeCommentBean;
+import com.example.PixelPro.Bean.MemberBean;
 import com.example.PixelPro.entity.ClubComment;
 import com.example.PixelPro.entity.Club;
+import com.example.PixelPro.entity.FreeCommentEntity;
+import com.example.PixelPro.entity.Member;
 import com.example.PixelPro.service.ClubCommentService;
 import com.example.PixelPro.service.ClubService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -34,10 +39,12 @@ public class ClubCommentController {
         Club club = clubService.findByClnum(clnum);
 
         ClubCommentBean clubCommentBean = new ClubCommentBean();
+        MemberBean memberBean = new MemberBean();
 
         clubCommentBean.setClnum(clnum);
         clubCommentBean.setMbnum(club.getMbnum());
         clubCommentBean.setCldetail(cldetail);
+        clubCommentBean.setClname(memberBean.getMbname());
 
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -97,6 +104,35 @@ public class ClubCommentController {
 
         ClubComment clubComment = ClubComment.insertClubComment(clubCommentBean);
         clubCommentService.saveClubComment(clubComment);
+
+        return "redirect:/club/detail?clnum=" + clnum;
+    }
+
+    //댓글, 답글 수정
+    @PostMapping(value = "/club/updatecomment")
+    public String updateFreeBoardComment(@RequestParam(value="clnum", required = false) int clnum,
+                                         @RequestParam(value="conum", required = false) int conum,
+                                         @RequestParam(value="cldetail", required = false) String cldetail,
+                                         Model model, HttpSession session){
+
+        ClubComment conumEntity = clubCommentService.findByConum(conum);
+        ClubCommentBean clubCommentBean = new ClubCommentBean();
+
+        clubCommentBean.setClnum(clnum);
+        clubCommentBean.setConum(conum);
+
+        Integer mbnum = (Integer)session.getAttribute("mbnum");
+        clubCommentBean.setMbnum(mbnum);
+        clubCommentBean.setCldetail(cldetail);
+        clubCommentBean.setClstep(conumEntity.getClstep());
+        clubCommentBean.setCllevel(conumEntity.getCllevel());
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        clubCommentBean.setCldate(now.format(dateTimeFormatter));
+
+        ClubComment clubCommentEntity = ClubComment.insertClubComment(clubCommentBean);
+        clubCommentService.saveClubComment(clubCommentEntity);
 
         return "redirect:/club/detail?clnum=" + clnum;
     }

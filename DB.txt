@@ -169,11 +169,11 @@ values(35,'인사팀','전자결재 관련 공지사항입니다.','공지내용
 commit;
 select * from notice;
 
-insert into club(clnum,mbnum,clcategory,cltitle,cldetail,clwriter,cldate,filename)
+insert into club(clnum,mbnum,clcategory,cltitle,cldetail,clwriter,cldate,cfilename)
 values(10,1,'모집','등산동아리 모집합니다^^ 많관부~','모집합니다.','김사장','2023-08-07','CinemaPlus.pdf');
 
 insert into club(clnum,mbnum,clcategory,cltitle,cldetail,clwriter,cldate)
-values(11,2,'문의','헬스동아리 질문입니다!','질문합니다.','이사원','2023-08-07');
+values(11,2,'문의','헬스동아리 질문입니다!','몇시간 운동하나요?.','이사원','2023-08-07');
 
 insert into club(clnum,mbnum,clcategory,cltitle,cldetail,clwriter,cldate)
 values(12,3,'모집','독서동아리 모집합니다','모집합니다.','김과장','2023-08-07');
@@ -181,6 +181,15 @@ values(12,3,'모집','독서동아리 모집합니다','모집합니다.','김�
 insert into club(clnum,mbnum,clcategory,cltitle,cldetail,clwriter,cldate)
 values(13,4,'기타','배드민턴동아리 장소 추천받아요~~','추천받습니다.','홍길동','2023-08-07');
 
+commit;
+
+--동아리게시판 댓글
+insert into clubcomment(conum, mbnum, cldetail, cldate, clnum, clstep, cllevel, cllike,clname)
+values(1, 4, '등산 후에 파전에 막걸리도 먹나요?', '2023-08-08 16:41', 10, 0, 0, null,'김과장');
+insert into clubcomment(conum, mbnum, cldetail, cldate, clnum, clstep, cllevel, cllike,clname)
+values(2, 3, '당근당근^^', '2023-08-08 16:42', 10, 0, 1, null,'김사장');
+insert into clubcomment(conum, mbnum, cldetail, cldate, clnum, clstep, cllevel, cllike,clname)
+values(4, 1, '2시간 예상합니다~ 오늘도 득근하세요~', '2023-08-08 16:44', 11, 0, 0, null,'홍길동');
 commit;
 
 
