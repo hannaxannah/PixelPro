@@ -144,9 +144,9 @@ public class ChatController {
             msgstatus.setCpnum(p.getCpnum());
             msgstatusService.save(msgstatus);
             messagingTemplate.convertAndSend("/topic/receiveMessage/" + pmbnum, message);
+            getAllUnread(String.valueOf(pmbnum));
+            getRecentConversations(String.valueOf(pmbnum));
         }
-        getAllUnread(String.valueOf(mbnum));
-        getRecentConversations(String.valueOf(mbnum));
     }
 
     @MessageMapping("/chat/allUsers")
@@ -306,7 +306,7 @@ public class ChatController {
                 participantService.save(participant);
             }
         }
-        return "redirect:/chat";
+        return "redirect:/chat?cnum="+convNum;
     }
 
     @MessageMapping("/chat/leaveConvo")
