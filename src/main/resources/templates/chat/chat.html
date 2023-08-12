@@ -8,7 +8,19 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 </th:block>
 
-<div class="content" layout:fragment="content" style = "height: 800px; padding: 60px 0px; margin-left: 340px; margin-top:50px;">
+<div class="content" layout:fragment="content" style = "height: 850px; padding: 38px 0px; margin-left: 340px; margin-top:50px;">
+    <div class="pagetitle" th:style="'display: flex; align-items: center; justify-content: space-between;'">
+        <div class="title-container" th:style="'flex-grow: 1;'">
+            <h1>채팅</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active">채팅</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- End Page Title -->
     <input type = "hidden" name = "cnum" value = "">
     <input type = "hidden" name = "initCnum" th:value = "${cnum}">
     <div class="container">
@@ -48,11 +60,8 @@
 
                             </div>
                             <!-- 두번째 모달 -->
-                            <!-- Trigger/Open The Modal -->
-
                             <div id="myModal2" class="modal" >
-
-                            <!-- Modal content -->
+                            <!-- 모달 내용 -->
                                     <form autocomplete="off" method="post" action="/chat/addUsers" onsubmit = "return addUsers()">
                                 <div class="modal-content2">
                                     <span class="close2" onclick = "spanNone2()">&times;</span>
@@ -84,7 +93,8 @@
                 </div>
                 <div class="mesgs" style = "height:600px;">
                     <div class = "msg_top" id = "conversationTop">
-                        <p id = "conversationName" style = "font-size:20px; font-weight:bold; color: #198754;"></p>
+                        <!-- 대화정보 들어갈 영역-->
+                        <p id = "conversationName" style = "font-size:20px; font-weight:bold; color: #198754;">채팅을 선택하거나 새 대화를 시작하세요.</p>
                         <p id = "conversationParticipants" style = "border-bottom:1px solid #198754; font-size:14px; font-weight:bold;">
                         </p>
                     </div>
@@ -116,7 +126,7 @@ $(document).ready(  function() {
 	//connectWS();
 	//connectSockJS();
 	console.log('Connected!');
-	connectStomp(); //페이지 로딩 될때 stomp연결하는 함수 호출.
+	connectStomp(); //페이지 로딩 될때 stomp연결하는 함수 바로 호출.
 
 	$('.chatList').click(function(evt) {
 	    $('.chatList').each(function(){
@@ -471,7 +481,7 @@ function sendMessage(){ //메시지 보내는 함수
 
     }, 110);
 
-
+    updateNav();
 }
 
 //메시지 많은 경우 스크롤바 제일 밑으로 설정해준다.
