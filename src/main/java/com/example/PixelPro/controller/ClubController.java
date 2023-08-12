@@ -2,10 +2,7 @@ package com.example.PixelPro.controller;
 
 import com.example.PixelPro.Bean.ClubBean;
 import com.example.PixelPro.Bean.MemberBean;
-import com.example.PixelPro.entity.Atapproval;
-import com.example.PixelPro.entity.ClubComment;
-import com.example.PixelPro.entity.Club;
-import com.example.PixelPro.entity.Member;
+import com.example.PixelPro.entity.*;
 import com.example.PixelPro.service.ClubCommentService;
 import com.example.PixelPro.service.ClubService;
 import com.example.PixelPro.service.MemberService;
@@ -49,7 +46,7 @@ public class ClubController {
     /*목록*/
     @GetMapping({"/club/list"})
     public String gotoFreeBoard(HttpSession session, HttpServletResponse response,
-                                Model model, @PageableDefault(page=0, size = 7, sort = {"cldate"}, direction = Sort.Direction.DESC) Pageable pageable) throws IOException {
+                                Model model, @PageableDefault(page=0, size = 7, sort = {"cldate","clnum"}, direction = Sort.Direction.DESC) Pageable pageable) throws IOException {
 
         response.setContentType("text/html; charset=UTF-8");
         Member member = (Member)session.getAttribute("loginInfo");
@@ -164,29 +161,30 @@ public class ClubController {
     public String updateGet(@PathVariable("clnum") int clnum, Model model){
         Club club = clubService.findByClnum(clnum);
         model.addAttribute("clubBean", club);
+
         return "/club/update";
     }
 
 
     /*글 수정*/
     @PostMapping(value = "/club/update")
-    public String updatePost(@Valid ClubBean clubBean,
-                                  BindingResult bindingResult, Model model){
+    public String updatePost(@Valid ClubBean club, BindingResult bindingResult,
+                             @RequestParam("clnum") int clnum, Model model){
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("clubBean", clubBean);
-            return  "club/update";
+            model.addAttribute("clubBean", club);
+            return  "/club/update";
         }
 
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        clubBean.setCldate(now.format(dateTimeFormatter));
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        club.setCldate(now.format(dateTimeFormatter));
 
 
-        if(!clubBean.getCfilename().equals("")){
+        if(!club.getCfilename().equals("")){
             String uploadPath = "C:\\PixelPro\\src\\main\\resources\\clubFile";
-            File destination = new File(uploadPath + File.separator + clubBean.getUpload().getOriginalFilename());
-            MultipartFile multi =  clubBean.getUpload();
+            File destination = new File(uploadPath + File.separator + club.getUpload().getOriginalFilename());
+            MultipartFile multi =  club.getUpload();
             try {
                 multi.transferTo(destination);
             } catch (IllegalStateException e) {
@@ -196,10 +194,7 @@ public class ClubController {
             }
         }
 
-
-
-        Club club = Club.insertClub(clubBean);
-        clubService.saveClub(club);
+        clubService.saveClub(Club.insertClub(club));
 
         return "redirect:/club/list";
     }

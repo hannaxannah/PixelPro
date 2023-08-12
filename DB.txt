@@ -183,15 +183,6 @@ values(13,4,'기타','배드민턴동아리 장소 추천받아요~~','추천받
 
 commit;
 
---동아리게시판 댓글
-insert into clubcomment(conum, mbnum, cldetail, cldate, clnum, clstep, cllevel, cllike,clname)
-values(1, 4, '등산 후에 파전에 막걸리도 먹나요?', '2023-08-08 16:41', 10, 0, 0, null,'김과장');
-insert into clubcomment(conum, mbnum, cldetail, cldate, clnum, clstep, cllevel, cllike,clname)
-values(2, 3, '당근당근^^', '2023-08-08 16:42', 10, 0, 1, null,'김사장');
-insert into clubcomment(conum, mbnum, cldetail, cldate, clnum, clstep, cllevel, cllike,clname)
-values(4, 1, '2시간 예상합니다~ 오늘도 득근하세요~', '2023-08-08 16:44', 11, 0, 0, null,'홍길동');
-commit;
-
 
 
 -- 채팅 초기 값 (필수는 아님, 그냥 사이트에서 대화 생성해도 됨)
