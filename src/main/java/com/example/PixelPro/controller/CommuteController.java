@@ -61,24 +61,27 @@ public class CommuteController {
                 if (today.equals(gotoworkDate)) {
                     out.println("<script>alert('이미 출근을 등록하셨습니다.');location.href='/attendance/attendanceCheck';</script>");
                     out.close();
+                }else{
+                    //출근 등록 처리
+                    CommuteBean cb = new CommuteBean();
+                    cb.setMbnum(member.getMbnum());
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date currentDate = new Date();
+                    String formattedDate = sdf.format(currentDate);
+                    Timestamp timestamp = Timestamp.valueOf(formattedDate);
+                    cb.setGotowork(timestamp);
+
+                    Commute commute = Commute.createCommute(cb);
+                    commuteService.save(commute);
+
+                    out.println("<script>alert('출근 등록 완료되었습니다.');location.href='/attendance/attendanceCheck';</script>");
+                    out.close();
+
                 }
+
             }
 
-            //출근 등록 처리
-            CommuteBean cb = new CommuteBean();
-            cb.setMbnum(member.getMbnum());
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date currentDate = new Date();
-            String formattedDate = sdf.format(currentDate);
-            Timestamp timestamp = Timestamp.valueOf(formattedDate);
-            cb.setGotowork(timestamp);
-
-            Commute commute = Commute.createCommute(cb);
-            commuteService.save(commute);
-
-            out.println("<script>alert('출근 등록 완료되었습니다.');location.href='/attendance/attendanceCheck';</script>");
-            out.close();
         }
         return "redirect:/attendance/attendanceCheck";
     }
