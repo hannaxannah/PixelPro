@@ -125,7 +125,7 @@ public class MemberController {
                 }
             }
             if (existDateList.isEmpty()) {
-                out.println("<script>if (confirm('출근f 등록 하시겠습니까?')) { location.href='/commute/attendanceGotoWork'; } else{location.href='/home'}</script>");
+                out.println("<script>if (confirm('출근 등록 하시겠습니까?')) { location.href='/commute/attendanceGotoWork'; } else{location.href='/home'}</script>");
                 out.close();
             } else {
                 LocalDate today = LocalDate.now();
