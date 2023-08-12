@@ -106,7 +106,9 @@
                                     <td th:text="${bean.mbenddate}"></td>
                                     <td th:text="${bean.mstate}"></td>
                                     <!--th:href="@{'/resign/oneList/' + ${bean.mbnum}}"-->
-                                    <td><a type="button" class="btn btn-success" th:href="@{'/resignInsert/' + ${bean.mbnum}}">조회</a></td>
+                                    <td>
+                                        <a type="button"  id="allClear"  class="btn btn-success" th:href="@{'/resignInsert/' + ${bean.mbnum}}">조회</a>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>

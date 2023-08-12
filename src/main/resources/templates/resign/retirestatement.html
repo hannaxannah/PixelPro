@@ -110,7 +110,7 @@ $('[data-filter="trigger"]').on("change", function() {
 }
 .payment {
     margin-top: 30px;
-    margin-left: 100px;
+    margin-left: 180px;
     align: center;
 }
 
@@ -167,7 +167,7 @@ $('[data-filter="trigger"]').on("change", function() {
                     <div class="card-body">
                         <div class="container pb-5 mb-2">
                             <div class="comparison-table">
-                                <table class="table table-bordered">
+                                <table class="table table-bordered" th:each="mem : ${member}">
                                     <thead class="bg-secondary">
                                     <tr>
                                         <td class="align-middle" colspan="2">
@@ -193,45 +193,43 @@ $('[data-filter="trigger"]').on("change", function() {
                                         <th>퇴사일</th>
                                     </tr>
                                     <tr class="tcenter">
-                                        <th>신주영</th>
-                                        <td>개발부</td>
-                                        <td>사원</td>
-                                        <td>2021/11/20</td>
-                                        <td>2023/07/31</td>
+                                        <th th:text="${mem.mbname}"></th>
+                                        <td th:text="${mem.dept}"></td>
+                                        <td th:text="${mem.mblevel}"></td>
+                                        <td th:text="${mem.mbstartdate}"></td>
+                                        <td th:text="${mem.mbenddate}"></td>
                                     </tr>
                                     </tbody>
                                 </table><br><br>
 
                                 <span><h5>임금내역</h5></span>
-                                <table class="table table-bordered">
+                                <table class="table table-bordered" th:each="bean : ${resignBean}">
                                     <tbody id="price" data-filter="target">
                                     <tr class="bg-secondary" id="secondary4">
                                         <th colspan="2">통상임금(1일)</th>
-                                        <td colspan="2">100,000</td>
+                                        <td colspan="2" th:text="${bean.onedaypay}"></td>
                                         <td></td>
                                     </tr>
                                     <tr class="bg-secondary" id="secondary5">
                                         <th colspan="2">평균임금(1일)</th>
-                                        <td colspan="2">99,900</td>
+                                        <td colspan="2" th:text="${bean.oneavgpay}"></td>
                                         <td></td>
                                     </tr>
                                     <tr class="bg-secondary" id="secondary6">
                                         <th colspan="2">급여(3개월)</th>
-                                        <td colspan="2">9,000,000</td>
+                                        <td colspan="2" th:text="${bean.thrpay}"></td>
                                         <td></td>
                                     </tr>
                                     <tr class="bg-secondary" id="secondary7">
                                         <th colspan="2">근무일수(3개월)</th>
-                                        <td colspan="2">67</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr class="bg-secondary" id="secondary8">
-                                        <th colspan="2">근무상태</th>
-                                        <td colspan="2">퇴사</td>
+                                        <td colspan="2" th:text="${bean.thrday}"></td>
                                         <td></td>
                                     </tr>
                                     <tr class="taxsum">
-                                        <th colspan="5">임금금액 합계 : 2,451,000</th>
+                                        <th colspan="5">임금금액 합계 :
+                                            <span
+                                                    th:text="${#numbers.formatInteger((resignBean.thrpay / 3), 0, 'COMMA')}"/> 원
+                                        </th>
                                     </tr>
                                     </tbody>
                                 </table><br><br>
@@ -247,15 +245,18 @@ $('[data-filter="trigger"]').on("change", function() {
                                         <th>비고</th>
                                     </tr>
                                     <tr>
-                                        <th class="tcenter">MP2150812</th>
-                                        <td>2,578,120</td>
-                                        <td>7,345,788</td>
-                                        <td>600,000</td>
+                                        <th class="tcenter" th:text="${session.loginInfo.mbnum}"></th>
+                                        <td th:text="${#numbers.formatInteger((resignBean.oneavgpay * 30), 0, 'COMMA')}"></td>
+                                        <td th:text="${#numbers.formatInteger((resignBean.thrpay / 3), 0, 'COMMA')}"></td>
+                                        <td th:text="${#numbers.formatInteger((resignBean.thrpay  / 3 * 0.1), 0, 'COMMA')}"></td>
                                         <td class="tcenter">상호 간 확인에 동의합니다.</td>
                                     </tr>
                                     <tr class="resignsum">
                                         <!--(총액 - 공제금액) = 지급금액-->
-                                        <th colspan="5">지급금액 합계 : 6,985,388</th>
+                                        <th colspan="5">지급금액 합계 : <span
+                                                th:text="${#numbers.formatInteger((resignBean.thrpay / 3 * 0.9), 0, 'COMMA')}"/> 원
+
+                                        </th>
                                     </tr>
                                     <tr>
                                         <td colspan="5">

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -63,40 +64,66 @@ public class ResignController {
 
     /*개인 퇴직금 목록*/
     @GetMapping(value = "resign/oneList")
-    public String selectOne(Model model){/*@PathVariable("mbnum") int mbnum,*/
+    public String selectOne(HttpSession session, HttpServletResponse response, Model model) throws IOException  {
         //System.out.println("mbnum: " + mbnum);
-        List<Member> member = memberService.findByOrderByMbnumDesc();
+
+        response.setContentType("text/html; charset=UTF-8");
+        Member member = (Member)session.getAttribute("loginInfo");
+        if(member == null){
+            session.setAttribute("destination", "redirect:/mail/inbox");
+            response.getWriter().print("<script>alert('로그인이 필요합니다.');location.href='/login'</script>");
+            response.getWriter().flush();
+        }
+
+
+        List<Member> memberBean = memberService.findByOrderByMbnumDesc();
         //ResignEntity resign = resignService.getResignByMbnum(mbnum);
 
 //        if (resign.getSevpay()== null) {
 //            return "/resign/servpayList/" + mbnum;
 //        }
 
-        model.addAttribute("member", member);
+        model.addAttribute("member", memberBean);
         return "resign/servpayList";
 
     }
 
     /*전체 퇴직금 목록*/
     @GetMapping(value = "resign/resignList")
-    public String selectAll(Model model){
-        List<Member> member = memberService.findByOrderByMbnumDesc();
+    public String selectAll(HttpSession session, HttpServletResponse response, Model model) throws IOException  {
+
+        response.setContentType("text/html; charset=UTF-8");
+        Member member = (Member)session.getAttribute("loginInfo");
+        if(member == null){
+            session.setAttribute("destination", "redirect:/mail/inbox");
+            response.getWriter().print("<script>alert('로그인이 필요합니다.');location.href='/login'</script>");
+            response.getWriter().flush();
+        }
+
+
         List<ResignEntity> resign = resignService.findByOrderBySevpayDesc();
 
-        model.addAttribute("memberBean", member);
         model.addAttribute("resign", resign);
         return "/resign/servpayAllList";
     }
 
     /*퇴직명세서*/
     @GetMapping(value = "resign/retireState/{sevpay}")
-    public String retireStatement(@PathVariable("sevpay") int sevpay, Model model) {
+    public String retireStatement(@PathVariable("sevpay") int sevpay, HttpSession session,
+                                  HttpServletResponse response, Model model) throws IOException  {
+
+        response.setContentType("text/html; charset=UTF-8");
+        Member member = (Member)session.getAttribute("loginInfo");
+
         System.out.println("sevpay:" + sevpay);
         ResignEntity resign = resignService.getResignByServpay(sevpay);
-        Member member = (Member) memberService.findByOrderByMbnumDesc();
+
         if (resign.getSevpay()== null) {
             return "/resign/paystubInsert/" + sevpay;
         }
+
+//        System.out.println("퇴직명세서 멤버번호"+member.getMbnum());
+//        System.out.println("퇴직명세서 이름"+member.getMbname());
 
         System.out.println("resign Sevpay: " + resign.getSevpay());
         System.out.println("Payment: " + resign.getPayment());

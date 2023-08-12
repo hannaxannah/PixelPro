@@ -102,6 +102,9 @@
 
     <script>
         alert('명세서 작업 내용이 없습니다 ');
+
+        var cells = document.getElementsByClassName('btn btn-success');
+
         $("#wrecord").keyup(function (event) {
             const wrecord = $("#wrecord").val() ? parseInt($("#wrecord").val()) : null;
             const allowance = $("#allowance").val() ? parseInt($("#allowance").val()) : null;
@@ -114,7 +117,7 @@
             $("#tsum").val(wrecord * allowance);
         });
 
-        document.querySelector(".btn btn-success").addEventListener("click", function () {
+       cells[0].addEventListener("click", function() {
             if ($("#aitem").val() === '') {
                 alert("수당항목을 선택해주세요.");
                 $("#aitem").focus();
