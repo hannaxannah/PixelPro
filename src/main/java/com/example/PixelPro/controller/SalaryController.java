@@ -1,6 +1,7 @@
 package com.example.PixelPro.controller;
 
 import com.example.PixelPro.Bean.SalaryBean;
+import com.example.PixelPro.entity.Member;
 import com.example.PixelPro.entity.SalaryEntity;
 import com.example.PixelPro.service.SalaryService;
 import com.opencsv.CSVWriter;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -38,8 +40,17 @@ public class SalaryController {
 
     /*전체 급여목록*/
     @GetMapping(value = "selectList")
-    public String selectAll(Model model) {
+    public String selectAll(HttpSession session, HttpServletResponse response, Model model) throws IOException  {
 //      List<SalaryEntity> salary = salaryService.getSummarySalaryUsers();
+
+        response.setContentType("text/html; charset=UTF-8");
+        Member member = (Member)session.getAttribute("loginInfo");
+        if(member == null){
+            session.setAttribute("destination", "redirect:/mail/inbox");
+            response.getWriter().print("<script>alert('로그인이 필요합니다.');location.href='/login'</script>");
+            response.getWriter().flush();
+        }
+
         List<Map<String, Long>> salary = salaryService.getSummarySalaryUsers();
         model.addAttribute("salary", salary);
         return "/salary/salaryList";
@@ -47,7 +58,16 @@ public class SalaryController {
 
     /*개인 급여목록*/
     @GetMapping(value = "oneList")
-    public String oneList(Model model) {
+    public String oneList(HttpSession session, HttpServletResponse response, Model model) throws IOException  {
+
+        response.setContentType("text/html; charset=UTF-8");
+        Member member = (Member)session.getAttribute("loginInfo");
+        if(member == null){
+            session.setAttribute("destination", "redirect:/mail/inbox");
+            response.getWriter().print("<script>alert('로그인이 필요합니다.');location.href='/login'</script>");
+            response.getWriter().flush();
+        }
+
         List<SalaryEntity> salary = salaryService.findByOrderBySnumDesc();
         model.addAttribute("salary", salary);
         return "salary/salaryOneList";
