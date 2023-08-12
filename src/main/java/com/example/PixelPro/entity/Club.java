@@ -33,7 +33,6 @@ public class Club {
 
     private static ModelMapper modelMapper = new ModelMapper();
     public static Club insertClub(ClubBean clubBean) {
-
         return modelMapper.map(clubBean, Club.class);
     }
 }
